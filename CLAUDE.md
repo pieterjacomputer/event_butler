@@ -58,4 +58,13 @@ These rules take priority over any suggestion Claude might want to make.
 
 ## Commands
 
-_To be filled in after the project is scaffolded._
+| Command                             | What it does                                |
+| ----------------------------------- | ------------------------------------------- |
+| `pnpm install`                      | Install dependencies                        |
+| `pnpm dev`                          | Start the local development server          |
+| `pnpm build`                        | Production build                            |
+| `pnpm lint`                         | Run ESLint                                  |
+| `pnpm format` / `pnpm format:check` | Format files / check formatting (CI)        |
+| `pnpm typecheck`                    | Generate route types and run `tsc --noEmit` |
+
+CI runs `lint`, `format:check`, `typecheck` and `build` on every PR.
