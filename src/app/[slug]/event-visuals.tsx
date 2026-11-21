@@ -263,6 +263,7 @@ export function HousewarmingScene({
   idPrefix: string;
 }) {
   const windowId = `${idPrefix}-hw-window`;
+  const neonId = `${idPrefix}-neon`;
   const glowId = `${idPrefix}-hw-glow`;
   const bulbs = [226, 248, 270, 292, 314, 336];
   return (
@@ -607,32 +608,69 @@ export function HousewarmingScene({
 
       {/* Side entrance: a path along the right of the house and a glowing arrow */}
       <polygon points="204,198 236,190 240,200 206,206" fill="#6A5246" />
-      <path
-        d="M196 196 C204 182 214 176 230 176"
-        fill="none"
-        stroke="#F2C14E"
-        strokeWidth="6"
-        strokeLinecap="round"
-        opacity="0.3"
+      {/* Neon "Ingang" party sign on a post, right of the house */}
+      <defs>
+        <filter id={neonId} x="-30%" y="-30%" width="160%" height="160%">
+          <feGaussianBlur stdDeviation="1.6" result="blur" />
+          <feMerge>
+            <feMergeNode in="blur" />
+            <feMergeNode in="blur" />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
+      </defs>
+      <rect x="243" y="182" width="3" height="22" fill="#0E1226" />
+      <rect
+        x="218"
+        y="158"
+        width="54"
+        height="26"
+        rx="6"
+        fill="#120D24"
+        stroke="#0E1226"
+        strokeWidth="1"
       />
-      <path
-        d="M196 196 C204 182 214 176 230 176"
-        fill="none"
-        stroke="#F2C14E"
-        strokeWidth="2.6"
-        strokeLinecap="round"
+      <ellipse
+        cx="245"
+        cy="171"
+        rx="34"
+        ry="20"
+        fill="#FF5FA2"
+        opacity="0.14"
       />
-      <path d="M228 169 L239 176 L228 183 Z" fill="#F2C14E" />
+      <rect
+        x="221"
+        y="161"
+        width="48"
+        height="20"
+        rx="4.5"
+        fill="none"
+        stroke="#FF5FA2"
+        strokeWidth="1.4"
+        filter={`url(#${neonId})`}
+      />
       <text
-        x="214"
-        y="166"
+        x="241"
+        y="175.5"
         textAnchor="middle"
-        fill="#F2C14E"
-        fontSize="11"
+        fill="#FFE3F0"
+        stroke="#FF5FA2"
+        strokeWidth="0.4"
+        fontSize="12"
+        filter={`url(#${neonId})`}
         style={{ fontFamily: "var(--font-script), cursive" }}
       >
         Ingang
       </text>
+      <path
+        d="M258 171 H265 M262 167.5 L265.5 171 L262 174.5"
+        fill="none"
+        stroke="#5FF2E6"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        filter={`url(#${neonId})`}
+      />
 
       {/* Dancing guests on the driveway */}
       {[
@@ -679,16 +717,16 @@ export function HousewarmingScene({
       ))}
 
       {/* Garden table with cocktails and candles */}
-      <rect x="262" y="206" width="84" height="6" rx="2" fill="#6B4A33" />
-      <rect x="270" y="212" width="5" height="30" fill="#4E3626" />
+      <rect x="284" y="206" width="62" height="6" rx="2" fill="#6B4A33" />
+      <rect x="290" y="212" width="5" height="30" fill="#4E3626" />
       <rect x="333" y="212" width="5" height="30" fill="#4E3626" />
       {/* Cocktail glass (pink) */}
-      <path d="M274 184 h18 l-9 10 Z" fill="#E86A92" opacity="0.9" />
-      <rect x="282" y="194" width="2" height="9" fill="#F4EEE4" />
-      <rect x="277" y="203" width="12" height="2" fill="#F4EEE4" />
+      <path d="M288 184 h16 l-8 10 Z" fill="#E86A92" opacity="0.9" />
+      <rect x="295" y="194" width="2" height="9" fill="#F4EEE4" />
+      <rect x="290" y="203" width="12" height="2" fill="#F4EEE4" />
       {/* Tumbler (orange) */}
       <rect
-        x="300"
+        x="308"
         y="188"
         width="12"
         height="17"
@@ -696,9 +734,9 @@ export function HousewarmingScene({
         fill="#F2994A"
         opacity="0.9"
       />
-      <circle cx="306" cy="190" r="3" fill="#F6C445" />
+      <circle cx="314" cy="190" r="3" fill="#F6C445" />
       {/* Candles */}
-      {[322, 336].map((x) => (
+      {[326, 338].map((x) => (
         <g key={x}>
           <circle cx={x} cy={192} r="9" fill="#F6D27A" opacity="0.25" />
           <rect x={x - 3} y="194" width="6" height="11" fill="#F4EEE4" />
