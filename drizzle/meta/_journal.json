@@ -15,6 +15,20 @@
       "when": 1795185846392,
       "tag": "0001_seed_first_event",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1795283061705,
+      "tag": "0002_event_parts_and_image",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1795283062086,
+      "tag": "0003_seed_event_parts",
+      "breakpoints": true
     }
   ]
 }
