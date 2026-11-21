@@ -1,0 +1,93 @@
+import { sql } from "drizzle-orm";
+import {
+  check,
+  index,
+  integer,
+  pgTable,
+  primaryKey,
+  text,
+  timestamp,
+  uuid,
+} from "drizzle-orm/pg-core";
+
+const createdAt = timestamp("created_at", { withTimezone: true })
+  .notNull()
+  .defaultNow();
+
+/** An event with its public info and order deadline. */
+export const events = pgTable("events", {
+  id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
+  /** Used in the public URL, e.g. /43-is-a-party. */
+  slug: text("slug").notNull().unique(),
+  title: text("title").notNull(),
+  description: text("description").notNull(),
+  location: text("location").notNull(),
+  startsAt: timestamp("starts_at", { withTimezone: true }).notNull(),
+  endsAt: timestamp("ends_at", { withTimezone: true }),
+  /** Orders are accepted until this moment (stored in UTC). */
+  orderDeadline: timestamp("order_deadline", { withTimezone: true }),
+  createdAt,
+});
+
+/** The options guests can order for an event. */
+export const menuItems = pgTable(
+  "menu_items",
+  {
+    id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
+    eventId: integer("event_id")
+      .notNull()
+      .references(() => events.id, { onDelete: "cascade" }),
+    name: text("name").notNull(),
+    /** Optional; empty means free. */
+    priceCents: integer("price_cents"),
+    sortOrder: integer("sort_order").notNull().default(0),
+  },
+  (t) => [
+    index("menu_items_event_id_idx").on(t.eventId),
+    check(
+      "menu_items_price_cents_non_negative",
+      sql`${t.priceCents} IS NULL OR ${t.priceCents} >= 0`,
+    ),
+  ],
+);
+
+/** One order per guest. */
+export const orders = pgTable(
+  "orders",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    eventId: integer("event_id")
+      .notNull()
+      .references(() => events.id, { onDelete: "cascade" }),
+    guestName: text("guest_name").notNull(),
+    /** Optional, e.g. allergies. */
+    note: text("note"),
+    /** Secret token in the guest's personal link to change or cancel the order. */
+    editToken: text("edit_token").notNull().unique(),
+    createdAt,
+    updatedAt: timestamp("updated_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+  },
+  (t) => [index("orders_event_id_idx").on(t.eventId)],
+);
+
+/** How many portions of each menu item an order contains. */
+export const orderLines = pgTable(
+  "order_lines",
+  {
+    orderId: uuid("order_id")
+      .notNull()
+      .references(() => orders.id, { onDelete: "cascade" }),
+    menuItemId: integer("menu_item_id")
+      .notNull()
+      // "no action" (checked at end of statement) so deleting an event can
+      // cascade through orders and menu items in one go.
+      .references(() => menuItems.id, { onDelete: "no action" }),
+    quantity: integer("quantity").notNull(),
+  },
+  (t) => [
+    primaryKey({ columns: [t.orderId, t.menuItemId] }),
+    check("order_lines_quantity_positive", sql`${t.quantity} >= 1`),
+  ],
+);

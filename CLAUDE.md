@@ -58,13 +58,15 @@ These rules take priority over any suggestion Claude might want to make.
 
 ## Commands
 
-| Command                             | What it does                                |
-| ----------------------------------- | ------------------------------------------- |
-| `pnpm install`                      | Install dependencies                        |
-| `pnpm dev`                          | Start the local development server          |
-| `pnpm build`                        | Production build                            |
-| `pnpm lint`                         | Run ESLint                                  |
-| `pnpm format` / `pnpm format:check` | Format files / check formatting (CI)        |
-| `pnpm typecheck`                    | Generate route types and run `tsc --noEmit` |
+| Command                             | What it does                                            |
+| ----------------------------------- | ------------------------------------------------------- |
+| `pnpm install`                      | Install dependencies                                    |
+| `pnpm dev`                          | Start the local development server                      |
+| `pnpm build`                        | Production build                                        |
+| `pnpm lint`                         | Run ESLint                                              |
+| `pnpm format` / `pnpm format:check` | Format files / check formatting (CI)                    |
+| `pnpm typecheck`                    | Generate route types and run `tsc --noEmit`             |
+| `pnpm db:generate`                  | Generate a SQL migration from `src/db/schema.ts`        |
+| `pnpm db:migrate`                   | Apply pending migrations (runs on Vercel during deploy) |
 
 CI runs `lint`, `format:check`, `typecheck` and `build` on every PR.

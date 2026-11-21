@@ -19,14 +19,16 @@ Open http://localhost:3000.
 
 ## Scripts
 
-| Command             | What it does                            |
-| ------------------- | --------------------------------------- |
-| `pnpm dev`          | Start the local development server      |
-| `pnpm build`        | Production build                        |
-| `pnpm lint`         | Run ESLint                              |
-| `pnpm typecheck`    | Run the TypeScript compiler (no output) |
-| `pnpm format`       | Format all files with Prettier          |
-| `pnpm format:check` | Check formatting (used in CI)           |
+| Command             | What it does                             |
+| ------------------- | ---------------------------------------- |
+| `pnpm dev`          | Start the local development server       |
+| `pnpm build`        | Production build                         |
+| `pnpm lint`         | Run ESLint                               |
+| `pnpm typecheck`    | Run the TypeScript compiler (no output)  |
+| `pnpm format`       | Format all files with Prettier           |
+| `pnpm format:check` | Check formatting (used in CI)            |
+| `pnpm db:generate`  | Generate a SQL migration from the schema |
+| `pnpm db:migrate`   | Apply pending migrations to the database |
 
 ## How we work
 
