@@ -49,3 +49,15 @@ const shortDateFormat = new Intl.DateTimeFormat("nl-BE", {
 export function formatShortDate(date: Date): string {
   return shortDateFormat.format(date);
 }
+
+const dayMonthFormat = new Intl.DateTimeFormat("nl-BE", {
+  timeZone: TIME_ZONE,
+  weekday: "long",
+  day: "numeric",
+  month: "long",
+});
+
+/** "zaterdag 28 november" */
+export function formatDayMonth(date: Date): string {
+  return dayMonthFormat.format(date);
+}
