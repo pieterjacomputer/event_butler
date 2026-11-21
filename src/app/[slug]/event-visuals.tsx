@@ -608,7 +608,7 @@ export function HousewarmingScene({
 
       {/* Side entrance: a path along the right of the house and a glowing arrow */}
       <polygon points="204,198 236,190 240,200 206,206" fill="#6A5246" />
-      {/* Neon "Ingang" party sign on a post, right of the house */}
+      {/* Neon "Ingang" party sign on the right, pointing left to the side path */}
       <defs>
         <filter id={neonId} x="-30%" y="-30%" width="160%" height="160%">
           <feGaussianBlur stdDeviation="1.6" result="blur" />
@@ -619,9 +619,9 @@ export function HousewarmingScene({
           </feMerge>
         </filter>
       </defs>
-      <rect x="243" y="182" width="3" height="22" fill="#0E1226" />
+      <rect x="276" y="182" width="3" height="24" fill="#0E1226" />
       <rect
-        x="214"
+        x="246"
         y="158"
         width="64"
         height="26"
@@ -631,7 +631,7 @@ export function HousewarmingScene({
         strokeWidth="1"
       />
       <ellipse
-        cx="246"
+        cx="278"
         cy="171"
         rx="38"
         ry="20"
@@ -639,7 +639,7 @@ export function HousewarmingScene({
         opacity="0.14"
       />
       <rect
-        x="217"
+        x="249"
         y="161"
         width="58"
         height="20"
@@ -649,8 +649,17 @@ export function HousewarmingScene({
         strokeWidth="1.4"
         filter={`url(#${neonId})`}
       />
+      <path
+        d="M264 171 H256 M259.5 167.5 L256 171 L259.5 174.5"
+        fill="none"
+        stroke="#5FF2E6"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        filter={`url(#${neonId})`}
+      />
       <text
-        x="238"
+        x="285"
         y="175.5"
         textAnchor="middle"
         fill="#FFE3F0"
@@ -662,15 +671,6 @@ export function HousewarmingScene({
       >
         Ingang
       </text>
-      <path
-        d="M261 171 H269 M265.5 167.5 L269 171 L265.5 174.5"
-        fill="none"
-        stroke="#5FF2E6"
-        strokeWidth="1.6"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        filter={`url(#${neonId})`}
-      />
 
       {/* Dancing guests on the driveway */}
       {[
