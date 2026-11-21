@@ -69,4 +69,6 @@ These rules take priority over any suggestion Claude might want to make.
 | `pnpm db:generate`                  | Generate a SQL migration from `src/db/schema.ts`        |
 | `pnpm db:migrate`                   | Apply pending migrations (runs on Vercel during deploy) |
 
+The admin overview (sign-ups, headcount per part, spaghetti totals, CSV export) is at `/admin`, behind a GitHub login restricted to `ADMIN_GITHUB_ID`.
+
 CI runs `lint`, `format:check`, `typecheck` and `build` on every PR.
