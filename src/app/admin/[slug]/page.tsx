@@ -9,14 +9,19 @@ import { getEventOverview } from "@/lib/admin";
 import { isOrderingOpen } from "@/lib/events";
 import { formatDateTime } from "@/lib/format";
 import { SignOutButton } from "../sign-out-button";
+import { deleteAllSignups, deleteSignup } from "./actions";
+import { DeleteAllForm, DeleteSignupButton } from "./delete-buttons";
 
 export const metadata: Metadata = { title: "Admin – overzicht" };
 
-export default function AdminEventPage({ params }: PageProps<"/admin/[slug]">) {
+export default function AdminEventPage({
+  params,
+  searchParams,
+}: PageProps<"/admin/[slug]">) {
   return (
     <main className="mx-auto w-full max-w-5xl flex-1 px-4 py-8">
       <Suspense fallback={<p className="text-muted-foreground">Laden…</p>}>
-        <Overview params={params} />
+        <Overview params={params} searchParams={searchParams} />
       </Suspense>
     </main>
   );
@@ -24,9 +29,12 @@ export default function AdminEventPage({ params }: PageProps<"/admin/[slug]">) {
 
 async function Overview({
   params,
-}: Pick<PageProps<"/admin/[slug]">, "params">) {
+  searchParams,
+}: Pick<PageProps<"/admin/[slug]">, "params" | "searchParams">) {
   if (!(await isAdmin())) redirect("/admin/login");
-  const { slug } = await params;
+  const [{ slug }, query] = await Promise.all([params, searchParams]);
+  const deletedCount =
+    typeof query.verwijderd === "string" ? Number(query.verwijderd) : null;
   const overview = await getEventOverview(slug);
   if (!overview) notFound();
   const { event, signups, totals } = overview;
@@ -62,6 +70,14 @@ async function Overview({
           <SignOutButton />
         </div>
       </header>
+
+      {deletedCount !== null && Number.isFinite(deletedCount) && (
+        <p role="status" className="rounded-lg bg-muted px-4 py-3 text-sm">
+          {deletedCount === 1
+            ? "1 inschrijving verwijderd."
+            : `${deletedCount} inschrijvingen verwijderd.`}
+        </p>
+      )}
 
       <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <Stat label="Inschrijvingen" value={totals.signups} />
@@ -128,7 +144,10 @@ async function Overview({
                     </th>
                   ))}
                   <th className="py-2 pr-4 font-medium">Opmerking</th>
-                  <th className="py-2 font-medium">Laatst gewijzigd</th>
+                  <th className="py-2 pr-4 font-medium">Laatst gewijzigd</th>
+                  <th className="py-2 font-medium">
+                    <span className="sr-only">Verwijderen</span>
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -152,14 +171,41 @@ async function Overview({
                         </span>
                       )}
                     </td>
-                    <td className="py-2 whitespace-nowrap text-muted-foreground">
+                    <td className="py-2 pr-4 whitespace-nowrap text-muted-foreground">
                       {formatDateTime(s.updatedAt)}
+                    </td>
+                    <td className="py-1">
+                      <DeleteSignupButton
+                        guestName={s.guestName}
+                        action={deleteSignup.bind(null, event.slug, s.id)}
+                      />
                     </td>
                   </tr>
                 ))}
               </tbody>
             </table>
           )}
+        </CardContent>
+      </Card>
+
+      <Card className="border-destructive/40">
+        <CardHeader>
+          <CardTitle className="text-destructive">
+            Alle gastgegevens verwijderen
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="flex flex-col gap-3 text-sm">
+          <p className="text-muted-foreground">
+            Verwijdert alle {totals.signups} inschrijvingen van dit feest:
+            namen, aantallen, porties en opmerkingen. Het feest zelf en de
+            pagina blijven bestaan. Dit kan niet ongedaan worden; download
+            eventueel eerst de CSV.
+          </p>
+          <DeleteAllForm
+            title={event.title}
+            count={totals.signups}
+            action={deleteAllSignups.bind(null, event.slug)}
+          />
         </CardContent>
       </Card>
     </div>
