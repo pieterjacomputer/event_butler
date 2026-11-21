@@ -135,7 +135,7 @@ function OrderFields({
           maxLength={80}
           defaultValue={values.guestName}
           aria-invalid={!!errors.guestName}
-          placeholder="Bv. familie Janssens"
+          placeholder="Je naam"
         />
         <FieldError message={errors.guestName} />
       </div>
@@ -265,7 +265,7 @@ function OrderFields({
           maxLength={500}
           defaultValue={values.note}
           aria-invalid={!!errors.note}
-          placeholder="Bv. allergieën"
+          placeholder="Laat een berichtje achter"
         />
         <FieldError message={errors.note} />
       </div>
