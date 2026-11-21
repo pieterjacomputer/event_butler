@@ -799,7 +799,13 @@ export function CocktailsCheers({ className }: { className?: string }) {
 const PARTY_COLORS = ["#E86A92", "#F2C14E", "#4FB3A9", "#F2994A", "#B98CF0"];
 
 /** Colourful confetti scattered over the night sky. */
-export function Confetti({ className }: { className?: string }) {
+export function Confetti({
+  className,
+  colors = PARTY_COLORS,
+}: {
+  className?: string;
+  colors?: string[];
+}) {
   // Fixed positions so server and client render the same.
   const pieces = [
     [8, 18, 20],
@@ -835,7 +841,7 @@ export function Confetti({ className }: { className?: string }) {
             cx={x}
             cy={y}
             r="0.7"
-            fill={PARTY_COLORS[i % PARTY_COLORS.length]}
+            fill={colors[i % colors.length]}
           />
         ) : (
           <rect
@@ -845,7 +851,7 @@ export function Confetti({ className }: { className?: string }) {
             width="1.6"
             height="0.7"
             rx="0.2"
-            fill={PARTY_COLORS[i % PARTY_COLORS.length]}
+            fill={colors[i % colors.length]}
             transform={`rotate(${rotate} ${x} ${y})`}
             opacity="0.9"
           />
@@ -1018,6 +1024,231 @@ export function Spotlights({ className }: { className?: string }) {
       <polygon points="98,100 92,100 38,0 60,0" fill="url(#beam-gold)" />
       <polygon points="52,100 48,100 6,0 26,0" fill="url(#beam-purple)" />
       <polygon points="52,100 48,100 76,0 96,0" fill="url(#beam-purple)" />
+    </svg>
+  );
+}
+
+/** A warm afternoon sun with soft rays. */
+export function Sun({ className }: { className?: string }) {
+  const rays = Array.from({ length: 12 }, (_, i) => i * 30);
+  return (
+    <svg viewBox="0 0 120 120" className={className} aria-hidden>
+      <circle cx="60" cy="60" r="44" fill="#F6C445" opacity="0.18" />
+      {rays.map((angle) => {
+        const rad = (angle * Math.PI) / 180;
+        return (
+          <line
+            key={angle}
+            x1={60 + Math.cos(rad) * 30}
+            y1={60 + Math.sin(rad) * 30}
+            x2={60 + Math.cos(rad) * 42}
+            y2={60 + Math.sin(rad) * 42}
+            stroke="#F2994A"
+            strokeWidth="4"
+            strokeLinecap="round"
+          />
+        );
+      })}
+      <circle cx="60" cy="60" r="24" fill="#F6C445" />
+      <circle cx="52" cy="52" r="8" fill="#FFF3C4" opacity="0.6" />
+    </svg>
+  );
+}
+
+/** A soft, puffy cloud. */
+export function Cloud({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 120 50" className={className} aria-hidden>
+      <g fill="#FFFFFF">
+        <ellipse cx="34" cy="34" rx="26" ry="14" />
+        <ellipse cx="60" cy="24" rx="26" ry="20" />
+        <ellipse cx="88" cy="32" rx="24" ry="15" />
+        <rect x="18" y="32" width="86" height="16" rx="8" />
+      </g>
+    </svg>
+  );
+}
+
+/**
+ * An afternoon terrace at the hostel: trees, a parasol, a picnic table with
+ * a spritz, a beer and daisies, kids playing with foam swords, and a visit
+ * from the Sint.
+ */
+export function TerraceScene({ className }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 400 220"
+      preserveAspectRatio="xMidYMax meet"
+      className={className}
+      aria-hidden
+    >
+      {/* Trees and hedge in the back */}
+      <circle cx="40" cy="96" r="38" fill="#9CC48A" />
+      <circle cx="78" cy="110" r="30" fill="#86B676" />
+      <circle cx="348" cy="92" r="40" fill="#9CC48A" />
+      <circle cx="312" cy="112" r="28" fill="#86B676" />
+      <rect x="0" y="132" width="400" height="30" rx="14" fill="#7FAE6E" />
+      {/* Grass */}
+      <path d="M0 150 Q200 136 400 150 V220 H0 Z" fill="#B7D59A" />
+      {/* Flowers in the grass */}
+      {[
+        [24, 170, "#F4A6B7"],
+        [52, 186, "#F6C445"],
+        [86, 176, "#FFFFFF"],
+        [318, 178, "#F4A6B7"],
+        [356, 190, "#FFFFFF"],
+        [378, 170, "#F6C445"],
+      ].map(([x, y, c], i) => (
+        <g key={i}>
+          <circle cx={x as number} cy={y as number} r="4" fill={c as string} />
+          <circle cx={x as number} cy={y as number} r="1.5" fill="#F2994A" />
+        </g>
+      ))}
+
+      {/* Parasol */}
+      <rect x="198" y="58" width="3" height="104" fill="#6B4A33" />
+      <path d="M140 74 Q200 30 260 74 Z" fill="#E4572E" />
+      {[160, 180, 200, 220, 240].map((x, i) =>
+        i % 2 ? (
+          <path
+            key={x}
+            d={`M${x} 74 Q${x + 10} ${48 + Math.abs(200 - x) * 0.2} ${x + 20} 74 Z`}
+            fill="#FBF3E4"
+          />
+        ) : null,
+      )}
+      <path
+        d="M140 74 Q200 30 260 74"
+        fill="none"
+        stroke="#B8402A"
+        strokeWidth="1.5"
+      />
+
+      {/* Picnic table */}
+      <rect x="150" y="128" width="100" height="8" rx="2" fill="#B9824F" />
+      <rect x="140" y="146" width="120" height="6" rx="2" fill="#A0703F" />
+      <path
+        d="M162 136 L154 176 M238 136 L246 176"
+        stroke="#8A5E35"
+        strokeWidth="5"
+        strokeLinecap="round"
+      />
+      {/* Spritz glass with orange slice and straw */}
+      <path d="M166 104 h16 l-2 20 h-12 Z" fill="#F2994A" opacity="0.85" />
+      <rect x="173" y="124" width="2" height="4" fill="#E8DCCB" />
+      <circle
+        cx="166"
+        cy="106"
+        r="5"
+        fill="#F6C445"
+        stroke="#E8A13A"
+        strokeWidth="1"
+      />
+      <path
+        d="M178 104 L184 92"
+        stroke="#E4572E"
+        strokeWidth="2"
+        strokeLinecap="round"
+      />
+      {/* Beer */}
+      <rect
+        x="192"
+        y="106"
+        width="14"
+        height="22"
+        rx="2"
+        fill="#F2C14E"
+        opacity="0.9"
+      />
+      <rect x="192" y="102" width="14" height="6" rx="3" fill="#FFFFFF" />
+      {/* Vase with daisies */}
+      <rect
+        x="222"
+        y="112"
+        width="12"
+        height="16"
+        rx="3"
+        fill="#BFE3DC"
+        opacity="0.9"
+      />
+      {[
+        [224, 98],
+        [232, 94],
+        [228, 104],
+      ].map(([x, y], i) => (
+        <g key={i}>
+          <line
+            x1="228"
+            y1="112"
+            x2={x}
+            y2={y}
+            stroke="#6A9A58"
+            strokeWidth="1.2"
+          />
+          <circle cx={x} cy={y} r="4" fill="#FFFFFF" />
+          <circle cx={x} cy={y} r="1.6" fill="#F6C445" />
+        </g>
+      ))}
+
+      {/* Kids with foam swords */}
+      <g transform="translate(96 172)">
+        <circle cx="0" cy="-30" r="6" fill="#F1C7A4" />
+        <path d="M-7 -4 L0 -24 L7 -4 Z" fill="#4FB3A9" />
+        <path
+          d="M-3 -4 L-5 8 M3 -4 L5 8"
+          stroke="#2B2140"
+          strokeWidth="2.5"
+          strokeLinecap="round"
+        />
+        <path
+          d="M5 -18 L22 -34"
+          stroke="#F6C445"
+          strokeWidth="4"
+          strokeLinecap="round"
+        />
+      </g>
+      <g transform="translate(130 174)">
+        <circle cx="0" cy="-28" r="6" fill="#C98E6B" />
+        <path d="M-7 -4 L0 -22 L7 -4 Z" fill="#E86A92" />
+        <path
+          d="M-3 -4 L-5 8 M3 -4 L5 8"
+          stroke="#2B2140"
+          strokeWidth="2.5"
+          strokeLinecap="round"
+        />
+        <path
+          d="M-5 -16 L-20 -34"
+          stroke="#4F8FE0"
+          strokeWidth="4"
+          strokeLinecap="round"
+        />
+      </g>
+
+      {/* The Sint, waving */}
+      <g transform="translate(300 176)">
+        <path d="M-14 6 L-10 -30 L10 -30 L14 6 Z" fill="#C8432B" />
+        <path d="M-10 -30 L10 -30" stroke="#F6C445" strokeWidth="2" />
+        <circle cx="0" cy="-38" r="7" fill="#F1C7A4" />
+        <path
+          d="M-7 -36 Q0 -22 7 -36 Q4 -28 0 -26 Q-4 -28 -7 -36 Z"
+          fill="#FFFFFF"
+        />
+        <path d="M-7 -44 L0 -60 L7 -44 Z" fill="#C8432B" />
+        <path d="M0 -57 V-47 M-3 -52 H3" stroke="#F6C445" strokeWidth="1.5" />
+        <path
+          d="M14 -20 L22 -34"
+          stroke="#C8432B"
+          strokeWidth="4"
+          strokeLinecap="round"
+        />
+        <path d="M-12 -18 L-18 6" stroke="#F6C445" strokeWidth="2" />
+        <path
+          d="M-20 4 q2 -14 -2 -24 q6 2 6 6"
+          fill="none"
+          stroke="#F6C445"
+          strokeWidth="2"
+        />
+      </g>
     </svg>
   );
 }
