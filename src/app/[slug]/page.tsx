@@ -302,7 +302,7 @@ function PartPanel({
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_50%_100%,rgba(201,71,111,0.45),transparent_60%)]" />
           <StarField className="pointer-events-none absolute inset-0 h-full w-full" />
           <Spotlights className="pointer-events-none absolute inset-0 h-full w-full mix-blend-screen" />
-          <Confetti className="pointer-events-none absolute inset-0 h-full w-full" />
+          <Confetti className="pointer-events-none absolute inset-0 h-full w-full opacity-55" />
           <PartyLights className="pointer-events-none absolute inset-x-0 top-6 h-12 w-full md:top-8" />
           <DiscoBall className="pointer-events-none absolute top-8 left-3 w-20 md:top-10 md:left-16 md:w-28" />
           <MoonAndStars className="pointer-events-none absolute top-14 right-2 w-28 md:top-14 md:w-36" />
