@@ -208,7 +208,7 @@ function EventHeader({
       <div className="pointer-events-none absolute inset-0" aria-hidden>
         <Confetti
           colors={["#F4A6B7", "#F6C445", "#7CCBB8", "#F2994A", "#E4572E"]}
-          className="absolute inset-0 h-full w-full opacity-70"
+          className="absolute inset-0 h-full w-full opacity-70 md:opacity-35 md:[mask-image:radial-gradient(ellipse_55%_50%_at_50%_42%,transparent_45%,black_100%)]"
         />
         <Sun className="absolute top-12 right-2 w-12 md:top-14 md:right-auto md:left-[6%] md:w-28 lg:w-32" />
         <Cloud className="absolute top-24 left-1 w-14 opacity-90 md:top-20 md:left-[18%] md:w-32" />
@@ -302,7 +302,7 @@ function PartPanel({
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_50%_100%,rgba(201,71,111,0.45),transparent_60%)]" />
           <StarField className="pointer-events-none absolute inset-0 h-full w-full" />
           <Spotlights className="pointer-events-none absolute inset-0 h-full w-full mix-blend-screen" />
-          <Confetti className="pointer-events-none absolute inset-0 h-full w-full opacity-55" />
+          <Confetti className="pointer-events-none absolute inset-0 h-full w-full opacity-55 md:opacity-30 md:[mask-image:radial-gradient(ellipse_55%_50%_at_50%_42%,transparent_45%,black_100%)]" />
           <PartyLights className="pointer-events-none absolute inset-x-0 top-6 h-12 w-full md:top-8" />
           <DiscoBall className="pointer-events-none absolute top-8 left-3 w-20 md:top-10 md:left-16 md:w-28" />
           <MoonAndStars className="pointer-events-none absolute top-14 right-2 w-28 md:top-14 md:w-36" />
@@ -335,7 +335,7 @@ function PartPanel({
             <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_30%_100%,rgba(246,196,69,0.28),transparent_60%)]" />
             <Confetti
               colors={["#F4A6B7", "#F6C445", "#7CCBB8", "#F2994A", "#E4572E"]}
-              className="absolute inset-0 h-full w-full opacity-70"
+              className="absolute inset-0 h-full w-full opacity-70 md:opacity-35 md:[mask-image:radial-gradient(ellipse_55%_50%_at_50%_42%,transparent_45%,black_100%)]"
             />
             <Cloud className="absolute top-16 right-10 hidden w-24 opacity-80 md:block" />
             {/* Desktop: the header flows into this side with the same wavy edge as the night side */}
@@ -347,7 +347,7 @@ function PartPanel({
         </>
       )}
 
-      <div className="relative mx-auto flex w-full max-w-sm flex-1 flex-col items-center text-center">
+      <div className="relative mx-auto flex w-full max-w-sm flex-1 flex-col items-center text-center md:max-w-2xl">
         {night ? (
           <>
             {/* The info sits in the middle of the night sky. */}
