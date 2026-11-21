@@ -167,9 +167,12 @@ export function SpaghettiBowl({ className }: { className?: string }) {
 export function WaveEdge({
   direction,
   className,
+  fill = "#FBF3E4",
 }: {
   direction: "vertical" | "horizontal";
   className?: string;
+  /** Colour of the side the wave flows out of (default: the header cream). */
+  fill?: string;
 }) {
   // Filled with the day colour, drawn on top of the night panel.
   return direction === "vertical" ? (
@@ -186,7 +189,7 @@ export function WaveEdge({
       />
       <path
         d="M0 0 H22 C58 90 -6 170 26 260 C58 350 -2 430 28 520 C58 610 -4 690 24 800 H0 Z"
-        fill="#FBF3E4"
+        fill={fill}
       />
     </svg>
   ) : (
@@ -203,7 +206,7 @@ export function WaveEdge({
       />
       <path
         d="M0 0 V22 C90 58 170 -6 260 26 C350 58 430 -2 520 28 C610 58 690 -4 800 24 V0 Z"
-        fill="#FBF3E4"
+        fill={fill}
       />
     </svg>
   );
