@@ -606,7 +606,7 @@ function FormSection({
                   action={createOrder.bind(null, event.slug)}
                   parts={partsForForm(event)}
                   menu={event.menu.map((m) => ({ id: m.id, name: m.name }))}
-                  submitLabel="Inschrijven"
+                  submitLabel="Ik kom Feesten!"
                 />
                 <p className="text-xs text-muted-foreground">
                   We bewaren je naam, inschrijving en bestelling enkel voor dit
