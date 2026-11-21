@@ -39,6 +39,7 @@ import {
   formatDate,
   formatDayMonth,
   formatShortDate,
+  formatTime,
   formatTimeRange,
 } from "@/lib/format";
 
@@ -265,6 +266,10 @@ function PartPanel({
     .split("\n")
     .map((line) => line.trim())
     .filter(Boolean);
+  // Night side: if the programme already starts with the start time, show
+  // that time only once (in the glowing programme line, with a clock).
+  const startInProgramme =
+    night && items[0]?.startsWith(formatTime(part.startsAt)) === true;
 
   return (
     <section
@@ -338,10 +343,12 @@ function PartPanel({
                 </p>
               )}
 
-              <p className="flex items-center gap-2 font-serif text-2xl">
-                <Clock className="size-5" aria-hidden />
-                {formatTimeRange(part.startsAt, part.endsAt)}
-              </p>
+              {!startInProgramme && (
+                <p className="flex items-center gap-2 font-serif text-2xl">
+                  <Clock className="size-5" aria-hidden />
+                  {formatTimeRange(part.startsAt, part.endsAt)}
+                </p>
+              )}
 
               {part.location && (
                 <p
@@ -367,17 +374,14 @@ function PartPanel({
                         )}
                       >
                         {time ? (
-                          <>
-                            <span
-                              className={cn(
-                                "w-12 shrink-0 font-semibold",
-                                theme.accent,
-                              )}
-                            >
-                              {time}
-                            </span>
+                          <span className="flex items-center gap-2.5 font-serif text-2xl">
+                            <Clock
+                              className={cn("size-6", theme.accent)}
+                              aria-hidden
+                            />
+                            <span className={theme.accent}>{time}</span>
                             <span>{text}</span>
-                          </>
+                          </span>
                         ) : (
                           <span className="w-full text-center font-script text-2xl">
                             {item}
