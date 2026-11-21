@@ -649,3 +649,76 @@ export function DiscoBall({ className }: { className?: string }) {
     </svg>
   );
 }
+
+/** A firework burst: coloured rays with sparkling tips. */
+export function Firework({
+  className,
+  colors = ["#E86A92", "#F2C14E"],
+}: {
+  className?: string;
+  colors?: [string, string];
+}) {
+  const rays = Array.from({ length: 16 }, (_, i) => (i * 360) / 16);
+  return (
+    <svg viewBox="0 0 120 120" className={className} aria-hidden>
+      <circle cx="60" cy="60" r="30" fill={colors[0]} opacity="0.12" />
+      {rays.map((angle, i) => {
+        const rad = (angle * Math.PI) / 180;
+        const inner = 12 + (i % 2) * 4;
+        const outer = i % 2 ? 44 : 54;
+        const color = colors[i % 2];
+        return (
+          <g key={angle}>
+            <line
+              x1={60 + Math.cos(rad) * inner}
+              y1={60 + Math.sin(rad) * inner}
+              x2={60 + Math.cos(rad) * outer}
+              y2={60 + Math.sin(rad) * outer}
+              stroke={color}
+              strokeWidth="2.2"
+              strokeLinecap="round"
+            />
+            <circle
+              cx={60 + Math.cos(rad) * (outer + 5)}
+              cy={60 + Math.sin(rad) * (outer + 5)}
+              r="1.8"
+              fill={color}
+            />
+          </g>
+        );
+      })}
+      <circle cx="60" cy="60" r="3" fill="#FBE3A0" />
+    </svg>
+  );
+}
+
+/** Coloured stage spotlights sweeping up from the ground. */
+export function Spotlights({ className }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 100 100"
+      preserveAspectRatio="none"
+      className={className}
+      aria-hidden
+    >
+      <defs>
+        <linearGradient id="beam-pink" x1="0" y1="1" x2="0" y2="0">
+          <stop offset="0%" stopColor="#E86A92" stopOpacity="0.45" />
+          <stop offset="100%" stopColor="#E86A92" stopOpacity="0" />
+        </linearGradient>
+        <linearGradient id="beam-gold" x1="0" y1="1" x2="0" y2="0">
+          <stop offset="0%" stopColor="#F2C14E" stopOpacity="0.4" />
+          <stop offset="100%" stopColor="#F2C14E" stopOpacity="0" />
+        </linearGradient>
+        <linearGradient id="beam-purple" x1="0" y1="1" x2="0" y2="0">
+          <stop offset="0%" stopColor="#B98CF0" stopOpacity="0.4" />
+          <stop offset="100%" stopColor="#B98CF0" stopOpacity="0" />
+        </linearGradient>
+      </defs>
+      <polygon points="8,100 2,100 40,0 62,0" fill="url(#beam-pink)" />
+      <polygon points="98,100 92,100 38,0 60,0" fill="url(#beam-gold)" />
+      <polygon points="52,100 48,100 6,0 26,0" fill="url(#beam-purple)" />
+      <polygon points="52,100 48,100 76,0 96,0" fill="url(#beam-purple)" />
+    </svg>
+  );
+}

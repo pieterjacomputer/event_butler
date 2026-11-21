@@ -19,8 +19,10 @@ import {
   HousewarmingScene,
   Confetti,
   DiscoBall,
+  Firework,
   MoonAndStars,
   PartyLights,
+  Spotlights,
   SpaghettiBowl,
   StarField,
   WaveEdge,
@@ -276,14 +278,21 @@ function PartPanel({
     >
       {night ? (
         <>
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_50%_100%,rgba(201,71,111,0.45),transparent_60%)]" />
           <StarField className="pointer-events-none absolute inset-0 h-full w-full" />
+          <Spotlights className="pointer-events-none absolute inset-0 h-full w-full mix-blend-screen" />
           <Confetti className="pointer-events-none absolute inset-0 h-full w-full" />
           <PartyLights className="pointer-events-none absolute inset-x-0 top-6 h-12 w-full md:top-0" />
           <DiscoBall className="pointer-events-none absolute top-8 left-3 w-20 md:top-4 md:left-16 md:w-28" />
           <MoonAndStars className="pointer-events-none absolute top-14 right-2 w-28 md:top-8 md:w-36" />
-          <HousewarmingScene
-            idPrefix="desktop"
-            className="pointer-events-none absolute inset-x-0 bottom-0 hidden w-full opacity-90 md:block"
+          <Firework className="pointer-events-none absolute top-[30%] -left-4 w-24 opacity-90 md:left-10 md:w-32" />
+          <Firework
+            colors={["#4FB3A9", "#B98CF0"]}
+            className="pointer-events-none absolute top-[40%] -right-3 w-20 opacity-90 md:right-6 md:w-28"
+          />
+          <Firework
+            colors={["#F2994A", "#F2C14E"]}
+            className="pointer-events-none absolute top-[18%] right-[30%] hidden w-16 opacity-70 md:block"
           />
           {/* Organic transition from the day side */}
           <WaveEdge
@@ -302,86 +311,164 @@ function PartPanel({
         </>
       )}
 
-      <div className="relative mx-auto flex w-full max-w-sm flex-1 flex-col items-center gap-3 text-center md:gap-4">
-        <p
-          className={cn(
-            "text-xs font-semibold tracking-widest uppercase",
-            theme.muted,
-          )}
-        >
-          Deel {number}
-        </p>
-        <h2
-          className={cn(
-            "-rotate-1 rounded-md px-5 py-1.5 font-serif text-3xl",
-            theme.pill,
-          )}
-        >
-          {label}
-        </h2>
-        {venue && (
-          <p className={cn("font-script text-2xl", theme.accent)}>{venue}</p>
-        )}
-
-        <p className="flex items-center gap-2 font-serif text-2xl">
-          <Clock className="size-5" aria-hidden />
-          {formatTimeRange(part.startsAt, part.endsAt)}
-        </p>
-
-        {part.location && (
-          <p className={cn("flex items-start gap-2 text-sm", theme.muted)}>
-            <MapPin className="mt-0.5 size-4 shrink-0" aria-hidden />
-            {part.location}
-          </p>
-        )}
-
-        {items.length > 0 && (
-          <ul className="flex flex-col gap-1.5 text-left text-[15px]">
-            {items.map((item) => {
-              const [, time, text] =
-                /^(\d{1,2}u\d{2})\s+(.*)$/.exec(item) ?? [];
-              return (
-                <li key={item} className="flex gap-3">
-                  {time ? (
-                    <>
-                      <span
-                        className={cn(
-                          "w-12 shrink-0 font-semibold",
-                          theme.accent,
-                        )}
-                      >
-                        {time}
-                      </span>
-                      <span>{text}</span>
-                    </>
-                  ) : (
-                    <span className="w-full text-center font-script text-2xl">
-                      {item}
-                    </span>
-                  )}
-                </li>
-              );
-            })}
-          </ul>
-        )}
-
-        {/* Spacer: pushes the route buttons to the bottom of the panel. */}
+      <div className="relative mx-auto flex w-full max-w-sm flex-1 flex-col items-center text-center">
         {night ? (
           <>
-            {/* Mobile: the party scene fills the screen between text and buttons. */}
-            <div className="flex w-full flex-1 flex-col items-center md:hidden">
-              <div className="flex flex-1 items-center py-4">
-                <CocktailsCheers className="w-36" />
-              </div>
-              <HousewarmingScene
-                idPrefix="mobile"
-                className="pointer-events-none -mx-6 w-[calc(100%+3rem)] max-w-none"
-              />
+            {/* The info sits in the middle of the night sky. */}
+            <div className="flex w-full flex-1 flex-col items-center justify-center gap-3 py-6 md:gap-4">
+              <p
+                className={cn(
+                  "text-xs font-semibold tracking-widest uppercase",
+                  theme.muted,
+                )}
+              >
+                Deel {number}
+              </p>
+              <h2
+                className={cn(
+                  "-rotate-1 rounded-md px-5 py-1.5 font-serif text-3xl",
+                  theme.pill,
+                )}
+              >
+                {label}
+              </h2>
+              {venue && (
+                <p className={cn("font-script text-2xl", theme.accent)}>
+                  {venue}
+                </p>
+              )}
+
+              <p className="flex items-center gap-2 font-serif text-2xl">
+                <Clock className="size-5" aria-hidden />
+                {formatTimeRange(part.startsAt, part.endsAt)}
+              </p>
+
+              {part.location && (
+                <p
+                  className={cn("flex items-start gap-2 text-sm", theme.muted)}
+                >
+                  <MapPin className="mt-0.5 size-4 shrink-0" aria-hidden />
+                  {part.location}
+                </p>
+              )}
+
+              {items.length > 0 && (
+                <ul className="flex flex-col gap-1.5 text-left text-[15px]">
+                  {items.map((item) => {
+                    const [, time, text] =
+                      /^(\d{1,2}u\d{2})\s+(.*)$/.exec(item) ?? [];
+                    return (
+                      <li
+                        key={item}
+                        className={cn(
+                          "flex gap-3",
+                          night &&
+                            "text-lg [text-shadow:0_0_12px_rgba(232,106,146,0.9)]",
+                        )}
+                      >
+                        {time ? (
+                          <>
+                            <span
+                              className={cn(
+                                "w-12 shrink-0 font-semibold",
+                                theme.accent,
+                              )}
+                            >
+                              {time}
+                            </span>
+                            <span>{text}</span>
+                          </>
+                        ) : (
+                          <span className="w-full text-center font-script text-2xl">
+                            {item}
+                          </span>
+                        )}
+                      </li>
+                    );
+                  })}
+                </ul>
+              )}
+              <CocktailsCheers className="mt-2 w-28 md:w-32" />
             </div>
-            <div className="hidden min-h-6 flex-1 md:block" />
+            <HousewarmingScene
+              idPrefix={`part-${part.id}`}
+              className="pointer-events-none -mx-6 w-[calc(100%+3rem)] max-w-none md:-mx-12 md:w-[calc(100%+6rem)]"
+            />
           </>
         ) : (
-          <div className="min-h-6 flex-1" />
+          <div className="flex w-full flex-1 flex-col items-center gap-3 md:gap-4">
+            <p
+              className={cn(
+                "text-xs font-semibold tracking-widest uppercase",
+                theme.muted,
+              )}
+            >
+              Deel {number}
+            </p>
+            <h2
+              className={cn(
+                "-rotate-1 rounded-md px-5 py-1.5 font-serif text-3xl",
+                theme.pill,
+              )}
+            >
+              {label}
+            </h2>
+            {venue && (
+              <p className={cn("font-script text-2xl", theme.accent)}>
+                {venue}
+              </p>
+            )}
+
+            <p className="flex items-center gap-2 font-serif text-2xl">
+              <Clock className="size-5" aria-hidden />
+              {formatTimeRange(part.startsAt, part.endsAt)}
+            </p>
+
+            {part.location && (
+              <p className={cn("flex items-start gap-2 text-sm", theme.muted)}>
+                <MapPin className="mt-0.5 size-4 shrink-0" aria-hidden />
+                {part.location}
+              </p>
+            )}
+
+            {items.length > 0 && (
+              <ul className="flex flex-col gap-1.5 text-left text-[15px]">
+                {items.map((item) => {
+                  const [, time, text] =
+                    /^(\d{1,2}u\d{2})\s+(.*)$/.exec(item) ?? [];
+                  return (
+                    <li
+                      key={item}
+                      className={cn(
+                        "flex gap-3",
+                        night &&
+                          "text-lg [text-shadow:0_0_12px_rgba(232,106,146,0.9)]",
+                      )}
+                    >
+                      {time ? (
+                        <>
+                          <span
+                            className={cn(
+                              "w-12 shrink-0 font-semibold",
+                              theme.accent,
+                            )}
+                          >
+                            {time}
+                          </span>
+                          <span>{text}</span>
+                        </>
+                      ) : (
+                        <span className="w-full text-center font-script text-2xl">
+                          {item}
+                        </span>
+                      )}
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
+            <div className="min-h-6 flex-1" />
+          </div>
         )}
 
         {part.routeAddress && (
