@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import {
+  ChevronDown,
   ChevronsDown,
   Clock,
   MapPin,
@@ -16,10 +17,12 @@ import {
   Bunting,
   CocktailsCheers,
   HousewarmingScene,
+  Confetti,
+  DiscoBall,
   MoonAndStars,
+  PartyLights,
   SpaghettiBowl,
   StarField,
-  StringLights,
   WaveEdge,
 } from "./event-visuals";
 import { OrderForm } from "./order-form";
@@ -95,22 +98,15 @@ async function EventDetails({
               part={dayPart}
               number={1}
               slug={event.slug}
-              className="flex-1 md:col-start-1 md:row-start-2"
+              className="flex-1 md:col-start-1 md:row-start-2 md:pr-32"
             >
+              {open && <CallToAction className="mt-6 md:hidden" />}
               {otherParts[0] && (
-                <a
-                  href={`#deel-2`}
-                  className="mt-auto flex flex-col items-center gap-1 pt-8 text-sm text-[#2B2140]/80 md:hidden"
-                >
-                  <span>
-                    Swipe omhoog voor{" "}
-                    <strong>{otherParts[0].name.split(" – ")[0]}</strong>
-                  </span>
-                  <ChevronsDown
-                    className="size-6 motion-safe:animate-bounce"
-                    aria-hidden
-                  />
-                </a>
+                <ScrollHint
+                  href="#deel-2"
+                  label={`Naar ${otherParts[0].name.split(" – ")[0]}`}
+                  className="text-[#2B2140]/70"
+                />
               )}
             </PartPanel>
           )}
@@ -123,19 +119,14 @@ async function EventDetails({
             part={part}
             number={index + 2}
             slug={event.slug}
-            className="min-h-svh md:col-start-2 md:row-start-2 md:min-h-0"
+            className="min-h-svh md:col-start-2 md:row-start-2 md:min-h-0 md:pl-32"
           >
             {open && (
-              <a
+              <ScrollHint
                 href="#inschrijven"
-                className="mt-auto flex flex-col items-center gap-1 pt-8 text-sm text-white/80 md:hidden"
-              >
-                <span>Swipe omhoog om in te schrijven</span>
-                <ChevronsDown
-                  className="size-6 motion-safe:animate-bounce"
-                  aria-hidden
-                />
-              </a>
+                label="Naar het inschrijfformulier"
+                className="text-white/80"
+              />
             )}
           </PartPanel>
         ))}
@@ -150,6 +141,27 @@ async function EventDetails({
 
       <FormSection event={event} open={open} />
     </article>
+  );
+}
+
+/** Mobile only: a bouncing arrow to the next screen. */
+function ScrollHint({
+  href,
+  label,
+  className,
+}: {
+  href: string;
+  label: string;
+  className?: string;
+}) {
+  return (
+    <a
+      href={href}
+      aria-label={label}
+      className={cn("mt-4 flex justify-center p-2 md:hidden", className)}
+    >
+      <ChevronsDown className="size-8 motion-safe:animate-bounce" aria-hidden />
+    </a>
   );
 }
 
@@ -265,7 +277,9 @@ function PartPanel({
       {night ? (
         <>
           <StarField className="pointer-events-none absolute inset-0 h-full w-full" />
-          <StringLights className="pointer-events-none absolute inset-x-0 top-6 h-12 w-full md:top-0" />
+          <Confetti className="pointer-events-none absolute inset-0 h-full w-full" />
+          <PartyLights className="pointer-events-none absolute inset-x-0 top-6 h-12 w-full md:top-0" />
+          <DiscoBall className="pointer-events-none absolute top-8 left-3 w-20 md:top-4 md:left-16 md:w-28" />
           <MoonAndStars className="pointer-events-none absolute top-14 right-2 w-28 md:top-8 md:w-36" />
           <HousewarmingScene
             idPrefix="desktop"
@@ -371,12 +385,7 @@ function PartPanel({
         )}
 
         {part.routeAddress && (
-          <RouteButtons
-            slug={slug}
-            partId={part.id}
-            className={theme.button}
-            muted={theme.muted}
-          />
+          <RouteMenu slug={slug} partId={part.id} className={theme.button} />
         )}
 
         {children}
@@ -385,45 +394,55 @@ function PartPanel({
   );
 }
 
-function RouteButtons({
+/**
+ * One Route button; the guest picks their maps app from a small menu.
+ * Every option goes through our own redirect, so the address is never in
+ * this page.
+ */
+function RouteMenu({
   slug,
   partId,
   className,
-  muted,
 }: {
   slug: string;
   partId: number;
   className: string;
-  muted: string;
 }) {
   const apps = [
     ["google", "Google Maps"],
     ["waze", "Waze"],
+    ["apple", "Apple Kaarten"],
   ] as const;
   return (
-    <div className="flex flex-col items-center gap-2">
-      <span className={cn("text-xs tracking-widest uppercase", muted)}>
+    <details className="group relative">
+      <summary
+        className={cn(
+          "inline-flex cursor-pointer list-none items-center gap-2 rounded-full border px-5 py-2.5 text-sm font-medium transition-colors [&::-webkit-details-marker]:hidden",
+          className,
+        )}
+      >
+        <Navigation className="size-4" aria-hidden />
         Route
-      </span>
-      <div className="flex flex-wrap justify-center gap-2">
+        <ChevronDown
+          className="size-4 transition-transform group-open:rotate-180"
+          aria-hidden
+        />
+      </summary>
+      <ul className="absolute bottom-full left-1/2 z-20 mb-2 w-48 -translate-x-1/2 overflow-hidden rounded-xl border bg-white text-left text-sm text-[#2B2140] shadow-xl">
         {apps.map(([app, appLabel]) => (
-          <a
-            key={app}
-            // Our own redirect: the address is never in this page.
-            href={`/${slug}/route/${partId}?app=${app}`}
-            target="_blank"
-            rel="nofollow noreferrer"
-            className={cn(
-              "inline-flex items-center gap-1.5 rounded-full border px-4 py-2 text-sm font-medium transition-colors",
-              className,
-            )}
-          >
-            <Navigation className="size-3.5" aria-hidden />
-            {appLabel}
-          </a>
+          <li key={app}>
+            <a
+              href={`/${slug}/route/${partId}?app=${app}`}
+              target="_blank"
+              rel="nofollow noreferrer"
+              className="block px-4 py-3 hover:bg-[#FBF3E4]"
+            >
+              Openen in {appLabel}
+            </a>
+          </li>
         ))}
-      </div>
-    </div>
+      </ul>
+    </details>
   );
 }
 

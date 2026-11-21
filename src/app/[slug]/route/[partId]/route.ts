@@ -40,7 +40,9 @@ export async function GET(
   const target =
     app === "waze"
       ? `https://waze.com/ul?q=${destination}&navigate=yes`
-      : `https://www.google.com/maps/dir/?api=1&destination=${destination}`;
+      : app === "apple"
+        ? `https://maps.apple.com/?daddr=${destination}`
+        : `https://www.google.com/maps/dir/?api=1&destination=${destination}`;
 
   return new Response(null, {
     status: 302,

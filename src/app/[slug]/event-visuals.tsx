@@ -373,6 +373,50 @@ export function HousewarmingScene({
         />
       ))}
 
+      {/* Dancing guests on the lawn */}
+      {[
+        { x: 214, color: "#E86A92", arms: "M-9 -22 L0 -14 L9 -24" },
+        { x: 238, color: "#4FB3A9", arms: "M-10 -24 L0 -14 L8 -18" },
+        { x: 196, color: "#F2C14E", arms: "M-8 -16 L0 -14 L10 -25" },
+      ].map((d) => (
+        <g key={d.x} transform={`translate(${d.x} 222)`}>
+          <circle cx="0" cy="-27" r="4.5" fill="#0E1226" />
+          <path d="M-6 -2 L0 -20 L6 -2 Z" fill={d.color} />
+          <path
+            d={d.arms}
+            fill="none"
+            stroke="#0E1226"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+          />
+          <path
+            d="M-3 -2 L-5 8 M3 -2 L6 8"
+            stroke="#0E1226"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+          />
+        </g>
+      ))}
+      {/* Music notes floating out of the house */}
+      {[
+        [182, 150, "#F2C14E"],
+        [194, 132, "#E86A92"],
+        [176, 116, "#4FB3A9"],
+      ].map(([x, y, c], i) => (
+        <g key={i} fill={c as string}>
+          <ellipse cx={x as number} cy={y as number} rx="4" ry="3" />
+          <rect
+            x={(x as number) + 3}
+            y={(y as number) - 14}
+            width="1.6"
+            height="14"
+          />
+          <path
+            d={`M${(x as number) + 4.6} ${(y as number) - 14} q6 2 6 8 q-2 -4 -6 -4 Z`}
+          />
+        </g>
+      ))}
+
       {/* Garden table with cocktails and candles */}
       <rect x="262" y="206" width="84" height="6" rx="2" fill="#6B4A33" />
       <rect x="270" y="212" width="5" height="30" fill="#4E3626" />
@@ -449,6 +493,159 @@ export function CocktailsCheers({ className }: { className?: string }) {
           strokeLinecap="round"
         />
       </g>
+    </svg>
+  );
+}
+
+const PARTY_COLORS = ["#E86A92", "#F2C14E", "#4FB3A9", "#F2994A", "#B98CF0"];
+
+/** Colourful confetti scattered over the night sky. */
+export function Confetti({ className }: { className?: string }) {
+  // Fixed positions so server and client render the same.
+  const pieces = [
+    [8, 18, 20],
+    [16, 52, -30],
+    [24, 34, 45],
+    [33, 70, 10],
+    [42, 22, -15],
+    [55, 46, 60],
+    [63, 14, -40],
+    [71, 64, 25],
+    [79, 30, -20],
+    [88, 56, 35],
+    [93, 22, 5],
+    [12, 80, -10],
+    [47, 84, 30],
+    [84, 82, -35],
+    [60, 76, 15],
+    [28, 92, 40],
+    [70, 40, -5],
+    [38, 58, -25],
+  ];
+  return (
+    <svg
+      viewBox="0 0 100 100"
+      preserveAspectRatio="none"
+      className={className}
+      aria-hidden
+    >
+      {pieces.map(([x, y, rotate], i) =>
+        i % 3 === 0 ? (
+          <circle
+            key={i}
+            cx={x}
+            cy={y}
+            r="0.7"
+            fill={PARTY_COLORS[i % PARTY_COLORS.length]}
+          />
+        ) : (
+          <rect
+            key={i}
+            x={x}
+            y={y}
+            width="1.6"
+            height="0.7"
+            rx="0.2"
+            fill={PARTY_COLORS[i % PARTY_COLORS.length]}
+            transform={`rotate(${rotate} ${x} ${y})`}
+            opacity="0.9"
+          />
+        ),
+      )}
+    </svg>
+  );
+}
+
+/** String lights with colourful party bulbs. */
+export function PartyLights({ className }: { className?: string }) {
+  const bulbs = Array.from({ length: 11 }, (_, i) => i);
+  return (
+    <svg
+      viewBox="0 0 440 60"
+      preserveAspectRatio="none"
+      className={className}
+      aria-hidden
+    >
+      <path
+        d="M0 6 Q110 38 220 12 T440 10"
+        fill="none"
+        stroke="#0E1226"
+        strokeWidth="1.5"
+      />
+      {bulbs.map((i) => {
+        const x = 18 + i * 40;
+        const y = 22 + Math.sin(i * 1.1) * 7;
+        const color = PARTY_COLORS[i % PARTY_COLORS.length];
+        return (
+          <g key={i}>
+            <circle cx={x} cy={y + 7} r="12" fill={color} opacity="0.22" />
+            <ellipse cx={x} cy={y + 7} rx="4.5" ry="5.5" fill={color} />
+            <rect x={x - 2} y={y - 1} width="4" height="4" fill="#0E1226" />
+          </g>
+        );
+      })}
+    </svg>
+  );
+}
+
+/** A disco ball hanging on a string, with light rays. */
+export function DiscoBall({ className }: { className?: string }) {
+  const rays = [-60, -35, -10, 15, 40, 65, 120, 150, 200, 235];
+  return (
+    <svg viewBox="0 0 140 170" className={className} aria-hidden>
+      <defs>
+        <clipPath id="disco-clip">
+          <circle cx="70" cy="90" r="34" />
+        </clipPath>
+      </defs>
+      <line x1="70" y1="0" x2="70" y2="56" stroke="#C9C3D6" strokeWidth="1.5" />
+      {rays.map((angle, i) => (
+        <line
+          key={angle}
+          x1="70"
+          y1="90"
+          x2={70 + Math.cos((angle * Math.PI) / 180) * 70}
+          y2={90 + Math.sin((angle * Math.PI) / 180) * 70}
+          stroke={PARTY_COLORS[i % PARTY_COLORS.length]}
+          strokeWidth="2"
+          strokeLinecap="round"
+          opacity="0.35"
+        />
+      ))}
+      <circle cx="70" cy="90" r="34" fill="#9EA3BF" />
+      <g clipPath="url(#disco-clip)">
+        {Array.from({ length: 8 }, (_, row) =>
+          Array.from({ length: 8 }, (_, col) => (
+            <rect
+              key={`${row}-${col}`}
+              x={36 + col * 9}
+              y={56 + row * 9}
+              width="8"
+              height="8"
+              fill={
+                (row + col) % 3 === 0
+                  ? "#F4F1FA"
+                  : (row + col) % 3 === 1
+                    ? "#C9C3D6"
+                    : "#7E83A3"
+              }
+            />
+          )),
+        )}
+      </g>
+      <circle cx="58" cy="78" r="7" fill="#fff" opacity="0.6" />
+      {[
+        [26, 48, 4],
+        [116, 60, 5],
+        [112, 128, 3.5],
+        [30, 126, 3],
+      ].map(([x, y, r], i) => (
+        <path
+          key={i}
+          d={`M${x} ${y - r * 2} L${x + r * 0.5} ${y - r * 0.5} L${x + r * 2} ${y} L${x + r * 0.5} ${y + r * 0.5} L${x} ${y + r * 2} L${x - r * 0.5} ${y + r * 0.5} L${x - r * 2} ${y} L${x - r * 0.5} ${y - r * 0.5} Z`}
+          fill="#FBE3A0"
+        />
+      ))}
     </svg>
   );
 }
