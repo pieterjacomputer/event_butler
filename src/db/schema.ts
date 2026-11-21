@@ -42,8 +42,20 @@ export const eventParts = pgTable(
     name: text("name").notNull(),
     startsAt: timestamp("starts_at", { withTimezone: true }).notNull(),
     endsAt: timestamp("ends_at", { withTimezone: true }),
-    /** Optional; left empty when the address must not be public. */
+    /** Shown on the page. Optional; left empty when the address must not be public. */
     location: text("location"),
+    /**
+     * Used only by the Route redirect (Google Maps / Waze), never rendered in
+     * the page. Private addresses are set directly in the database, never in
+     * migrations (the repository is public).
+     */
+    routeAddress: text("route_address"),
+    /** Programme or short text for this part, one line per item. */
+    description: text("description"),
+    /** Visual style of this part on the event page. */
+    theme: text("theme", { enum: ["day", "night"] })
+      .notNull()
+      .default("day"),
     sortOrder: integer("sort_order").notNull().default(0),
   },
   (t) => [index("event_parts_event_id_idx").on(t.eventId)],

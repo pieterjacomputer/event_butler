@@ -29,6 +29,20 @@
       "when": 1795283062086,
       "tag": "0003_seed_event_parts",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1795286326426,
+      "tag": "0004_event_part_route_theme",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1795286326920,
+      "tag": "0005_split_page_data",
+      "breakpoints": true
     }
   ]
 }
