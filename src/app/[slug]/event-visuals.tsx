@@ -265,7 +265,12 @@ export function HousewarmingScene({
   const glowId = `${idPrefix}-hw-glow`;
   const bulbs = [226, 248, 270, 292, 314, 336];
   return (
-    <svg viewBox="0 0 400 260" className={className} aria-hidden>
+    <svg
+      viewBox="0 0 400 260"
+      preserveAspectRatio="xMidYMax meet"
+      className={className}
+      aria-hidden
+    >
       <defs>
         <radialGradient id={windowId} cx="50%" cy="50%" r="60%">
           <stop offset="0%" stopColor="#FFE7A8" />
