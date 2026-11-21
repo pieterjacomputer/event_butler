@@ -556,9 +556,7 @@ function FormSection({
           <h2 className="font-script text-5xl text-[#E4572E] drop-shadow-[2px_2px_0_#F6C445]">
             Ik kom feesten
           </h2>
-          <p className="font-serif text-lg">
-            Schrijf je in en bestel je spaghetti
-          </p>
+          <p className="font-serif text-lg">RSVP en bestel je spaghetti</p>
         </header>
 
         <Card className="text-foreground">
