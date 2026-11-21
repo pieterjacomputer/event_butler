@@ -208,7 +208,7 @@ function EventHeader({
       <div className="pointer-events-none absolute inset-0" aria-hidden>
         <Confetti
           colors={["#F4A6B7", "#F6C445", "#7CCBB8", "#F2994A", "#E4572E"]}
-          className="absolute inset-0 h-full w-full opacity-70"
+          className="absolute inset-0 h-full w-full opacity-70 md:opacity-35 md:[mask-image:radial-gradient(ellipse_55%_50%_at_50%_42%,transparent_45%,black_100%)]"
         />
         <Sun className="absolute top-12 right-2 w-12 md:top-14 md:right-auto md:left-[6%] md:w-28 lg:w-32" />
         <Cloud className="absolute top-24 left-1 w-14 opacity-90 md:top-20 md:left-[18%] md:w-32" />
@@ -219,20 +219,20 @@ function EventHeader({
       <h1 className="font-script leading-none">
         {match ? (
           <>
-            <span className="text-6xl text-[#E4572E] drop-shadow-[3px_3px_0_#F6C445] sm:text-8xl">
+            <span className="text-6xl text-[#E4572E] drop-shadow-[3px_3px_0_#F6C445] sm:text-8xl lg:text-9xl">
               {match[1]}
             </span>{" "}
-            <span className="text-4xl text-[#C8432B] sm:text-6xl">
+            <span className="text-4xl text-[#C8432B] sm:text-6xl lg:text-7xl">
               {match[2]}
             </span>
           </>
         ) : (
-          <span className="text-4xl text-[#C8432B] sm:text-6xl">
+          <span className="text-4xl text-[#C8432B] sm:text-6xl lg:text-7xl">
             {event.title}
           </span>
         )}
       </h1>
-      <p className="mt-3 inline-block -rotate-1 bg-[#F6C445] px-5 py-1 font-serif text-xl tracking-wide text-[#2B2140] shadow-sm md:mt-5 md:px-6 md:py-1.5 md:text-2xl">
+      <p className="mt-3 inline-block -rotate-1 bg-[#F6C445] px-5 py-1 font-serif text-xl tracking-wide text-[#2B2140] shadow-sm md:mt-6 md:px-7 md:py-2 md:text-3xl">
         <span className="sr-only">{formatDate(event.startsAt)}</span>
         <span aria-hidden>{formatShortDate(event.startsAt)}</span>
       </p>
@@ -302,7 +302,7 @@ function PartPanel({
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_50%_100%,rgba(201,71,111,0.45),transparent_60%)]" />
           <StarField className="pointer-events-none absolute inset-0 h-full w-full" />
           <Spotlights className="pointer-events-none absolute inset-0 h-full w-full mix-blend-screen" />
-          <Confetti className="pointer-events-none absolute inset-0 h-full w-full opacity-55" />
+          <Confetti className="pointer-events-none absolute inset-0 h-full w-full opacity-55 md:opacity-30 md:[mask-image:radial-gradient(ellipse_55%_50%_at_50%_42%,transparent_45%,black_100%)]" />
           <PartyLights className="pointer-events-none absolute inset-x-0 top-6 h-12 w-full md:top-8" />
           <DiscoBall className="pointer-events-none absolute top-8 left-3 w-20 md:top-10 md:left-16 md:w-28" />
           <MoonAndStars className="pointer-events-none absolute top-14 right-2 w-28 md:top-14 md:w-36" />
@@ -335,7 +335,7 @@ function PartPanel({
             <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_30%_100%,rgba(246,196,69,0.28),transparent_60%)]" />
             <Confetti
               colors={["#F4A6B7", "#F6C445", "#7CCBB8", "#F2994A", "#E4572E"]}
-              className="absolute inset-0 h-full w-full opacity-70"
+              className="absolute inset-0 h-full w-full opacity-70 md:opacity-35 md:[mask-image:radial-gradient(ellipse_55%_50%_at_50%_42%,transparent_45%,black_100%)]"
             />
             <Cloud className="absolute top-16 right-10 hidden w-24 opacity-80 md:block" />
             {/* Desktop: the header flows into this side with the same wavy edge as the night side */}
@@ -347,14 +347,14 @@ function PartPanel({
         </>
       )}
 
-      <div className="relative mx-auto flex w-full max-w-sm flex-1 flex-col items-center text-center">
+      <div className="relative mx-auto flex w-full max-w-sm flex-1 flex-col items-center text-center md:max-w-2xl">
         {night ? (
           <>
             {/* The info sits in the middle of the night sky. */}
             <div className="flex w-full flex-1 flex-col items-center justify-center gap-3 py-6 md:gap-4">
               <p
                 className={cn(
-                  "text-xs font-semibold tracking-widest uppercase",
+                  "text-xs font-semibold tracking-widest uppercase md:text-sm",
                   theme.muted,
                 )}
               >
@@ -362,28 +362,36 @@ function PartPanel({
               </p>
               <h2
                 className={cn(
-                  "-rotate-1 rounded-md px-5 py-1.5 font-serif text-3xl",
+                  "-rotate-1 rounded-md px-5 py-1.5 font-serif text-3xl md:px-7 md:py-2 md:text-5xl",
                   theme.pill,
                 )}
               >
                 {label}
               </h2>
               {venue && (
-                <p className={cn("font-script text-2xl", theme.accent)}>
+                <p
+                  className={cn(
+                    "font-script text-2xl md:text-4xl",
+                    theme.accent,
+                  )}
+                >
                   {venue}
                 </p>
               )}
 
               {!startInProgramme && (
-                <p className="flex items-center gap-2 font-serif text-2xl">
-                  <Clock className="size-5" aria-hidden />
+                <p className="flex items-center gap-2 font-serif text-2xl md:gap-3 md:text-4xl">
+                  <Clock className="size-5 md:size-8" aria-hidden />
                   {formatTimeRange(part.startsAt, part.endsAt)}
                 </p>
               )}
 
               {part.location && (
                 <p
-                  className={cn("flex items-start gap-2 text-sm", theme.muted)}
+                  className={cn(
+                    "flex items-start gap-2 text-sm md:text-base",
+                    theme.muted,
+                  )}
                 >
                   <MapPin className="mt-0.5 size-4 shrink-0" aria-hidden />
                   {part.location}
@@ -391,7 +399,7 @@ function PartPanel({
               )}
 
               {items.length > 0 && (
-                <ul className="flex flex-col gap-1 text-left text-sm md:gap-1.5 md:text-[15px]">
+                <ul className="flex flex-col gap-1 text-left text-sm md:gap-2 md:text-lg">
                   {items.map((item) => {
                     const [, time, text] =
                       /^(\d{1,2}u\d{2})\s+(.*)$/.exec(item) ?? [];
@@ -401,13 +409,13 @@ function PartPanel({
                         className={cn(
                           "flex gap-3",
                           night &&
-                            "text-lg [text-shadow:0_0_12px_rgba(232,106,146,0.9)]",
+                            "text-lg [text-shadow:0_0_12px_rgba(232,106,146,0.9)] md:text-2xl",
                         )}
                       >
                         {time ? (
-                          <span className="flex items-center gap-2.5 font-serif text-2xl">
+                          <span className="flex items-center gap-2.5 font-serif text-2xl md:gap-3 md:text-4xl">
                             <Clock
-                              className={cn("size-6", theme.accent)}
+                              className={cn("size-6 md:size-9", theme.accent)}
                               aria-hidden
                             />
                             <span className={theme.accent}>{time}</span>
@@ -434,7 +442,7 @@ function PartPanel({
           <div className="flex w-full flex-1 flex-col items-center gap-2.5 md:gap-4">
             <p
               className={cn(
-                "text-xs font-semibold tracking-widest uppercase",
+                "text-xs font-semibold tracking-widest uppercase md:text-sm",
                 theme.muted,
               )}
             >
@@ -442,32 +450,39 @@ function PartPanel({
             </p>
             <h2
               className={cn(
-                "-rotate-1 rounded-md px-5 py-1.5 font-serif text-3xl",
+                "-rotate-1 rounded-md px-5 py-1.5 font-serif text-3xl md:px-7 md:py-2 md:text-5xl",
                 theme.pill,
               )}
             >
               {label}
             </h2>
             {venue && (
-              <p className={cn("font-script text-2xl", theme.accent)}>
+              <p
+                className={cn("font-script text-2xl md:text-4xl", theme.accent)}
+              >
                 {venue}
               </p>
             )}
 
-            <p className="flex items-center gap-2 font-serif text-2xl">
-              <Clock className="size-5" aria-hidden />
+            <p className="flex items-center gap-2 font-serif text-2xl md:gap-3 md:text-4xl">
+              <Clock className="size-5 md:size-8" aria-hidden />
               {formatTimeRange(part.startsAt, part.endsAt)}
             </p>
 
             {part.location && (
-              <p className={cn("flex items-start gap-2 text-sm", theme.muted)}>
+              <p
+                className={cn(
+                  "flex items-start gap-2 text-sm md:text-base",
+                  theme.muted,
+                )}
+              >
                 <MapPin className="mt-0.5 size-4 shrink-0" aria-hidden />
                 {part.location}
               </p>
             )}
 
             {items.length > 0 && (
-              <ul className="flex flex-col gap-1 text-left text-sm md:gap-1.5 md:text-[15px]">
+              <ul className="flex flex-col gap-1 text-left text-sm md:gap-2 md:text-lg">
                 {items.map((item) => {
                   const [, time, text] =
                     /^(\d{1,2}u\d{2})\s+(.*)$/.exec(item) ?? [];
@@ -477,14 +492,14 @@ function PartPanel({
                       className={cn(
                         "flex gap-3",
                         night &&
-                          "text-lg [text-shadow:0_0_12px_rgba(232,106,146,0.9)]",
+                          "text-lg [text-shadow:0_0_12px_rgba(232,106,146,0.9)] md:text-2xl",
                       )}
                     >
                       {time ? (
                         <>
                           <span
                             className={cn(
-                              "w-12 shrink-0 font-semibold",
+                              "w-12 shrink-0 font-semibold md:w-16",
                               theme.accent,
                             )}
                           >
@@ -547,7 +562,7 @@ function RouteMenu({
     <details className="group relative">
       <summary
         className={cn(
-          "inline-flex cursor-pointer list-none items-center gap-2 rounded-full border px-5 py-2.5 text-sm font-medium transition-colors [&::-webkit-details-marker]:hidden",
+          "inline-flex cursor-pointer list-none items-center gap-2 rounded-full border px-5 py-2.5 text-sm font-medium transition-colors md:px-6 md:py-3 md:text-base [&::-webkit-details-marker]:hidden",
           className,
         )}
       >
