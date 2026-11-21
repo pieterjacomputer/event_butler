@@ -159,3 +159,238 @@ export function SpaghettiBowl({ className }: { className?: string }) {
     </svg>
   );
 }
+
+/** Soft, wavy edge where the day side melts into the night side. */
+export function WaveEdge({
+  direction,
+  className,
+}: {
+  direction: "vertical" | "horizontal";
+  className?: string;
+}) {
+  // Filled with the day colour, drawn on top of the night panel.
+  return direction === "vertical" ? (
+    <svg
+      viewBox="0 0 80 800"
+      preserveAspectRatio="none"
+      className={className}
+      aria-hidden
+    >
+      <path
+        d="M0 0 H34 C70 90 6 170 38 260 C70 350 10 430 40 520 C70 610 8 690 36 800 H0 Z"
+        fill="#F4A6B7"
+        opacity="0.35"
+      />
+      <path
+        d="M0 0 H22 C58 90 -6 170 26 260 C58 350 -2 430 28 520 C58 610 -4 690 24 800 H0 Z"
+        fill="#FBF3E4"
+      />
+    </svg>
+  ) : (
+    <svg
+      viewBox="0 0 800 70"
+      preserveAspectRatio="none"
+      className={className}
+      aria-hidden
+    >
+      <path
+        d="M0 0 V34 C90 70 170 6 260 38 C350 70 430 10 520 40 C610 70 690 8 800 36 V0 Z"
+        fill="#F4A6B7"
+        opacity="0.35"
+      />
+      <path
+        d="M0 0 V22 C90 58 170 -6 260 26 C350 58 430 -2 520 28 C610 58 690 -4 800 24 V0 Z"
+        fill="#FBF3E4"
+      />
+    </svg>
+  );
+}
+
+/** Small stars scattered over the night sky. */
+export function StarField({ className }: { className?: string }) {
+  // Fixed positions so server and client render the same.
+  const stars = [
+    [6, 12, 1.2],
+    [18, 30, 0.8],
+    [27, 8, 1],
+    [41, 22, 0.7],
+    [52, 5, 1.1],
+    [63, 18, 0.8],
+    [74, 9, 1],
+    [88, 26, 0.9],
+    [94, 14, 0.7],
+    [12, 44, 0.7],
+    [35, 38, 0.9],
+    [58, 34, 0.7],
+    [81, 40, 1],
+    [47, 50, 0.6],
+    [22, 56, 0.8],
+    [70, 52, 0.7],
+    [92, 48, 0.8],
+    [4, 62, 0.6],
+  ];
+  return (
+    <svg
+      viewBox="0 0 100 100"
+      preserveAspectRatio="none"
+      className={className}
+      aria-hidden
+    >
+      {stars.map(([x, y, r], i) => (
+        <circle
+          key={i}
+          cx={x}
+          cy={y}
+          r={r * 0.35}
+          fill="#FBE3A0"
+          opacity={0.5 + (i % 3) * 0.2}
+        />
+      ))}
+    </svg>
+  );
+}
+
+/**
+ * A housewarming party at night: a house with glowing windows and guests,
+ * string lights to a tree, and a garden table with cocktails and candles.
+ */
+export function HousewarmingScene({ className }: { className?: string }) {
+  const bulbs = [148, 176, 204, 232, 260, 288, 316, 344];
+  return (
+    <svg viewBox="0 0 400 260" className={className} aria-hidden>
+      <defs>
+        <radialGradient id="hw-window" cx="50%" cy="50%" r="60%">
+          <stop offset="0%" stopColor="#FFE7A8" />
+          <stop offset="100%" stopColor="#F2B25C" />
+        </radialGradient>
+        <radialGradient id="hw-glow" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stopColor="#F6D27A" stopOpacity="0.55" />
+          <stop offset="100%" stopColor="#F6D27A" stopOpacity="0" />
+        </radialGradient>
+      </defs>
+
+      {/* Warm glow around the house */}
+      <ellipse cx="110" cy="170" rx="130" ry="80" fill="url(#hw-glow)" />
+
+      {/* Tree on the right */}
+      <rect x="352" y="120" width="8" height="90" fill="#121733" />
+      <circle cx="356" cy="104" r="34" fill="#16203F" />
+      <circle cx="336" cy="122" r="22" fill="#16203F" />
+      <circle cx="378" cy="124" r="20" fill="#16203F" />
+
+      {/* House */}
+      <path d="M40 120 L110 62 L180 120 Z" fill="#2B3463" />
+      <rect x="146" y="70" width="14" height="30" fill="#2B3463" />
+      <rect x="52" y="118" width="116" height="92" fill="#F4EEE4" />
+      <rect
+        x="52"
+        y="118"
+        width="116"
+        height="92"
+        fill="#1B2340"
+        opacity="0.15"
+      />
+      {/* Windows with guests */}
+      <rect
+        x="62"
+        y="132"
+        width="38"
+        height="34"
+        rx="2"
+        fill="url(#hw-window)"
+      />
+      <rect
+        x="120"
+        y="132"
+        width="38"
+        height="34"
+        rx="2"
+        fill="url(#hw-window)"
+      />
+      <circle cx="74" cy="148" r="5" fill="#3A2A3E" opacity="0.8" />
+      <path d="M67 166 q7 -14 14 0 Z" fill="#3A2A3E" opacity="0.8" />
+      <circle cx="88" cy="150" r="4.5" fill="#3A2A3E" opacity="0.8" />
+      <path d="M82 166 q6 -12 12 0 Z" fill="#3A2A3E" opacity="0.8" />
+      <circle cx="140" cy="148" r="5" fill="#3A2A3E" opacity="0.8" />
+      <path d="M133 166 q7 -14 14 0 Z" fill="#3A2A3E" opacity="0.8" />
+      {/* Big glass doors to the garden */}
+      <rect x="86" y="174" width="48" height="36" fill="url(#hw-window)" />
+      <line
+        x1="110"
+        y1="174"
+        x2="110"
+        y2="210"
+        stroke="#8A6A4A"
+        strokeWidth="1.5"
+      />
+      <circle cx="100" cy="188" r="4" fill="#3A2A3E" opacity="0.75" />
+      <path d="M94 210 v-10 q6 -10 12 0 v10 Z" fill="#3A2A3E" opacity="0.75" />
+
+      {/* String lights from the house to the tree */}
+      <path
+        d="M168 124 Q260 168 352 128"
+        fill="none"
+        stroke="#0E1226"
+        strokeWidth="1.2"
+      />
+      {bulbs.map((x) => {
+        const t = (x - 168) / 184;
+        const y = 124 + 2 * (1 - t) * t * 44 + (1 - t) * 0 + t * 4 + 4;
+        return (
+          <g key={x}>
+            <circle cx={x} cy={y} r="7" fill="#F6D27A" opacity="0.22" />
+            <circle cx={x} cy={y} r="2.6" fill="#FBE3A0" />
+          </g>
+        );
+      })}
+
+      {/* Ground and bushes with flowers */}
+      <path d="M0 206 Q200 192 400 206 V260 H0 Z" fill="#141A36" />
+      <ellipse cx="30" cy="210" rx="34" ry="18" fill="#1E2A4A" />
+      <ellipse cx="200" cy="214" rx="26" ry="12" fill="#1E2A4A" />
+      {[
+        [18, 202, "#E86A92"],
+        [34, 198, "#F4A6B7"],
+        [46, 206, "#E86A92"],
+        [192, 208, "#F4A6B7"],
+        [206, 205, "#E86A92"],
+      ].map(([x, y, c], i) => (
+        <circle
+          key={i}
+          cx={x as number}
+          cy={y as number}
+          r="3"
+          fill={c as string}
+        />
+      ))}
+
+      {/* Garden table with cocktails and candles */}
+      <rect x="262" y="206" width="84" height="6" rx="2" fill="#6B4A33" />
+      <rect x="270" y="212" width="5" height="30" fill="#4E3626" />
+      <rect x="333" y="212" width="5" height="30" fill="#4E3626" />
+      {/* Cocktail glass (pink) */}
+      <path d="M274 184 h18 l-9 10 Z" fill="#E86A92" opacity="0.9" />
+      <rect x="282" y="194" width="2" height="9" fill="#F4EEE4" />
+      <rect x="277" y="203" width="12" height="2" fill="#F4EEE4" />
+      {/* Tumbler (orange) */}
+      <rect
+        x="300"
+        y="188"
+        width="12"
+        height="17"
+        rx="1.5"
+        fill="#F2994A"
+        opacity="0.9"
+      />
+      <circle cx="306" cy="190" r="3" fill="#F6C445" />
+      {/* Candles */}
+      {[322, 336].map((x) => (
+        <g key={x}>
+          <circle cx={x} cy={192} r="9" fill="#F6D27A" opacity="0.25" />
+          <rect x={x - 3} y="194" width="6" height="11" fill="#F4EEE4" />
+          <path d={`M${x} 186 q3 4 0 8 q-3 -4 0 -8 Z`} fill="#FBE3A0" />
+        </g>
+      ))}
+    </svg>
+  );
+}

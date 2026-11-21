@@ -1,16 +1,25 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
-import { Clock, MapPin, Navigation, PartyPopper } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  ChevronsDown,
+  Clock,
+  MapPin,
+  Navigation,
+  PartyPopper,
+} from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { createOrder } from "./actions";
 import {
   Balloons,
   Bunting,
+  HousewarmingScene,
   MoonAndStars,
   SpaghettiBowl,
+  StarField,
   StringLights,
+  WaveEdge,
 } from "./event-visuals";
 import { OrderForm } from "./order-form";
 import {
@@ -48,6 +57,8 @@ export default function EventPage({
   );
 }
 
+type Part = EventWithDetails["parts"][number];
+
 async function EventDetails({
   params,
   searchParams,
@@ -58,89 +69,120 @@ async function EventDetails({
   if (!event) notFound();
 
   const open = isOrderingOpen(event) && event.orderDeadline !== null;
+  const [dayPart, ...otherParts] = event.parts;
 
   return (
     <article>
       {cancelled && (
-        <p role="status" className="mx-auto max-w-xl px-4 pt-4 text-sm">
-          <span className="block rounded-lg bg-muted px-4 py-3">
+        <p role="status" className="bg-[#FBF3E4] px-4 pt-4 text-sm">
+          <span className="mx-auto block max-w-xl rounded-lg bg-white px-4 py-3 text-[#2B2140] shadow-sm">
             Je inschrijving is geannuleerd. Toch komen? Vul het formulier
-            hieronder opnieuw in.
+            onderaan opnieuw in.
           </span>
         </p>
       )}
 
-      <EventHeader event={event} />
+      {/*
+        Mobile: three full screens — (1) header + day, (2) night, (3) form.
+        Desktop: header on top, day and night side by side, form below.
+      */}
+      <div className="relative md:grid md:grid-cols-2">
+        <div className="flex min-h-svh flex-col md:contents">
+          <EventHeader event={event} className="md:col-span-2" />
+          {dayPart && (
+            <PartPanel
+              part={dayPart}
+              number={1}
+              slug={event.slug}
+              className="flex-1 md:col-start-1 md:row-start-2"
+            >
+              {otherParts[0] && (
+                <a
+                  href={`#deel-2`}
+                  className="mt-auto flex flex-col items-center gap-1 pt-8 text-sm text-[#2B2140]/80 md:hidden"
+                >
+                  <span>
+                    Swipe omhoog voor{" "}
+                    <strong>{otherParts[0].name.split(" – ")[0]}</strong>
+                  </span>
+                  <ChevronsDown
+                    className="size-6 motion-safe:animate-bounce"
+                    aria-hidden
+                  />
+                </a>
+              )}
+            </PartPanel>
+          )}
+        </div>
 
-      <section
-        aria-label="Programma"
-        className="relative flex flex-col md:grid md:grid-cols-2"
-      >
-        {event.parts.map((part, index) => (
+        {otherParts.map((part, index) => (
           <PartPanel
             key={part.id}
+            id={`deel-${index + 2}`}
             part={part}
-            number={index + 1}
+            number={index + 2}
             slug={event.slug}
-            className={index === 0 ? "order-1" : "order-3"}
-          />
+            className="min-h-svh md:col-start-2 md:row-start-2 md:min-h-0"
+          >
+            {open && (
+              <a
+                href="#inschrijven"
+                className="mt-auto flex flex-col items-center gap-1 pt-8 text-sm text-white/80 md:hidden"
+              >
+                <span>Swipe omhoog om in te schrijven</span>
+                <ChevronsDown
+                  className="size-6 motion-safe:animate-bounce"
+                  aria-hidden
+                />
+              </a>
+            )}
+          </PartPanel>
         ))}
+
+        {/* Desktop: the call to action sits on the seam between both sides. */}
         {open && (
-          <div className="relative z-10 order-2 -my-7 flex justify-center md:absolute md:top-1/2 md:left-1/2 md:my-0 md:-translate-x-1/2 md:-translate-y-1/2">
-            <a
-              href="#inschrijven"
-              className="inline-flex items-center gap-2 rounded-full border-4 border-white bg-gradient-to-r from-[#E4572E] to-[#E86A92] px-7 py-3.5 font-serif text-xl text-white shadow-xl transition-transform hover:scale-105 focus-visible:ring-4 focus-visible:ring-[#F6C445] focus-visible:outline-none motion-reduce:transition-none"
-            >
-              <PartyPopper className="size-6" aria-hidden />
-              Ik kom feesten
-            </a>
+          <div className="pointer-events-none z-10 hidden md:col-span-2 md:row-start-2 md:flex md:items-center md:justify-center">
+            <CallToAction className="pointer-events-auto" />
           </div>
         )}
-      </section>
+      </div>
 
-      <section
-        id="inschrijven"
-        className="mx-auto max-w-xl scroll-mt-4 px-4 py-10"
-      >
-        <Card>
-          <CardHeader>
-            <CardTitle>Inschrijven en spaghetti bestellen</CardTitle>
-          </CardHeader>
-          <CardContent className="flex flex-col gap-6 text-sm">
-            {open && event.orderDeadline ? (
-              <>
-                <p>
-                  Inschrijven en bestellen kan tot{" "}
-                  <strong>{formatDateTime(event.orderDeadline)}</strong>. Na het
-                  inschrijven krijg je een persoonlijke link waarmee je tot dan
-                  kan wijzigen of annuleren.
-                </p>
-                <OrderForm
-                  action={createOrder.bind(null, event.slug)}
-                  parts={partsForForm(event)}
-                  menu={event.menu.map((m) => ({ id: m.id, name: m.name }))}
-                  submitLabel="Inschrijven"
-                />
-                <p className="text-xs text-muted-foreground">
-                  We bewaren je naam, inschrijving en bestelling enkel voor dit
-                  feest en verwijderen ze op {formatDate(retentionDate(event))}.
-                </p>
-              </>
-            ) : (
-              <p>Inschrijven en bestellen is afgesloten.</p>
-            )}
-          </CardContent>
-        </Card>
-      </section>
+      <FormSection event={event} open={open} />
     </article>
   );
 }
 
-function EventHeader({ event }: { event: EventWithDetails }) {
+function CallToAction({ className }: { className?: string }) {
+  return (
+    <a
+      href="#inschrijven"
+      className={cn(
+        "inline-flex items-center gap-2 rounded-full border-4 border-white bg-gradient-to-r from-[#E4572E] to-[#E86A92] px-7 py-3.5 font-serif text-xl text-white shadow-xl transition-transform hover:scale-105 focus-visible:ring-4 focus-visible:ring-[#F6C445] focus-visible:outline-none motion-reduce:transition-none",
+        className,
+      )}
+    >
+      <PartyPopper className="size-6" aria-hidden />
+      Ik kom feesten
+    </a>
+  );
+}
+
+function EventHeader({
+  event,
+  className,
+}: {
+  event: EventWithDetails;
+  className?: string;
+}) {
   // "43 is a Party" → a big "43" plus the rest in script.
   const match = /^(\d+)\s+(.*)$/.exec(event.title);
   return (
-    <header className="relative overflow-hidden bg-[#FBF3E4] px-4 pt-16 pb-10 text-center text-[#2B2140]">
+    <header
+      className={cn(
+        "relative overflow-hidden bg-[#FBF3E4] px-4 pt-16 pb-6 text-center text-[#2B2140] md:pb-10",
+        className,
+      )}
+    >
       <Bunting className="absolute inset-x-0 top-0 h-14 w-full" />
       <h1 className="font-script leading-none">
         {match ? (
@@ -172,29 +214,35 @@ const THEMES = {
     pill: "bg-[#F4A6B7]/70 text-[#2B2140]",
     accent: "text-[#C8432B]",
     muted: "text-[#2B2140]/70",
-    button: "border-[#2B2140]/20 bg-white/70 text-[#2B2140] hover:bg-white",
+    button: "border-[#2B2140]/20 bg-white/80 text-[#2B2140] hover:bg-white",
   },
   night: {
     panel: "bg-[#1B2340] text-[#F7EFE3]",
     pill: "bg-[#C9476F] text-white",
     accent: "text-[#F2C14E]",
     muted: "text-[#F7EFE3]/75",
-    button: "border-white/25 bg-white/10 text-white hover:bg-white/20",
+    button:
+      "border-white/30 bg-[#1B2340]/70 text-white backdrop-blur-sm hover:bg-[#1B2340]/90",
   },
 } as const;
 
 function PartPanel({
+  id,
   part,
   number,
   slug,
   className,
+  children,
 }: {
-  part: EventWithDetails["parts"][number];
+  id?: string;
+  part: Part;
   number: number;
   slug: string;
   className?: string;
+  children?: React.ReactNode;
 }) {
   const theme = THEMES[part.theme];
+  const night = part.theme === "night";
   // "Zonder kindjes – Hoge Housewarming" → label + subtitle.
   const [label, subtitle] = part.name.split(" – ");
   const venue = subtitle ?? part.location?.split(",")[0];
@@ -204,26 +252,39 @@ function PartPanel({
     .filter(Boolean);
 
   return (
-    <div
+    <section
+      id={id}
+      aria-label={`Deel ${number}: ${part.name}`}
       className={cn(
-        "relative overflow-hidden px-6 pt-14 pb-16 md:px-10 md:py-16",
+        "relative flex flex-col overflow-hidden px-6 pt-14 pb-8 md:px-12 md:pt-16 md:pb-10",
         theme.panel,
         className,
       )}
     >
-      {part.theme === "day" ? (
+      {night ? (
         <>
-          <Balloons className="pointer-events-none absolute top-3 left-1 w-14 opacity-90 md:w-20" />
-          <SpaghettiBowl className="pointer-events-none absolute right-3 bottom-4 w-20 opacity-90 md:w-24" />
+          <StarField className="pointer-events-none absolute inset-0 h-full w-full" />
+          <StringLights className="pointer-events-none absolute inset-x-0 top-6 h-12 w-full md:top-0" />
+          <MoonAndStars className="pointer-events-none absolute top-14 right-2 w-28 md:top-8 md:w-36" />
+          <HousewarmingScene className="pointer-events-none absolute inset-x-0 bottom-0 w-full opacity-90" />
+          {/* Organic transition from the day side */}
+          <WaveEdge
+            direction="horizontal"
+            className="pointer-events-none absolute inset-x-0 top-0 h-8 w-full md:hidden"
+          />
+          <WaveEdge
+            direction="vertical"
+            className="pointer-events-none absolute inset-y-0 left-0 hidden h-full w-14 md:block"
+          />
         </>
       ) : (
         <>
-          <StringLights className="pointer-events-none absolute inset-x-0 top-0 h-12 w-full" />
-          <MoonAndStars className="pointer-events-none absolute top-8 right-2 w-28 opacity-95 md:w-36" />
+          <Balloons className="pointer-events-none absolute top-3 left-1 w-14 opacity-90 md:w-20" />
+          <SpaghettiBowl className="pointer-events-none absolute right-3 bottom-24 w-20 opacity-90 md:bottom-28 md:w-24" />
         </>
       )}
 
-      <div className="relative mx-auto flex max-w-sm flex-col items-center gap-4 text-center">
+      <div className="relative mx-auto flex w-full max-w-sm flex-1 flex-col items-center gap-4 text-center">
         <p
           className={cn(
             "text-xs font-semibold tracking-widest uppercase",
@@ -276,7 +337,9 @@ function PartPanel({
                       <span>{text}</span>
                     </>
                   ) : (
-                    <span>{item}</span>
+                    <span className="w-full text-center font-script text-2xl">
+                      {item}
+                    </span>
                   )}
                 </li>
               );
@@ -284,33 +347,116 @@ function PartPanel({
           </ul>
         )}
 
+        {/* Spacer: pushes the route buttons to the bottom of the panel. */}
+        <div className="min-h-6 flex-1" />
+
         {part.routeAddress && (
-          <div className="flex flex-wrap items-center justify-center gap-2 pt-1">
-            <span className={cn("text-sm", theme.muted)}>Route:</span>
-            {(
-              [
-                ["google", "Google Maps"],
-                ["waze", "Waze"],
-              ] as const
-            ).map(([app, appLabel]) => (
-              <a
-                key={app}
-                // Our own redirect: the address is never in this page.
-                href={`/${slug}/route/${part.id}?app=${app}`}
-                target="_blank"
-                rel="nofollow noreferrer"
-                className={cn(
-                  "inline-flex items-center gap-1.5 rounded-full border px-3.5 py-1.5 text-sm font-medium transition-colors",
-                  theme.button,
-                )}
-              >
-                <Navigation className="size-3.5" aria-hidden />
-                {appLabel}
-              </a>
-            ))}
-          </div>
+          <RouteButtons
+            slug={slug}
+            partId={part.id}
+            className={theme.button}
+            muted={theme.muted}
+          />
         )}
+
+        {children}
+      </div>
+    </section>
+  );
+}
+
+function RouteButtons({
+  slug,
+  partId,
+  className,
+  muted,
+}: {
+  slug: string;
+  partId: number;
+  className: string;
+  muted: string;
+}) {
+  const apps = [
+    ["google", "Google Maps"],
+    ["waze", "Waze"],
+  ] as const;
+  return (
+    <div className="flex flex-col items-center gap-2">
+      <span className={cn("text-xs tracking-widest uppercase", muted)}>
+        Route
+      </span>
+      <div className="flex flex-wrap justify-center gap-2">
+        {apps.map(([app, appLabel]) => (
+          <a
+            key={app}
+            // Our own redirect: the address is never in this page.
+            href={`/${slug}/route/${partId}?app=${app}`}
+            target="_blank"
+            rel="nofollow noreferrer"
+            className={cn(
+              "inline-flex items-center gap-1.5 rounded-full border px-4 py-2 text-sm font-medium transition-colors",
+              className,
+            )}
+          >
+            <Navigation className="size-3.5" aria-hidden />
+            {appLabel}
+          </a>
+        ))}
       </div>
     </div>
+  );
+}
+
+function FormSection({
+  event,
+  open,
+}: {
+  event: EventWithDetails;
+  open: boolean;
+}) {
+  return (
+    <section
+      id="inschrijven"
+      className="relative min-h-svh scroll-mt-0 overflow-hidden bg-[#FBF3E4] px-4 pt-12 pb-16 text-[#2B2140] md:min-h-0"
+    >
+      <Bunting className="absolute inset-x-0 top-0 h-12 w-full opacity-80" />
+      <div className="relative mx-auto flex max-w-xl flex-col gap-6">
+        <header className="flex flex-col items-center gap-2 pt-4 text-center">
+          <h2 className="font-script text-5xl text-[#E4572E] drop-shadow-[2px_2px_0_#F6C445]">
+            Ik kom feesten
+          </h2>
+          <p className="font-serif text-lg">
+            Schrijf je in en bestel je spaghetti
+          </p>
+        </header>
+
+        <Card className="text-foreground">
+          <CardContent className="flex flex-col gap-6 text-sm">
+            {open && event.orderDeadline ? (
+              <>
+                <p>
+                  Inschrijven en bestellen kan tot{" "}
+                  <strong>{formatDateTime(event.orderDeadline)}</strong>. Na het
+                  inschrijven krijg je een persoonlijke link waarmee je tot dan
+                  kan wijzigen of annuleren.
+                </p>
+                <OrderForm
+                  action={createOrder.bind(null, event.slug)}
+                  parts={partsForForm(event)}
+                  menu={event.menu.map((m) => ({ id: m.id, name: m.name }))}
+                  submitLabel="Inschrijven"
+                />
+                <p className="text-xs text-muted-foreground">
+                  We bewaren je naam, inschrijving en bestelling enkel voor dit
+                  feest en verwijderen ze op {formatDate(retentionDate(event))}.
+                </p>
+              </>
+            ) : (
+              <p>Inschrijven en bestellen is afgesloten.</p>
+            )}
+          </CardContent>
+        </Card>
+      </div>
+    </section>
   );
 }
