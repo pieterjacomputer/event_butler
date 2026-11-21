@@ -287,53 +287,155 @@ export function HousewarmingScene({
       <circle cx="336" cy="122" r="22" fill="#16203F" />
       <circle cx="378" cy="124" r="20" fill="#16203F" />
 
-      {/* House */}
-      <path d="M40 120 L110 62 L180 120 Z" fill="#2B3463" />
-      <rect x="146" y="70" width="14" height="30" fill="#2B3463" />
-      <rect x="52" y="118" width="116" height="92" fill="#F4EEE4" />
+      {/* House: warm cream walls, terracotta roof, dark outlines */}
+      {/* Chimney with a little smoke */}
+      <circle cx="156" cy="52" r="6" fill="#C9C3D6" opacity="0.25" />
+      <circle cx="164" cy="40" r="8" fill="#C9C3D6" opacity="0.18" />
       <rect
-        x="52"
-        y="118"
-        width="116"
-        height="92"
-        fill="#1B2340"
-        opacity="0.15"
-      />
-      {/* Windows with guests */}
-      <rect
-        x="62"
-        y="132"
-        width="38"
-        height="34"
-        rx="2"
-        fill={`url(#${windowId})`}
-      />
-      <rect
-        x="120"
-        y="132"
-        width="38"
-        height="34"
-        rx="2"
-        fill={`url(#${windowId})`}
-      />
-      <circle cx="74" cy="148" r="5" fill="#3A2A3E" opacity="0.8" />
-      <path d="M67 166 q7 -14 14 0 Z" fill="#3A2A3E" opacity="0.8" />
-      <circle cx="88" cy="150" r="4.5" fill="#3A2A3E" opacity="0.8" />
-      <path d="M82 166 q6 -12 12 0 Z" fill="#3A2A3E" opacity="0.8" />
-      <circle cx="140" cy="148" r="5" fill="#3A2A3E" opacity="0.8" />
-      <path d="M133 166 q7 -14 14 0 Z" fill="#3A2A3E" opacity="0.8" />
-      {/* Big glass doors to the garden */}
-      <rect x="86" y="174" width="48" height="36" fill={`url(#${windowId})`} />
-      <line
-        x1="110"
-        y1="174"
-        x2="110"
-        y2="210"
-        stroke="#8A6A4A"
+        x="146"
+        y="68"
+        width="18"
+        height="40"
+        fill="#8A3A30"
+        stroke="#0E1226"
         strokeWidth="1.5"
       />
-      <circle cx="100" cy="188" r="4" fill="#3A2A3E" opacity="0.75" />
-      <path d="M94 210 v-10 q6 -10 12 0 v10 Z" fill="#3A2A3E" opacity="0.75" />
+      <rect
+        x="143"
+        y="64"
+        width="24"
+        height="6"
+        fill="#6E2C25"
+        stroke="#0E1226"
+        strokeWidth="1.5"
+      />
+      {/* Walls with siding */}
+      <rect
+        x="52"
+        y="116"
+        width="116"
+        height="94"
+        fill="#F6E7CF"
+        stroke="#0E1226"
+        strokeWidth="1.5"
+      />
+      {[128, 140, 152, 164, 176, 188, 200].map((y) => (
+        <line
+          key={y}
+          x1="53"
+          y1={y}
+          x2="167"
+          y2={y}
+          stroke="#E2CFAF"
+          strokeWidth="1"
+        />
+      ))}
+      {/* Roof with shingles and a warm rim light */}
+      <path
+        d="M34 122 L110 56 L186 122 Z"
+        fill="#C0503F"
+        stroke="#0E1226"
+        strokeWidth="1.5"
+        strokeLinejoin="round"
+      />
+      {[78, 92, 106].map((y) => {
+        const half = ((y - 56) / 66) * 76;
+        return (
+          <line
+            key={y}
+            x1={110 - half}
+            y1={y}
+            x2={110 + half}
+            y2={y}
+            stroke="#A2412F"
+            strokeWidth="1.2"
+          />
+        );
+      })}
+      <path
+        d="M34 122 L110 56 L186 122"
+        fill="none"
+        stroke="#F2994A"
+        strokeWidth="1.2"
+        opacity="0.7"
+      />
+      {/* Round attic window */}
+      <circle
+        cx="110"
+        cy="96"
+        r="9"
+        fill={`url(#${windowId})`}
+        stroke="#6B4A33"
+        strokeWidth="2"
+      />
+      <path d="M110 87 V105 M101 96 H119" stroke="#6B4A33" strokeWidth="1.5" />
+      {/* Housewarming garland along the eaves */}
+      <path
+        d="M52 118 Q110 132 168 118"
+        fill="none"
+        stroke="#0E1226"
+        strokeWidth="1"
+      />
+      {[60, 72, 84, 96, 108, 120, 132, 144, 156].map((x, i) => {
+        const t = (x - 52) / 116;
+        const y = 118 + 2 * (1 - t) * t * 14;
+        return (
+          <path
+            key={x}
+            d={`M${x - 4} ${y} L${x + 4} ${y} L${x} ${y + 7} Z`}
+            fill={["#E86A92", "#F2C14E", "#4FB3A9"][i % 3]}
+          />
+        );
+      })}
+      {/* Windows with guests */}
+      {[62, 124].map((x) => (
+        <g key={x}>
+          <rect
+            x={x}
+            y="136"
+            width="34"
+            height="30"
+            fill={`url(#${windowId})`}
+            stroke="#6B4A33"
+            strokeWidth="3"
+          />
+          <path
+            d={`M${x + 17} 136 V166 M${x} 151 H${x + 34}`}
+            stroke="#6B4A33"
+            strokeWidth="1.5"
+          />
+        </g>
+      ))}
+      <circle cx="72" cy="150" r="4.5" fill="#3A2A3E" opacity="0.85" />
+      <path d="M66 166 q6 -12 12 0 Z" fill="#3A2A3E" opacity="0.85" />
+      <circle cx="86" cy="152" r="4" fill="#3A2A3E" opacity="0.85" />
+      <path d="M81 166 q5 -10 10 0 Z" fill="#3A2A3E" opacity="0.85" />
+      <circle cx="142" cy="150" r="4.5" fill="#3A2A3E" opacity="0.85" />
+      <path d="M136 166 q6 -12 12 0 Z" fill="#3A2A3E" opacity="0.85" />
+      {/* Front door with a lit transom, porch lamp and step */}
+      <circle cx="128" cy="180" r="9" fill="#F6D27A" opacity="0.35" />
+      <circle cx="128" cy="180" r="2.5" fill="#FBE3A0" />
+      <rect
+        x="98"
+        y="172"
+        width="24"
+        height="38"
+        rx="1"
+        fill="#2F6F6A"
+        stroke="#0E1226"
+        strokeWidth="1.5"
+      />
+      <rect x="101" y="175" width="18" height="6" fill={`url(#${windowId})`} />
+      <circle cx="117" cy="193" r="1.6" fill="#F2C14E" />
+      <rect
+        x="93"
+        y="209"
+        width="34"
+        height="4"
+        fill="#C9B79A"
+        stroke="#0E1226"
+        strokeWidth="1"
+      />
 
       {/* String lights from the house to the tree */}
       <path
