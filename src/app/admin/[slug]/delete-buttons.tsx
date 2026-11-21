@@ -56,7 +56,7 @@ export function DeleteAllForm({
       onSubmit={(e) => {
         if (
           !window.confirm(
-            `Alle ${count} inschrijvingen definitief verwijderen? Dit kan niet ongedaan worden.`,
+            `${count === 1 ? "De enige inschrijving" : `Alle ${count} inschrijvingen`} definitief verwijderen? Dit kan niet ongedaan worden.`,
           )
         ) {
           e.preventDefault();
