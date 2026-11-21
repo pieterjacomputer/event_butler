@@ -361,15 +361,28 @@ export function HousewarmingScene({
           strokeDasharray="3 3"
         />
       ))}
+      {/* Chimney on the main roof, with smoke */}
       <rect
-        x="194"
-        y="56"
-        width="12"
-        height="10"
+        x="192"
+        y="50"
+        width="14"
+        height="18"
         fill="#B9A682"
         stroke="#0E1226"
         strokeWidth="1.2"
       />
+      <rect
+        x="190"
+        y="47"
+        width="18"
+        height="5"
+        fill="#9E8C6C"
+        stroke="#0E1226"
+        strokeWidth="1"
+      />
+      <circle cx="200" cy="38" r="6" fill="#C9C3D6" opacity="0.25" />
+      <circle cx="208" cy="26" r="8" fill="#C9C3D6" opacity="0.18" />
+      <circle cx="218" cy="14" r="10" fill="#C9C3D6" opacity="0.12" />
 
       {/* Brick walls */}
       <rect
@@ -422,27 +435,6 @@ export function HousewarmingScene({
         stroke="#0E1226"
         strokeWidth="1"
       />
-      {/* Brick chimney on the gable */}
-      <rect
-        x="64"
-        y="52"
-        width="16"
-        height="52"
-        fill="#CDBB9A"
-        stroke="#0E1226"
-        strokeWidth="1.5"
-      />
-      <rect
-        x="62"
-        y="48"
-        width="20"
-        height="6"
-        fill="#B9A682"
-        stroke="#0E1226"
-        strokeWidth="1.2"
-      />
-      <circle cx="74" cy="38" r="6" fill="#C9C3D6" opacity="0.22" />
-      <circle cx="82" cy="26" r="8" fill="#C9C3D6" opacity="0.15" />
       {/* Two small gable windows, lit */}
       {[84, 102].map((x) => (
         <rect
