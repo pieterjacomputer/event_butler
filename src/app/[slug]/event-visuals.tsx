@@ -474,28 +474,6 @@ export function HousewarmingScene({
         );
       })}
 
-      {/* Front door with tall glass slits and a wall lamp */}
-      <rect
-        x="60"
-        y="164"
-        width="16"
-        height="40"
-        fill="#8C9096"
-        stroke="#0E1226"
-        strokeWidth="1.2"
-      />
-      {[63, 67, 71].map((x) => (
-        <rect
-          key={x}
-          x={x}
-          y="168"
-          width="2.4"
-          height="30"
-          fill={`url(#${windowId})`}
-        />
-      ))}
-      <circle cx="82" cy="168" r="8" fill="#F6D27A" opacity="0.3" />
-      <rect x="80.5" y="165" width="3" height="5" fill="#FBE3A0" />
       {/* Living room window with blinds and guests */}
       <rect
         x="88"
@@ -627,11 +605,40 @@ export function HousewarmingScene({
         />
       ))}
 
-      {/* Dancing guests on the lawn */}
+      {/* Side entrance: a path along the right of the house and a glowing arrow */}
+      <polygon points="204,198 236,190 240,200 206,206" fill="#6A5246" />
+      <path
+        d="M196 196 C204 182 214 176 230 176"
+        fill="none"
+        stroke="#F2C14E"
+        strokeWidth="6"
+        strokeLinecap="round"
+        opacity="0.3"
+      />
+      <path
+        d="M196 196 C204 182 214 176 230 176"
+        fill="none"
+        stroke="#F2C14E"
+        strokeWidth="2.6"
+        strokeLinecap="round"
+      />
+      <path d="M228 169 L239 176 L228 183 Z" fill="#F2C14E" />
+      <text
+        x="214"
+        y="166"
+        textAnchor="middle"
+        fill="#F2C14E"
+        fontSize="11"
+        style={{ fontFamily: "var(--font-script), cursive" }}
+      >
+        Ingang
+      </text>
+
+      {/* Dancing guests on the driveway */}
       {[
-        { x: 214, color: "#E86A92", arms: "M-9 -22 L0 -14 L9 -24" },
-        { x: 238, color: "#4FB3A9", arms: "M-10 -24 L0 -14 L8 -18" },
-        { x: 196, color: "#F2C14E", arms: "M-8 -16 L0 -14 L10 -25" },
+        { x: 168, color: "#E86A92", arms: "M-9 -22 L0 -14 L9 -24" },
+        { x: 186, color: "#4FB3A9", arms: "M-10 -24 L0 -14 L8 -18" },
+        { x: 150, color: "#F2C14E", arms: "M-8 -16 L0 -14 L10 -25" },
       ].map((d) => (
         <g key={d.x} transform={`translate(${d.x} 222)`}>
           <circle cx="0" cy="-27" r="4.5" fill="#0E1226" />
