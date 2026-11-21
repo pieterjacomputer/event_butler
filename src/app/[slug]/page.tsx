@@ -237,7 +237,7 @@ const THEMES = {
     accent: "text-[#F2C14E]",
     muted: "text-[#F7EFE3]/75",
     button:
-      "border-[#F2C14E] bg-[#F2C14E] text-[#1B2340] shadow-[0_0_18px_rgba(242,193,78,0.55)] hover:bg-[#F6D27A]",
+      "border-2 border-[#F2C14E] bg-[#1B2340] text-white shadow-[0_0_16px_rgba(242,193,78,0.45)] hover:bg-[#232C52] hover:shadow-[0_0_22px_rgba(242,193,78,0.65)]",
   },
 } as const;
 
