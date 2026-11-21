@@ -135,6 +135,14 @@ export const orderParts = pgTable(
       .notNull()
       // "no action" so deleting an event can cascade in one statement.
       .references(() => eventParts.id, { onDelete: "no action" }),
+    /** How many people of this sign-up come to this part. */
+    people: integer("people").notNull().default(1),
   },
-  (t) => [primaryKey({ columns: [t.orderId, t.eventPartId] })],
+  (t) => [
+    primaryKey({ columns: [t.orderId, t.eventPartId] }),
+    check(
+      "order_parts_people_range",
+      sql`${t.people} >= 1 AND ${t.people} <= 30`,
+    ),
+  ],
 );

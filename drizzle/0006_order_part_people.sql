@@ -1,0 +1,2 @@
+ALTER TABLE "order_parts" ADD COLUMN "people" integer DEFAULT 1 NOT NULL;--> statement-breakpoint
+ALTER TABLE "order_parts" ADD CONSTRAINT "order_parts_people_range" CHECK ("order_parts"."people" >= 1 AND "order_parts"."people" <= 30);

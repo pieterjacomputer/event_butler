@@ -17,7 +17,10 @@ export async function getOrderByToken(eventId: number, token: string) {
 
   const [parts, lines] = await Promise.all([
     db
-      .select({ eventPartId: orderParts.eventPartId })
+      .select({
+        eventPartId: orderParts.eventPartId,
+        people: orderParts.people,
+      })
       .from(orderParts)
       .where(eq(orderParts.orderId, order.id)),
     db
@@ -32,6 +35,10 @@ export async function getOrderByToken(eventId: number, token: string) {
   return {
     ...order,
     partIds: parts.map((p) => p.eventPartId),
+    /** People per part, keyed by part id. */
+    people: Object.fromEntries(
+      parts.map((p) => [String(p.eventPartId), p.people]),
+    ),
     lines,
   };
 }
