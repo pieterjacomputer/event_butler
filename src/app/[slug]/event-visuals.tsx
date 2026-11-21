@@ -254,23 +254,32 @@ export function StarField({ className }: { className?: string }) {
  * A housewarming party at night: a house with glowing windows and guests,
  * string lights to a tree, and a garden table with cocktails and candles.
  */
-export function HousewarmingScene({ className }: { className?: string }) {
+export function HousewarmingScene({
+  className,
+  idPrefix,
+}: {
+  className?: string;
+  /** Unique per instance on a page, so gradient ids don't clash. */
+  idPrefix: string;
+}) {
+  const windowId = `${idPrefix}-hw-window`;
+  const glowId = `${idPrefix}-hw-glow`;
   const bulbs = [148, 176, 204, 232, 260, 288, 316, 344];
   return (
     <svg viewBox="0 0 400 260" className={className} aria-hidden>
       <defs>
-        <radialGradient id="hw-window" cx="50%" cy="50%" r="60%">
+        <radialGradient id={windowId} cx="50%" cy="50%" r="60%">
           <stop offset="0%" stopColor="#FFE7A8" />
           <stop offset="100%" stopColor="#F2B25C" />
         </radialGradient>
-        <radialGradient id="hw-glow" cx="50%" cy="50%" r="50%">
+        <radialGradient id={glowId} cx="50%" cy="50%" r="50%">
           <stop offset="0%" stopColor="#F6D27A" stopOpacity="0.55" />
           <stop offset="100%" stopColor="#F6D27A" stopOpacity="0" />
         </radialGradient>
       </defs>
 
       {/* Warm glow around the house */}
-      <ellipse cx="110" cy="170" rx="130" ry="80" fill="url(#hw-glow)" />
+      <ellipse cx="110" cy="170" rx="130" ry="80" fill={`url(#${glowId})`} />
 
       {/* Tree on the right */}
       <rect x="352" y="120" width="8" height="90" fill="#121733" />
@@ -297,7 +306,7 @@ export function HousewarmingScene({ className }: { className?: string }) {
         width="38"
         height="34"
         rx="2"
-        fill="url(#hw-window)"
+        fill={`url(#${windowId})`}
       />
       <rect
         x="120"
@@ -305,7 +314,7 @@ export function HousewarmingScene({ className }: { className?: string }) {
         width="38"
         height="34"
         rx="2"
-        fill="url(#hw-window)"
+        fill={`url(#${windowId})`}
       />
       <circle cx="74" cy="148" r="5" fill="#3A2A3E" opacity="0.8" />
       <path d="M67 166 q7 -14 14 0 Z" fill="#3A2A3E" opacity="0.8" />
@@ -314,7 +323,7 @@ export function HousewarmingScene({ className }: { className?: string }) {
       <circle cx="140" cy="148" r="5" fill="#3A2A3E" opacity="0.8" />
       <path d="M133 166 q7 -14 14 0 Z" fill="#3A2A3E" opacity="0.8" />
       {/* Big glass doors to the garden */}
-      <rect x="86" y="174" width="48" height="36" fill="url(#hw-window)" />
+      <rect x="86" y="174" width="48" height="36" fill={`url(#${windowId})`} />
       <line
         x1="110"
         y1="174"
@@ -391,6 +400,55 @@ export function HousewarmingScene({ className }: { className?: string }) {
           <path d={`M${x} 186 q3 4 0 8 q-3 -4 0 -8 Z`} fill="#FBE3A0" />
         </g>
       ))}
+    </svg>
+  );
+}
+
+/** Two cocktail glasses clinking, with sparkles. */
+export function CocktailsCheers({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 160 130" className={className} aria-hidden>
+      {/* Sparkles */}
+      {[
+        [80, 14, 6],
+        [58, 26, 3.5],
+        [104, 24, 4],
+        [122, 50, 2.5],
+        [36, 48, 2.5],
+      ].map(([x, y, r], i) => (
+        <path
+          key={i}
+          d={`M${x} ${y - r * 2} L${x + r * 0.5} ${y - r * 0.5} L${x + r * 2} ${y} L${x + r * 0.5} ${y + r * 0.5} L${x} ${y + r * 2} L${x - r * 0.5} ${y + r * 0.5} L${x - r * 2} ${y} L${x - r * 0.5} ${y - r * 0.5} Z`}
+          fill="#F2C14E"
+        />
+      ))}
+      {/* Left glass: pink cocktail, tilted right */}
+      <g transform="rotate(14 60 80)">
+        <path d="M36 50 H84 L64 78 H56 Z" fill="#E86A92" opacity="0.9" />
+        <path d="M36 50 H84" stroke="#F4EEE4" strokeWidth="2" />
+        <rect x="58.5" y="78" width="3" height="30" fill="#F4EEE4" />
+        <rect x="48" y="106" width="24" height="3" rx="1.5" fill="#F4EEE4" />
+        <circle cx="76" cy="50" r="6" fill="#F6C445" />
+        <path d="M76 50 l-6 -2" stroke="#F2994A" strokeWidth="2" />
+      </g>
+      {/* Right glass: orange spritz, tilted left */}
+      <g transform="rotate(-14 104 80)">
+        <path
+          d="M86 52 Q86 92 104 96 Q122 92 122 52 Z"
+          fill="#F2994A"
+          opacity="0.9"
+        />
+        <path d="M86 52 H122" stroke="#F4EEE4" strokeWidth="2" />
+        <rect x="102.5" y="96" width="3" height="14" fill="#F4EEE4" />
+        <rect x="92" y="108" width="24" height="3" rx="1.5" fill="#F4EEE4" />
+        <circle cx="96" cy="62" r="6" fill="#F6C445" opacity="0.9" />
+        <path
+          d="M112 30 L106 66"
+          stroke="#E4572E"
+          strokeWidth="3"
+          strokeLinecap="round"
+        />
+      </g>
     </svg>
   );
 }

@@ -14,6 +14,7 @@ import { createOrder } from "./actions";
 import {
   Balloons,
   Bunting,
+  CocktailsCheers,
   HousewarmingScene,
   MoonAndStars,
   SpaghettiBowl,
@@ -266,7 +267,10 @@ function PartPanel({
           <StarField className="pointer-events-none absolute inset-0 h-full w-full" />
           <StringLights className="pointer-events-none absolute inset-x-0 top-6 h-12 w-full md:top-0" />
           <MoonAndStars className="pointer-events-none absolute top-14 right-2 w-28 md:top-8 md:w-36" />
-          <HousewarmingScene className="pointer-events-none absolute inset-x-0 bottom-0 hidden w-full opacity-90 md:block" />
+          <HousewarmingScene
+            idPrefix="desktop"
+            className="pointer-events-none absolute inset-x-0 bottom-0 hidden w-full opacity-90 md:block"
+          />
           {/* Organic transition from the day side */}
           <WaveEdge
             direction="horizontal"
@@ -351,8 +355,14 @@ function PartPanel({
         {night ? (
           <>
             {/* Mobile: the party scene fills the screen between text and buttons. */}
-            <div className="flex w-full flex-1 items-end md:hidden">
-              <HousewarmingScene className="pointer-events-none -mx-6 w-[calc(100%+3rem)] max-w-none" />
+            <div className="flex w-full flex-1 flex-col items-center md:hidden">
+              <div className="flex flex-1 items-center py-4">
+                <CocktailsCheers className="w-36" />
+              </div>
+              <HousewarmingScene
+                idPrefix="mobile"
+                className="pointer-events-none -mx-6 w-[calc(100%+3rem)] max-w-none"
+              />
             </div>
             <div className="hidden min-h-6 flex-1 md:block" />
           </>
