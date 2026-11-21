@@ -30,6 +30,8 @@ Open http://localhost:3000.
 | `pnpm db:generate`  | Generate a SQL migration from the schema |
 | `pnpm db:migrate`   | Apply pending migrations to the database |
 
+The admin overview is at `/admin` (GitHub login, owner only).
+
 ## How we work
 
 - [CONTRIBUTING.md](./CONTRIBUTING.md): the workflow, branches, commits and definition of done
