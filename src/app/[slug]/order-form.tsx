@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import {
+  MAX_PEOPLE,
   MAX_PORTIONS,
   parseOrderForm,
   toFieldErrors,
@@ -30,6 +31,7 @@ type Props = {
 const EMPTY: OrderFormValues = {
   guestName: "",
   partIds: [],
+  people: {},
   quantities: {},
   note: "",
 };
@@ -86,6 +88,11 @@ function OrderFields({
     ),
   );
 
+  // Which parts are ticked: the headcount field shows only for those.
+  const [checked, setChecked] = useState<Set<number>>(
+    () => new Set(values.partIds),
+  );
+
   function step(id: number, delta: number) {
     setQuantities((q) => {
       const current = Number(q[String(id)]) || 0;
@@ -135,26 +142,62 @@ function OrderFields({
 
       <fieldset className="flex flex-col gap-3">
         <legend className="mb-2 text-sm font-medium">Kom je?</legend>
-        {parts.map((part) => (
-          <div key={part.id} className="flex items-start gap-3">
-            <Checkbox
-              id={`part-${part.id}`}
-              name="partId"
-              value={String(part.id)}
-              defaultChecked={values.partIds.includes(part.id)}
-              aria-invalid={!!errors.partIds}
-              className="mt-0.5"
-            />
-            <Label
-              htmlFor={`part-${part.id}`}
-              className="flex flex-col items-start gap-0.5 font-normal"
-            >
-              <span className="font-medium">{part.name}</span>
-              <span className="text-muted-foreground">{part.when}</span>
-            </Label>
-          </div>
-        ))}
+        {parts.map((part) => {
+          const isChecked = checked.has(part.id);
+          return (
+            <div key={part.id} className="flex flex-col gap-2">
+              <div className="flex items-start gap-3">
+                <Checkbox
+                  id={`part-${part.id}`}
+                  name="partId"
+                  value={String(part.id)}
+                  checked={isChecked}
+                  onCheckedChange={(value) =>
+                    setChecked((prev) => {
+                      const next = new Set(prev);
+                      if (value === true) next.add(part.id);
+                      else next.delete(part.id);
+                      return next;
+                    })
+                  }
+                  aria-invalid={!!errors.partIds}
+                  className="mt-0.5"
+                />
+                <Label
+                  htmlFor={`part-${part.id}`}
+                  className="flex flex-col items-start gap-0.5 font-normal"
+                >
+                  <span className="font-medium">{part.name}</span>
+                  <span className="text-muted-foreground">{part.when}</span>
+                </Label>
+              </div>
+              {isChecked && (
+                <div className="ml-7 flex items-center gap-3">
+                  <Label
+                    htmlFor={`people-${part.id}`}
+                    className="font-normal text-muted-foreground"
+                  >
+                    Met hoeveel personen?
+                  </Label>
+                  <Input
+                    id={`people-${part.id}`}
+                    name={`people-${part.id}`}
+                    type="number"
+                    inputMode="numeric"
+                    min={1}
+                    max={MAX_PEOPLE}
+                    step={1}
+                    defaultValue={values.people[String(part.id)] ?? "1"}
+                    aria-invalid={!!errors.people}
+                    className="w-16 text-center"
+                  />
+                </div>
+              )}
+            </div>
+          );
+        })}
         <FieldError message={errors.partIds} />
+        <FieldError message={errors.people} />
       </fieldset>
 
       <fieldset className="flex flex-col gap-3">

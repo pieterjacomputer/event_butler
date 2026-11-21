@@ -88,7 +88,8 @@ async function OrderDetails({
             <ul className="list-disc pl-5">
               {chosenParts.map((p) => (
                 <li key={p.id}>
-                  {p.name}{" "}
+                  {p.name}:{" "}
+                  <strong>{personen(order.people[String(p.id)] ?? 1)}</strong>{" "}
                   <span className="text-muted-foreground">({p.when})</span>
                 </li>
               ))}
@@ -137,6 +138,12 @@ async function OrderDetails({
                 initialValues={{
                   guestName: order.guestName,
                   partIds: order.partIds,
+                  people: Object.fromEntries(
+                    Object.entries(order.people).map(([id, n]) => [
+                      id,
+                      String(n),
+                    ]),
+                  ),
                   quantities: Object.fromEntries(
                     event.menu.map((m) => [
                       String(m.id),
@@ -168,4 +175,8 @@ async function OrderDetails({
       </p>
     </article>
   );
+}
+
+function personen(n: number): string {
+  return n === 1 ? "1 persoon" : `${n} personen`;
 }

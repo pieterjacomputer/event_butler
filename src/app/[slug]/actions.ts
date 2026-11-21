@@ -69,9 +69,13 @@ function childRows(orderId: string, input: OrderInput) {
   const queries: BatchItem<"pg">[] = [];
   const uniquePartIds = [...new Set(input.partIds)];
   queries.push(
-    db
-      .insert(orderParts)
-      .values(uniquePartIds.map((eventPartId) => ({ orderId, eventPartId }))),
+    db.insert(orderParts).values(
+      uniquePartIds.map((eventPartId) => ({
+        orderId,
+        eventPartId,
+        people: input.people[String(eventPartId)],
+      })),
+    ),
   );
   const lines = Object.entries(input.quantities)
     .filter(([, quantity]) => quantity > 0)
