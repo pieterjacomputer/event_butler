@@ -26,8 +26,28 @@ export const events = pgTable("events", {
   endsAt: timestamp("ends_at", { withTimezone: true }),
   /** Orders are accepted until this moment (stored in UTC). */
   orderDeadline: timestamp("order_deadline", { withTimezone: true }),
+  /** Path of the event image under /public, e.g. /events/43-is-a-party.jpg. */
+  imagePath: text("image_path"),
   createdAt,
 });
+
+/** The parts of an event guests can RSVP for (e.g. afternoon and evening). */
+export const eventParts = pgTable(
+  "event_parts",
+  {
+    id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
+    eventId: integer("event_id")
+      .notNull()
+      .references(() => events.id, { onDelete: "cascade" }),
+    name: text("name").notNull(),
+    startsAt: timestamp("starts_at", { withTimezone: true }).notNull(),
+    endsAt: timestamp("ends_at", { withTimezone: true }),
+    /** Optional; left empty when the address must not be public. */
+    location: text("location"),
+    sortOrder: integer("sort_order").notNull().default(0),
+  },
+  (t) => [index("event_parts_event_id_idx").on(t.eventId)],
+);
 
 /** The options guests can order for an event. */
 export const menuItems = pgTable(
@@ -90,4 +110,19 @@ export const orderLines = pgTable(
     primaryKey({ columns: [t.orderId, t.menuItemId] }),
     check("order_lines_quantity_positive", sql`${t.quantity} >= 1`),
   ],
+);
+
+/** Which event parts a guest is coming to (RSVP). */
+export const orderParts = pgTable(
+  "order_parts",
+  {
+    orderId: uuid("order_id")
+      .notNull()
+      .references(() => orders.id, { onDelete: "cascade" }),
+    eventPartId: integer("event_part_id")
+      .notNull()
+      // "no action" so deleting an event can cascade in one statement.
+      .references(() => eventParts.id, { onDelete: "no action" }),
+  },
+  (t) => [primaryKey({ columns: [t.orderId, t.eventPartId] })],
 );
