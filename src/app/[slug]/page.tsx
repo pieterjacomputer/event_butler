@@ -317,13 +317,13 @@ function PartPanel({
           />
           {/* Organic transition from the day side */}
           <WaveEdge
-            direction="horizontal"
-            className="pointer-events-none absolute inset-x-0 top-0 h-8 w-full md:h-10"
-          />
-          <WaveEdge
             direction="vertical"
             fill="#F7E7CF"
-            className="pointer-events-none absolute top-6 bottom-0 left-0 hidden w-14 md:block"
+            className="pointer-events-none absolute inset-y-0 left-0 hidden h-full w-14 md:block"
+          />
+          <WaveEdge
+            direction="horizontal"
+            className="pointer-events-none absolute inset-x-0 top-0 h-8 w-full md:h-10"
           />
         </>
       ) : (
