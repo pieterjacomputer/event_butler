@@ -561,7 +561,7 @@ function FormSection({
             {open && event.orderDeadline ? (
               <>
                 <p>
-                  Inschrijven en bestellen kan tot{" "}
+                  RSVP&apos;en en spaghetti bestellen graag voor{" "}
                   <strong>{formatDateTime(event.orderDeadline)}</strong>. Na het
                   inschrijven krijg je een persoonlijke link waarmee je tot dan
                   kan wijzigen of annuleren.
