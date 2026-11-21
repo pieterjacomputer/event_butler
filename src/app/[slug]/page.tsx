@@ -28,6 +28,7 @@ import {
   WaveEdge,
 } from "./event-visuals";
 import { OrderForm } from "./order-form";
+import { StickyCallToAction } from "./sticky-cta";
 import {
   getEventBySlug,
   isOrderingOpen,
@@ -103,7 +104,6 @@ async function EventDetails({
               slug={event.slug}
               className="flex-1 md:col-start-1 md:row-start-2 md:pr-32"
             >
-              {open && <CallToAction className="mt-4 md:hidden" />}
               {otherParts[0] && (
                 <ScrollHint
                   href="#deel-2"
@@ -143,6 +143,7 @@ async function EventDetails({
       </div>
 
       <FormSection event={event} open={open} />
+      {open && <StickyCallToAction targetId="inschrijven" />}
     </article>
   );
 }
@@ -195,7 +196,7 @@ function EventHeader({
   return (
     <header
       className={cn(
-        "relative overflow-hidden bg-[#FBF3E4] px-4 pt-14 pb-2 text-center text-[#2B2140] md:pt-16 md:pb-10",
+        "relative overflow-hidden bg-[#FBF3E4] px-4 pt-11 pb-1 text-center text-[#2B2140] md:pt-16 md:pb-10",
         className,
       )}
     >
@@ -203,20 +204,20 @@ function EventHeader({
       <h1 className="font-script leading-none">
         {match ? (
           <>
-            <span className="text-7xl text-[#E4572E] drop-shadow-[3px_3px_0_#F6C445] sm:text-8xl">
+            <span className="text-6xl text-[#E4572E] drop-shadow-[3px_3px_0_#F6C445] sm:text-8xl">
               {match[1]}
             </span>{" "}
-            <span className="text-5xl text-[#C8432B] sm:text-6xl">
+            <span className="text-4xl text-[#C8432B] sm:text-6xl">
               {match[2]}
             </span>
           </>
         ) : (
-          <span className="text-5xl text-[#C8432B] sm:text-6xl">
+          <span className="text-4xl text-[#C8432B] sm:text-6xl">
             {event.title}
           </span>
         )}
       </h1>
-      <p className="mt-5 inline-block -rotate-1 bg-[#F6C445] px-6 py-1.5 font-serif text-2xl tracking-wide text-[#2B2140] shadow-sm">
+      <p className="mt-3 inline-block -rotate-1 bg-[#F6C445] px-5 py-1 font-serif text-xl tracking-wide text-[#2B2140] shadow-sm md:mt-5 md:px-6 md:py-1.5 md:text-2xl">
         <span className="sr-only">{formatDate(event.startsAt)}</span>
         <span aria-hidden>{formatShortDate(event.startsAt)}</span>
       </p>
@@ -276,7 +277,7 @@ function PartPanel({
       id={id}
       aria-label={`Deel ${number}: ${part.name}`}
       className={cn(
-        "relative flex flex-col overflow-hidden px-6 pt-10 pb-6 md:px-12 md:pt-16 md:pb-10",
+        "relative flex flex-col overflow-hidden px-6 pt-6 pb-24 md:px-12 md:pt-16 md:pb-10",
         theme.panel,
         className,
       )}
@@ -360,7 +361,7 @@ function PartPanel({
               )}
 
               {items.length > 0 && (
-                <ul className="flex flex-col gap-1.5 text-left text-[15px]">
+                <ul className="flex flex-col gap-1 text-left text-sm md:gap-1.5 md:text-[15px]">
                   {items.map((item) => {
                     const [, time, text] =
                       /^(\d{1,2}u\d{2})\s+(.*)$/.exec(item) ?? [];
@@ -400,7 +401,7 @@ function PartPanel({
             />
           </>
         ) : (
-          <div className="flex w-full flex-1 flex-col items-center gap-3 md:gap-4">
+          <div className="flex w-full flex-1 flex-col items-center gap-2.5 md:gap-4">
             <p
               className={cn(
                 "text-xs font-semibold tracking-widest uppercase",
@@ -436,7 +437,7 @@ function PartPanel({
             )}
 
             {items.length > 0 && (
-              <ul className="flex flex-col gap-1.5 text-left text-[15px]">
+              <ul className="flex flex-col gap-1 text-left text-sm md:gap-1.5 md:text-[15px]">
                 {items.map((item) => {
                   const [, time, text] =
                     /^(\d{1,2}u\d{2})\s+(.*)$/.exec(item) ?? [];
