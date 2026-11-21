@@ -204,20 +204,17 @@ function EventHeader({
       )}
     >
       <Bunting className="absolute inset-x-0 top-0 h-14 w-full" />
-      {/* Desktop: a sunny sky with balloons and confetti around the title */}
-      <div
-        className="pointer-events-none absolute inset-0 hidden md:block"
-        aria-hidden
-      >
+      {/* A sunny sky with balloons and confetti around the title */}
+      <div className="pointer-events-none absolute inset-0" aria-hidden>
         <Confetti
           colors={["#F4A6B7", "#F6C445", "#7CCBB8", "#F2994A", "#E4572E"]}
           className="absolute inset-0 h-full w-full opacity-80"
         />
-        <Sun className="absolute top-14 left-[6%] w-28 lg:w-32" />
-        <Cloud className="absolute top-20 left-[18%] w-32 opacity-90" />
-        <Cloud className="absolute top-12 right-[22%] w-24 opacity-80" />
-        <Balloons className="absolute top-12 right-[5%] w-24 lg:w-28" />
-        <Balloons className="absolute top-24 left-[30%] w-14 -scale-x-100 opacity-80" />
+        <Sun className="absolute top-12 right-2 w-12 md:top-14 md:right-auto md:left-[6%] md:w-28 lg:w-32" />
+        <Cloud className="absolute top-24 left-1 w-14 opacity-90 md:top-20 md:left-[18%] md:w-32" />
+        <Cloud className="absolute top-12 right-[22%] hidden w-24 opacity-80 md:block" />
+        <Balloons className="absolute top-12 right-[5%] hidden w-24 md:block lg:w-28" />
+        <Balloons className="absolute top-24 left-[30%] hidden w-14 -scale-x-100 opacity-80 md:block" />
       </div>
       <h1 className="font-script leading-none">
         {match ? (
@@ -332,18 +329,15 @@ function PartPanel({
         <>
           <Balloons className="pointer-events-none absolute top-3 left-1 w-14 opacity-90 md:w-20" />
           <SpaghettiBowl className="pointer-events-none absolute right-3 bottom-24 w-20 opacity-90 md:hidden" />
-          {/* Desktop: pastel confetti, sun glow and a second bunting */}
-          <div
-            className="pointer-events-none absolute inset-0 hidden md:block"
-            aria-hidden
-          >
+          {/* Pastel confetti and a sun glow (plus bunting and a cloud on desktop) */}
+          <div className="pointer-events-none absolute inset-0" aria-hidden>
             <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_30%_100%,rgba(246,196,69,0.28),transparent_60%)]" />
             <Confetti
               colors={["#F4A6B7", "#F6C445", "#7CCBB8", "#F2994A", "#E4572E"]}
               className="absolute inset-0 h-full w-full opacity-70"
             />
-            <Bunting className="absolute inset-x-0 top-0 h-10 w-full opacity-70" />
-            <Cloud className="absolute top-16 right-10 w-24 opacity-80" />
+            <Bunting className="absolute inset-x-0 top-0 hidden h-10 w-full opacity-70 md:block" />
+            <Cloud className="absolute top-16 right-10 hidden w-24 opacity-80 md:block" />
           </div>
         </>
       )}
@@ -503,9 +497,15 @@ function PartPanel({
                 })}
               </ul>
             )}
-            <div className="min-h-6 flex-1" />
-            {/* Desktop: the afternoon terrace fills the space above Route. */}
-            <TerraceScene className="pointer-events-none -mx-12 hidden w-[calc(100%+6rem)] max-w-none md:block" />
+            {/*
+              The afternoon terrace fills the space above Route. On phones it
+              only takes the room left on the first screen (it may shrink to
+              nothing on small phones), so screen 1 keeps fitting.
+            */}
+            <div className="-mx-6 flex min-h-0 w-[calc(100%+3rem)] flex-1 items-end md:-mx-12 md:w-[calc(100%+6rem)] md:flex-none">
+              <TerraceScene className="pointer-events-none h-full max-h-56 w-full [mask-image:linear-gradient(to_bottom,black_70%,transparent)] md:h-auto md:max-h-none" />
+            </div>
+            <div className="hidden min-h-6 flex-1 md:block" />
           </div>
         )}
 
