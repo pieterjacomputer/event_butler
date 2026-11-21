@@ -621,9 +621,9 @@ export function HousewarmingScene({
       </defs>
       <rect x="243" y="182" width="3" height="22" fill="#0E1226" />
       <rect
-        x="218"
+        x="214"
         y="158"
-        width="54"
+        width="64"
         height="26"
         rx="6"
         fill="#120D24"
@@ -631,17 +631,17 @@ export function HousewarmingScene({
         strokeWidth="1"
       />
       <ellipse
-        cx="245"
+        cx="246"
         cy="171"
-        rx="34"
+        rx="38"
         ry="20"
         fill="#FF5FA2"
         opacity="0.14"
       />
       <rect
-        x="221"
+        x="217"
         y="161"
-        width="48"
+        width="58"
         height="20"
         rx="4.5"
         fill="none"
@@ -650,7 +650,7 @@ export function HousewarmingScene({
         filter={`url(#${neonId})`}
       />
       <text
-        x="241"
+        x="238"
         y="175.5"
         textAnchor="middle"
         fill="#FFE3F0"
@@ -663,7 +663,7 @@ export function HousewarmingScene({
         Ingang
       </text>
       <path
-        d="M258 171 H265 M262 167.5 L265.5 171 L262 174.5"
+        d="M261 171 H269 M265.5 167.5 L269 171 L265.5 174.5"
         fill="none"
         stroke="#5FF2E6"
         strokeWidth="1.6"
