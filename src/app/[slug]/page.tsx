@@ -323,7 +323,7 @@ function PartPanel({
           <WaveEdge
             direction="vertical"
             fill="#F7E7CF"
-            className="pointer-events-none absolute inset-y-0 left-0 hidden h-full w-14 md:block"
+            className="pointer-events-none absolute top-6 bottom-0 left-0 hidden w-14 md:block"
           />
         </>
       ) : (
