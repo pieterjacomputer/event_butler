@@ -37,7 +37,7 @@ import {
 } from "@/lib/events";
 import {
   formatDate,
-  formatDateTime,
+  formatDayMonth,
   formatShortDate,
   formatTimeRange,
 } from "@/lib/format";
@@ -561,8 +561,8 @@ function FormSection({
             {open && event.orderDeadline ? (
               <>
                 <p>
-                  Inschrijven en bestellen kan tot{" "}
-                  <strong>{formatDateTime(event.orderDeadline)}</strong>. Na het
+                  RSVP&apos;en en spaghetti bestellen graag voor{" "}
+                  <strong>{formatDayMonth(event.orderDeadline)}</strong>. Na het
                   inschrijven krijg je een persoonlijke link waarmee je tot dan
                   kan wijzigen of annuleren.
                 </p>
