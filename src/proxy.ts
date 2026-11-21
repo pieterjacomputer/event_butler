@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { auth } from "@/auth";
+import { adminGithubId, auth } from "@/auth";
 
 /**
  * First line of defence for /admin: send visitors without the owner's
@@ -11,7 +11,7 @@ export const proxy = auth((request) => {
   if (pathname === "/admin/login") return NextResponse.next();
 
   const githubId = (request.auth as { githubId?: unknown } | null)?.githubId;
-  const adminId = process.env.ADMIN_GITHUB_ID;
+  const adminId = adminGithubId();
   if (!adminId || githubId !== adminId) {
     return NextResponse.redirect(new URL("/admin/login", request.nextUrl));
   }

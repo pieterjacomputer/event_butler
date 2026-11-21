@@ -8,6 +8,14 @@ import GitHub from "next-auth/providers/github";
  * Environment: AUTH_SECRET, AUTH_GITHUB_ID, AUTH_GITHUB_SECRET,
  * ADMIN_GITHUB_ID, and on previews AUTH_REDIRECT_PROXY_URL.
  */
+/**
+ * The organiser's GitHub account id, cleaned of stray spaces, line breaks
+ * and quotes that easily sneak in when pasting into Vercel. Empty when unset.
+ */
+export function adminGithubId(): string {
+  return (process.env.ADMIN_GITHUB_ID ?? "").replace(/[\s"']/g, "");
+}
+
 export const { handlers, auth, signIn, signOut } = NextAuth({
   providers: [GitHub],
   session: { strategy: "jwt" },
@@ -16,7 +24,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   callbacks: {
     // Only the owner's GitHub account may sign in.
     signIn({ profile }) {
-      const adminId = process.env.ADMIN_GITHUB_ID;
+      const adminId = adminGithubId();
       return Boolean(adminId) && String(profile?.id) === adminId;
     },
     jwt({ token, profile }) {
@@ -32,7 +40,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 /** True only for a signed-in session of the owner's GitHub account. */
 export async function isAdmin(): Promise<boolean> {
   const session = await auth();
-  const adminId = process.env.ADMIN_GITHUB_ID;
+  const adminId = adminGithubId();
   return (
     Boolean(adminId) &&
     (session as { githubId?: unknown } | null)?.githubId === adminId
