@@ -37,3 +37,15 @@ export function formatTimeRange(start: Date, end: Date | null): string {
 export function formatDateTime(date: Date): string {
   return `${formatDate(date)} om ${formatTime(date)}`;
 }
+
+const shortDateFormat = new Intl.DateTimeFormat("nl-BE", {
+  timeZone: TIME_ZONE,
+  day: "2-digit",
+  month: "2-digit",
+  year: "numeric",
+});
+
+/** "05/12/2026" */
+export function formatShortDate(date: Date): string {
+  return shortDateFormat.format(date);
+}
