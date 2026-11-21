@@ -264,7 +264,7 @@ export function HousewarmingScene({
 }) {
   const windowId = `${idPrefix}-hw-window`;
   const glowId = `${idPrefix}-hw-glow`;
-  const bulbs = [148, 176, 204, 232, 260, 288, 316, 344];
+  const bulbs = [226, 248, 270, 292, 314, 336];
   return (
     <svg viewBox="0 0 400 260" className={className} aria-hidden>
       <defs>
@@ -287,166 +287,288 @@ export function HousewarmingScene({
       <circle cx="336" cy="122" r="22" fill="#16203F" />
       <circle cx="378" cy="124" r="20" fill="#16203F" />
 
-      {/* House: warm cream walls, terracotta roof, dark outlines */}
-      {/* Chimney with a little smoke */}
-      <circle cx="156" cy="52" r="6" fill="#C9C3D6" opacity="0.25" />
-      <circle cx="164" cy="40" r="8" fill="#C9C3D6" opacity="0.18" />
-      <rect
-        x="146"
-        y="68"
-        width="18"
-        height="40"
-        fill="#8A3A30"
+      {/*
+        House, inspired by a Flemish semi-detached home: sand-coloured brick,
+        dark tiled roof, a front gable with two small windows, a brick
+        chimney and a garage with a dark door. Lit up for the party.
+      */}
+      {/* Neighbour on the left (cut off), long roof with skylights */}
+      <polygon
+        points="-10,104 74,104 64,140 -10,140"
+        fill="#2B2723"
         stroke="#0E1226"
-        strokeWidth="1.5"
+        strokeWidth="1.2"
       />
       <rect
-        x="143"
-        y="64"
-        width="24"
-        height="6"
-        fill="#6E2C25"
-        stroke="#0E1226"
-        strokeWidth="1.5"
-      />
-      {/* Walls with siding */}
-      <rect
-        x="52"
+        x="4"
         y="116"
-        width="116"
-        height="94"
-        fill="#F6E7CF"
-        stroke="#0E1226"
-        strokeWidth="1.5"
+        width="14"
+        height="9"
+        fill="#F6D27A"
+        opacity="0.7"
+        transform="skewX(-12)"
       />
-      {[128, 140, 152, 164, 176, 188, 200].map((y) => (
-        <line
-          key={y}
-          x1="53"
-          y1={y}
-          x2="167"
-          y2={y}
-          stroke="#E2CFAF"
-          strokeWidth="1"
-        />
-      ))}
-      {/* Roof with shingles and a warm rim light */}
-      <path
-        d="M34 122 L110 56 L186 122 Z"
-        fill="#C0503F"
+      <rect
+        x="32"
+        y="114"
+        width="14"
+        height="9"
+        fill="#F6D27A"
+        opacity="0.7"
+        transform="skewX(-12)"
+      />
+      <rect x="-10" y="140" width="62" height="64" fill="#B9A682" />
+      <rect
+        x="0"
+        y="158"
+        width="38"
+        height="24"
+        fill="#F2B25C"
+        opacity="0.55"
+        stroke="#4A4F57"
+        strokeWidth="2"
+      />
+
+      {/* Main roof with tiles, running over the garage */}
+      <polygon
+        points="108,64 204,64 212,140 96,140"
+        fill="#2B2723"
         stroke="#0E1226"
         strokeWidth="1.5"
         strokeLinejoin="round"
       />
-      {[78, 92, 106].map((y) => {
-        const half = ((y - 56) / 66) * 76;
+      {[76, 88, 100, 112, 124].map((y) => (
+        <line
+          key={y}
+          x1={108 - (y - 64) * 0.16}
+          y1={y}
+          x2={204 + (y - 64) * 0.1}
+          y2={y}
+          stroke="#3D3731"
+          strokeWidth="1.2"
+        />
+      ))}
+      {[120, 136, 152, 168, 184, 198].map((x) => (
+        <line
+          key={x}
+          x1={x}
+          y1="66"
+          x2={x + 2}
+          y2="138"
+          stroke="#3D3731"
+          strokeWidth="0.6"
+          strokeDasharray="3 3"
+        />
+      ))}
+      <rect
+        x="194"
+        y="56"
+        width="12"
+        height="10"
+        fill="#B9A682"
+        stroke="#0E1226"
+        strokeWidth="1.2"
+      />
+
+      {/* Brick walls */}
+      <rect
+        x="52"
+        y="138"
+        width="156"
+        height="66"
+        fill="#D8C6A0"
+        stroke="#0E1226"
+        strokeWidth="1.5"
+      />
+      {/* Front gable */}
+      <polygon points="58,140 98,62 138,140" fill="#D8C6A0" />
+      {[146, 154, 162, 170, 178, 186, 194].map((y) => (
+        <line
+          key={y}
+          x1="53"
+          y1={y}
+          x2="207"
+          y2={y}
+          stroke="#C4B08A"
+          strokeWidth="0.8"
+        />
+      ))}
+      {[84, 96, 108, 120, 132].map((y) => {
+        const half = ((y - 62) / 78) * 40;
         return (
           <line
             key={y}
-            x1={110 - half}
+            x1={98 - half}
             y1={y}
-            x2={110 + half}
+            x2={98 + half}
             y2={y}
-            stroke="#A2412F"
-            strokeWidth="1.2"
+            stroke="#C4B08A"
+            strokeWidth="0.8"
           />
         );
       })}
+      {/* Gable roof edges */}
       <path
-        d="M34 122 L110 56 L186 122"
+        d="M52 146 L98 56 L144 146"
         fill="none"
-        stroke="#F2994A"
-        strokeWidth="1.2"
-        opacity="0.7"
+        stroke="#2B2723"
+        strokeWidth="7"
+        strokeLinejoin="round"
       />
-      {/* Round attic window */}
-      <circle
-        cx="110"
-        cy="96"
-        r="9"
-        fill={`url(#${windowId})`}
-        stroke="#6B4A33"
-        strokeWidth="2"
-      />
-      <path d="M110 87 V105 M101 96 H119" stroke="#6B4A33" strokeWidth="1.5" />
-      {/* Housewarming garland along the eaves */}
       <path
-        d="M52 118 Q110 132 168 118"
+        d="M52 146 L98 56 L144 146"
         fill="none"
         stroke="#0E1226"
         strokeWidth="1"
       />
-      {[60, 72, 84, 96, 108, 120, 132, 144, 156].map((x, i) => {
-        const t = (x - 52) / 116;
-        const y = 118 + 2 * (1 - t) * t * 14;
+      {/* Brick chimney on the gable */}
+      <rect
+        x="64"
+        y="52"
+        width="16"
+        height="52"
+        fill="#CDBB9A"
+        stroke="#0E1226"
+        strokeWidth="1.5"
+      />
+      <rect
+        x="62"
+        y="48"
+        width="20"
+        height="6"
+        fill="#B9A682"
+        stroke="#0E1226"
+        strokeWidth="1.2"
+      />
+      <circle cx="74" cy="38" r="6" fill="#C9C3D6" opacity="0.22" />
+      <circle cx="82" cy="26" r="8" fill="#C9C3D6" opacity="0.15" />
+      {/* Two small gable windows, lit */}
+      {[84, 102].map((x) => (
+        <rect
+          key={x}
+          x={x}
+          y="92"
+          width="12"
+          height="17"
+          fill={`url(#${windowId})`}
+          stroke="#4A4F57"
+          strokeWidth="2.5"
+        />
+      ))}
+      {/* Party garland under the gable */}
+      <path
+        d="M62 138 Q98 150 134 138"
+        fill="none"
+        stroke="#0E1226"
+        strokeWidth="1"
+      />
+      {[68, 78, 88, 98, 108, 118, 128].map((x, i) => {
+        const t = (x - 62) / 72;
+        const y = 138 + 2 * (1 - t) * t * 12;
         return (
           <path
             key={x}
-            d={`M${x - 4} ${y} L${x + 4} ${y} L${x} ${y + 7} Z`}
+            d={`M${x - 3.5} ${y} L${x + 3.5} ${y} L${x} ${y + 6} Z`}
             fill={["#E86A92", "#F2C14E", "#4FB3A9"][i % 3]}
           />
         );
       })}
-      {/* Windows with guests */}
-      {[62, 124].map((x) => (
-        <g key={x}>
-          <rect
-            x={x}
-            y="136"
-            width="34"
-            height="30"
-            fill={`url(#${windowId})`}
-            stroke="#6B4A33"
-            strokeWidth="3"
-          />
-          <path
-            d={`M${x + 17} 136 V166 M${x} 151 H${x + 34}`}
-            stroke="#6B4A33"
-            strokeWidth="1.5"
-          />
-        </g>
-      ))}
-      <circle cx="72" cy="150" r="4.5" fill="#3A2A3E" opacity="0.85" />
-      <path d="M66 166 q6 -12 12 0 Z" fill="#3A2A3E" opacity="0.85" />
-      <circle cx="86" cy="152" r="4" fill="#3A2A3E" opacity="0.85" />
-      <path d="M81 166 q5 -10 10 0 Z" fill="#3A2A3E" opacity="0.85" />
-      <circle cx="142" cy="150" r="4.5" fill="#3A2A3E" opacity="0.85" />
-      <path d="M136 166 q6 -12 12 0 Z" fill="#3A2A3E" opacity="0.85" />
-      {/* Front door with a lit transom, porch lamp and step */}
-      <circle cx="128" cy="180" r="9" fill="#F6D27A" opacity="0.35" />
-      <circle cx="128" cy="180" r="2.5" fill="#FBE3A0" />
+
+      {/* Front door with tall glass slits and a wall lamp */}
       <rect
-        x="98"
-        y="172"
-        width="24"
-        height="38"
-        rx="1"
-        fill="#2F6F6A"
+        x="60"
+        y="164"
+        width="16"
+        height="40"
+        fill="#8C9096"
+        stroke="#0E1226"
+        strokeWidth="1.2"
+      />
+      {[63, 67, 71].map((x) => (
+        <rect
+          key={x}
+          x={x}
+          y="168"
+          width="2.4"
+          height="30"
+          fill={`url(#${windowId})`}
+        />
+      ))}
+      <circle cx="82" cy="168" r="8" fill="#F6D27A" opacity="0.3" />
+      <rect x="80.5" y="165" width="3" height="5" fill="#FBE3A0" />
+      {/* Living room window with blinds and guests */}
+      <rect
+        x="88"
+        y="162"
+        width="44"
+        height="26"
+        fill={`url(#${windowId})`}
+        stroke="#4A4F57"
+        strokeWidth="2.5"
+      />
+      {[96, 104, 112, 120, 128].map((x) => (
+        <line
+          key={x}
+          x1={x}
+          y1="163"
+          x2={x}
+          y2="187"
+          stroke="#E0A04A"
+          strokeWidth="0.8"
+        />
+      ))}
+      <circle cx="100" cy="172" r="4" fill="#3A2A3E" opacity="0.85" />
+      <path d="M95 188 q5 -11 10 0 Z" fill="#3A2A3E" opacity="0.85" />
+      <circle cx="118" cy="173" r="3.6" fill="#3A2A3E" opacity="0.85" />
+      <path d="M113 188 q5 -10 10 0 Z" fill="#3A2A3E" opacity="0.85" />
+      {/* Garage with a dark door, light leaking out underneath */}
+      <rect
+        x="150"
+        y="156"
+        width="50"
+        height="48"
+        fill="#3B434E"
         stroke="#0E1226"
         strokeWidth="1.5"
       />
-      <rect x="101" y="175" width="18" height="6" fill={`url(#${windowId})`} />
-      <circle cx="117" cy="193" r="1.6" fill="#F2C14E" />
+      {[164, 172, 180, 188, 196].map((y) => (
+        <line
+          key={y}
+          x1="151"
+          y1={y}
+          x2="199"
+          y2={y}
+          stroke="#4A5360"
+          strokeWidth="1"
+        />
+      ))}
       <rect
-        x="93"
-        y="209"
-        width="34"
-        height="4"
-        fill="#C9B79A"
-        stroke="#0E1226"
-        strokeWidth="1"
+        x="151"
+        y="201"
+        width="48"
+        height="2.5"
+        fill="#F6D27A"
+        opacity="0.8"
+      />
+      <line
+        x1="205"
+        y1="140"
+        x2="205"
+        y2="204"
+        stroke="#4A4F57"
+        strokeWidth="2"
       />
 
       {/* String lights from the house to the tree */}
       <path
-        d="M168 124 Q260 168 352 128"
+        d="M210 140 Q281 176 352 128"
         fill="none"
         stroke="#0E1226"
         strokeWidth="1.2"
       />
       {bulbs.map((x) => {
-        const t = (x - 168) / 184;
-        const y = 124 + 2 * (1 - t) * t * 44 + (1 - t) * 0 + t * 4 + 4;
+        const t = (x - 210) / 142;
+        const y = (1 - t) ** 2 * 140 + 2 * (1 - t) * t * 176 + t ** 2 * 128 + 4;
         return (
           <g key={x}>
             <circle cx={x} cy={y} r="7" fill="#F6D27A" opacity="0.22" />
@@ -472,6 +594,36 @@ export function HousewarmingScene({
           cy={y as number}
           r="3"
           fill={c as string}
+        />
+      ))}
+
+      {/* Paved driveway, hedges and ornamental grasses */}
+      <polygon points="148,204 202,204 230,260 122,260" fill="#4E3A33" />
+      {[214, 226, 240].map((y) => {
+        const t = (y - 204) / 56;
+        return (
+          <line
+            key={y}
+            x1={148 - t * 26}
+            y1={y}
+            x2={202 + t * 28}
+            y2={y}
+            stroke="#3E2E28"
+            strokeWidth="1"
+          />
+        );
+      })}
+      <rect x="-6" y="202" width="70" height="22" rx="10" fill="#1F3A2E" />
+      <rect x="208" y="204" width="22" height="18" rx="8" fill="#1F3A2E" />
+      {[96, 104, 112, 222].map((x) => (
+        <path
+          key={x}
+          d={`M${x} 206 q-6 -16 -8 -24 M${x} 206 q0 -18 0 -26 M${x} 206 q6 -16 8 -24`}
+          fill="none"
+          stroke="#C9B79A"
+          strokeWidth="1.4"
+          strokeLinecap="round"
+          opacity="0.85"
         />
       ))}
 
