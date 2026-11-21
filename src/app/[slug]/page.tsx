@@ -105,7 +105,7 @@ async function EventDetails({
               part={dayPart}
               number={1}
               slug={event.slug}
-              className="flex-1 md:col-start-1 md:row-start-2 md:pr-32"
+              className="flex-1 md:col-start-1 md:row-start-2 md:bg-[#F7E7CF] md:pr-32"
             >
               {otherParts[0] && (
                 <ScrollHint
@@ -317,12 +317,13 @@ function PartPanel({
           />
           {/* Organic transition from the day side */}
           <WaveEdge
-            direction="horizontal"
-            className="pointer-events-none absolute inset-x-0 top-0 h-8 w-full md:h-10"
+            direction="vertical"
+            fill="#F7E7CF"
+            className="pointer-events-none absolute inset-y-0 left-0 hidden h-full w-14 md:block"
           />
           <WaveEdge
-            direction="vertical"
-            className="pointer-events-none absolute inset-y-0 left-0 hidden h-full w-14 md:block"
+            direction="horizontal"
+            className="pointer-events-none absolute inset-x-0 top-0 h-8 w-full md:h-10"
           />
         </>
       ) : (
@@ -337,6 +338,11 @@ function PartPanel({
               className="absolute inset-0 h-full w-full opacity-70"
             />
             <Cloud className="absolute top-16 right-10 hidden w-24 opacity-80 md:block" />
+            {/* Desktop: the header flows into this side with the same wavy edge as the night side */}
+            <WaveEdge
+              direction="horizontal"
+              className="absolute inset-x-0 top-0 hidden h-10 w-full md:block"
+            />
           </div>
         </>
       )}
