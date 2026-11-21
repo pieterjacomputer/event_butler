@@ -1,3 +1,5 @@
+import { useId } from "react";
+
 /**
  * Decorative illustrations for the event page, inspired by the invitation's
  * colours and mood. Purely visual: hidden from screen readers.
@@ -5,36 +7,37 @@
 
 const FLAG_COLORS = ["#E4572E", "#F6C445", "#4FB3A9", "#F4A6B7", "#F2994A"];
 
-/** A garland of triangular flags. */
+/**
+ * A garland of triangular flags. Drawn as a repeating pattern at a fixed
+ * size, so the flags keep their shape on any screen width.
+ */
 export function Bunting({ className }: { className?: string }) {
-  const flags = Array.from({ length: 11 }, (_, i) => i);
+  const id = `bunting-${useId().replace(/[^a-zA-Z0-9]/g, "")}`;
   return (
-    <svg
-      viewBox="0 0 440 70"
-      preserveAspectRatio="none"
-      className={className}
-      aria-hidden
-    >
-      <path
-        d="M0 8 Q220 46 440 8"
-        fill="none"
-        stroke="#3B2F2F"
-        strokeOpacity="0.5"
-        strokeWidth="1.5"
-      />
-      {flags.map((i) => {
-        const x = 20 + i * 40;
-        // Follow the curve of the string.
-        const t = x / 440;
-        const y = 8 + 2 * (1 - t) * t * 38;
-        return (
-          <path
-            key={i}
-            d={`M${x - 13} ${y} L${x + 13} ${y} L${x} ${y + 26} Z`}
-            fill={FLAG_COLORS[i % FLAG_COLORS.length]}
-          />
-        );
-      })}
+    <svg className={className} aria-hidden>
+      <defs>
+        <pattern id={id} width="220" height="56" patternUnits="userSpaceOnUse">
+          {FLAG_COLORS.map((color, i) => {
+            const x = i * 44;
+            return (
+              <g key={color}>
+                <path
+                  d={`M${x} 6 Q${x + 22} 20 ${x + 44} 6`}
+                  fill="none"
+                  stroke="#3B2F2F"
+                  strokeOpacity="0.45"
+                  strokeWidth="1.5"
+                />
+                <path
+                  d={`M${x + 11} 13 L${x + 33} 13 L${x + 22} 38 Z`}
+                  fill={color}
+                />
+              </g>
+            );
+          })}
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill={`url(#${id})`} />
     </svg>
   );
 }
@@ -206,46 +209,38 @@ export function WaveEdge({
   );
 }
 
-/** Small stars scattered over the night sky. */
+/** Small stars scattered over the night sky (fixed-size repeating pattern). */
 export function StarField({ className }: { className?: string }) {
-  // Fixed positions so server and client render the same.
+  const id = `stars-${useId().replace(/[^a-zA-Z0-9]/g, "")}`;
   const stars = [
-    [6, 12, 1.2],
-    [18, 30, 0.8],
-    [27, 8, 1],
-    [41, 22, 0.7],
-    [52, 5, 1.1],
-    [63, 18, 0.8],
-    [74, 9, 1],
-    [88, 26, 0.9],
-    [94, 14, 0.7],
-    [12, 44, 0.7],
-    [35, 38, 0.9],
-    [58, 34, 0.7],
-    [81, 40, 1],
-    [47, 50, 0.6],
-    [22, 56, 0.8],
-    [70, 52, 0.7],
-    [92, 48, 0.8],
-    [4, 62, 0.6],
+    [12, 18, 1.4],
+    [58, 40, 0.9],
+    [102, 12, 1.2],
+    [140, 54, 0.8],
+    [30, 84, 1],
+    [88, 98, 1.5],
+    [128, 120, 0.9],
+    [18, 138, 1.1],
+    [70, 150, 0.8],
+    [150, 92, 1.2],
   ];
   return (
-    <svg
-      viewBox="0 0 100 100"
-      preserveAspectRatio="none"
-      className={className}
-      aria-hidden
-    >
-      {stars.map(([x, y, r], i) => (
-        <circle
-          key={i}
-          cx={x}
-          cy={y}
-          r={r * 0.35}
-          fill="#FBE3A0"
-          opacity={0.5 + (i % 3) * 0.2}
-        />
-      ))}
+    <svg className={className} aria-hidden>
+      <defs>
+        <pattern id={id} width="160" height="160" patternUnits="userSpaceOnUse">
+          {stars.map(([x, y, r], i) => (
+            <circle
+              key={i}
+              cx={x}
+              cy={y}
+              r={r}
+              fill="#FBE3A0"
+              opacity={0.45 + (i % 3) * 0.2}
+            />
+          ))}
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill={`url(#${id})`} />
     </svg>
   );
 }
@@ -790,7 +785,7 @@ export function CocktailsCheers({ className }: { className?: string }) {
 
 const PARTY_COLORS = ["#E86A92", "#F2C14E", "#4FB3A9", "#F2994A", "#B98CF0"];
 
-/** Colourful confetti scattered over the night sky. */
+/** Colourful confetti as a fixed-size repeating pattern (no stretching). */
 export function Confetti({
   className,
   colors = PARTY_COLORS,
@@ -798,89 +793,89 @@ export function Confetti({
   className?: string;
   colors?: string[];
 }) {
-  // Fixed positions so server and client render the same.
+  const id = `confetti-${useId().replace(/[^a-zA-Z0-9]/g, "")}`;
+  // [x, y, rotation] within a 200×200 tile.
   const pieces = [
-    [8, 18, 20],
-    [16, 52, -30],
-    [24, 34, 45],
-    [33, 70, 10],
-    [42, 22, -15],
-    [55, 46, 60],
-    [63, 14, -40],
-    [71, 64, 25],
-    [79, 30, -20],
-    [88, 56, 35],
-    [93, 22, 5],
-    [12, 80, -10],
-    [47, 84, 30],
-    [84, 82, -35],
-    [60, 76, 15],
-    [28, 92, 40],
-    [70, 40, -5],
-    [38, 58, -25],
+    [16, 22, 20],
+    [74, 12, -30],
+    [132, 30, 45],
+    [184, 18, 10],
+    [44, 70, -15],
+    [104, 84, 60],
+    [166, 66, -40],
+    [20, 128, 25],
+    [82, 140, -20],
+    [148, 118, 35],
+    [60, 186, 5],
+    [124, 176, -35],
+    [188, 150, 15],
   ];
   return (
-    <svg
-      viewBox="0 0 100 100"
-      preserveAspectRatio="none"
-      className={className}
-      aria-hidden
-    >
-      {pieces.map(([x, y, rotate], i) =>
-        i % 3 === 0 ? (
-          <circle
-            key={i}
-            cx={x}
-            cy={y}
-            r="0.7"
-            fill={colors[i % colors.length]}
-          />
-        ) : (
-          <rect
-            key={i}
-            x={x}
-            y={y}
-            width="1.6"
-            height="0.7"
-            rx="0.2"
-            fill={colors[i % colors.length]}
-            transform={`rotate(${rotate} ${x} ${y})`}
-            opacity="0.9"
-          />
-        ),
-      )}
+    <svg className={className} aria-hidden>
+      <defs>
+        <pattern id={id} width="200" height="200" patternUnits="userSpaceOnUse">
+          {pieces.map(([x, y, rotate], i) =>
+            i % 3 === 0 ? (
+              <circle
+                key={i}
+                cx={x}
+                cy={y}
+                r="3"
+                fill={colors[i % colors.length]}
+              />
+            ) : (
+              <rect
+                key={i}
+                x={x - 4.5}
+                y={y - 2}
+                width="9"
+                height="4"
+                rx="1"
+                fill={colors[i % colors.length]}
+                transform={`rotate(${rotate} ${x} ${y})`}
+                opacity="0.9"
+              />
+            ),
+          )}
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill={`url(#${id})`} />
     </svg>
   );
 }
 
-/** String lights with colourful party bulbs. */
+/** String lights with colourful party bulbs (fixed-size repeating pattern). */
 export function PartyLights({ className }: { className?: string }) {
-  const bulbs = Array.from({ length: 11 }, (_, i) => i);
+  const id = `lights-${useId().replace(/[^a-zA-Z0-9]/g, "")}`;
   return (
-    <svg
-      viewBox="0 0 440 60"
-      preserveAspectRatio="none"
-      className={className}
-      aria-hidden
-    >
-      <path
-        d="M0 6 Q110 38 220 12 T440 10"
-        fill="none"
-        stroke="#0E1226"
-        strokeWidth="1.5"
-      />
-      {bulbs.map((i) => {
-        const x = 18 + i * 40;
-        const y = 22 + Math.sin(i * 1.1) * 7;
-        const color = PARTY_COLORS[i % PARTY_COLORS.length];
-        return (
-          <g key={i}>
-            <circle cx={x} cy={y + 7} r="12" fill={color} opacity="0.22" />
-            <ellipse cx={x} cy={y + 7} rx="4.5" ry="5.5" fill={color} />
-            <rect x={x - 2} y={y - 1} width="4" height="4" fill="#0E1226" />
-          </g>
-        );
-      })}
+    <svg className={className} aria-hidden>
+      <defs>
+        <pattern id={id} width="220" height="48" patternUnits="userSpaceOnUse">
+          {PARTY_COLORS.map((color, i) => {
+            const x = i * 44;
+            return (
+              <g key={color}>
+                <path
+                  d={`M${x} 4 Q${x + 22} 18 ${x + 44} 4`}
+                  fill="none"
+                  stroke="#0E1226"
+                  strokeWidth="1.5"
+                />
+                <circle
+                  cx={x + 22}
+                  cy="20"
+                  r="11"
+                  fill={color}
+                  opacity="0.22"
+                />
+                <rect x={x + 20} y="9" width="4" height="4" fill="#0E1226" />
+                <ellipse cx={x + 22} cy="19" rx="4.5" ry="5.5" fill={color} />
+              </g>
+            );
+          })}
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill={`url(#${id})`} />
     </svg>
   );
 }
