@@ -502,8 +502,8 @@ function PartPanel({
               only takes the room left on the first screen (it may shrink to
               nothing on small phones), so screen 1 keeps fitting.
             */}
-            <div className="-mx-6 flex min-h-0 w-[calc(100%+3rem)] flex-1 items-end md:-mx-12 md:w-[calc(100%+6rem)] md:flex-none">
-              <TerraceScene className="pointer-events-none h-full max-h-56 w-full [mask-image:linear-gradient(to_bottom,black_70%,transparent)] md:h-auto md:max-h-none" />
+            <div className="relative -mx-6 min-h-0 w-[calc(100%+3rem)] flex-1 md:static md:-mx-12 md:w-[calc(100%+6rem)] md:flex-none">
+              <TerraceScene className="pointer-events-none absolute inset-0 h-full w-full [mask-image:linear-gradient(to_bottom,black_70%,transparent)] md:static md:h-auto" />
             </div>
             <div className="hidden min-h-6 flex-1 md:block" />
           </div>

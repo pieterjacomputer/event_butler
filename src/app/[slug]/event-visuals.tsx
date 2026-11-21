@@ -1076,7 +1076,12 @@ export function Cloud({ className }: { className?: string }) {
  */
 export function TerraceScene({ className }: { className?: string }) {
   return (
-    <svg viewBox="0 0 400 220" className={className} aria-hidden>
+    <svg
+      viewBox="0 0 400 220"
+      preserveAspectRatio="xMidYMax meet"
+      className={className}
+      aria-hidden
+    >
       {/* Trees and hedge in the back */}
       <circle cx="40" cy="96" r="38" fill="#9CC48A" />
       <circle cx="78" cy="110" r="30" fill="#86B676" />
