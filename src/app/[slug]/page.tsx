@@ -199,7 +199,7 @@ function EventHeader({
   return (
     <header
       className={cn(
-        "relative overflow-hidden bg-[#FBF3E4] px-4 pt-11 pb-1 text-center text-[#2B2140] md:pt-12 md:pb-7",
+        "relative overflow-hidden bg-[#FBF3E4] px-4 pt-11 pb-1 text-center text-[#2B2140] md:pt-[6vh] md:pb-[3vh]",
         className,
       )}
     >
@@ -219,15 +219,15 @@ function EventHeader({
       <h1 className="font-script leading-none">
         {match ? (
           <>
-            <span className="text-6xl text-[#E4572E] drop-shadow-[3px_3px_0_#F6C445] sm:text-8xl md:text-[clamp(4rem,10vh,8rem)]">
+            <span className="text-6xl text-[#E4572E] drop-shadow-[3px_3px_0_#F6C445] sm:text-8xl md:text-[clamp(3.5rem,9vh,8rem)]">
               {match[1]}
             </span>{" "}
-            <span className="text-4xl text-[#C8432B] sm:text-6xl md:text-[clamp(2.75rem,6.5vh,4.5rem)]">
+            <span className="text-4xl text-[#C8432B] sm:text-6xl md:text-[clamp(2.25rem,5.8vh,4.5rem)]">
               {match[2]}
             </span>
           </>
         ) : (
-          <span className="text-4xl text-[#C8432B] sm:text-6xl md:text-[clamp(2.75rem,6.5vh,4.5rem)]">
+          <span className="text-4xl text-[#C8432B] sm:text-6xl md:text-[clamp(2.25rem,5.8vh,4.5rem)]">
             {event.title}
           </span>
         )}
@@ -292,7 +292,7 @@ function PartPanel({
       id={id}
       aria-label={`Deel ${number}: ${part.name}`}
       className={cn(
-        "relative flex flex-col overflow-hidden px-6 pt-6 pb-24 md:min-h-0 md:px-12 md:pt-12 md:pb-6",
+        "relative flex flex-col overflow-hidden px-6 pt-6 pb-24 md:min-h-0 md:px-12 md:pt-[5vh] md:pb-[2.5vh]",
         theme.panel,
         className,
       )}
@@ -351,7 +351,7 @@ function PartPanel({
         {night ? (
           <>
             {/* The info sits in the middle of the night sky. */}
-            <div className="flex w-full flex-1 flex-col items-center justify-center gap-3 py-6 md:flex-none md:gap-3 md:py-2">
+            <div className="flex w-full flex-1 flex-col items-center justify-center gap-3 py-6 md:flex-none md:gap-[1.2vh] md:py-[1vh]">
               <p
                 className={cn(
                   "text-xs font-semibold tracking-widest uppercase md:text-sm",
@@ -362,7 +362,7 @@ function PartPanel({
               </p>
               <h2
                 className={cn(
-                  "-rotate-1 rounded-md px-5 py-1.5 font-serif text-3xl md:px-7 md:py-2 md:text-5xl",
+                  "-rotate-1 rounded-md px-5 py-1.5 font-serif text-3xl md:px-7 md:py-2 md:text-[clamp(1.75rem,4.3vh,3rem)]",
                   theme.pill,
                 )}
               >
@@ -371,7 +371,7 @@ function PartPanel({
               {venue && (
                 <p
                   className={cn(
-                    "font-script text-2xl md:text-4xl",
+                    "font-script text-2xl md:text-[clamp(1.375rem,3.3vh,2.25rem)]",
                     theme.accent,
                   )}
                 >
@@ -380,8 +380,11 @@ function PartPanel({
               )}
 
               {!startInProgramme && (
-                <p className="flex items-center gap-2 font-serif text-2xl md:gap-3 md:text-4xl">
-                  <Clock className="size-5 md:size-8" aria-hidden />
+                <p className="flex items-center gap-2 font-serif text-2xl md:gap-3 md:text-[clamp(1.375rem,3.3vh,2.25rem)]">
+                  <Clock
+                    className="size-5 md:size-[clamp(1.25rem,3vh,2rem)]"
+                    aria-hidden
+                  />
                   {formatTimeRange(part.startsAt, part.endsAt)}
                 </p>
               )}
@@ -399,7 +402,7 @@ function PartPanel({
               )}
 
               {items.length > 0 && (
-                <ul className="flex flex-col gap-1 text-left text-sm md:gap-2 md:text-lg">
+                <ul className="flex flex-col gap-1 text-left text-sm md:gap-[0.8vh] md:text-[clamp(0.875rem,1.9vh,1.125rem)]">
                   {items.map((item) => {
                     const [, time, text] =
                       /^(\d{1,2}u\d{2})\s+(.*)$/.exec(item) ?? [];
@@ -409,13 +412,16 @@ function PartPanel({
                         className={cn(
                           "flex gap-3",
                           night &&
-                            "text-lg [text-shadow:0_0_12px_rgba(232,106,146,0.9)] md:text-2xl",
+                            "text-lg [text-shadow:0_0_12px_rgba(232,106,146,0.9)] md:text-[clamp(1.125rem,2.6vh,1.5rem)]",
                         )}
                       >
                         {time ? (
-                          <span className="flex items-center gap-2.5 font-serif text-2xl md:gap-3 md:text-4xl">
+                          <span className="flex items-center gap-2.5 font-serif text-2xl md:gap-3 md:text-[clamp(1.375rem,3.3vh,2.25rem)]">
                             <Clock
-                              className={cn("size-6 md:size-9", theme.accent)}
+                              className={cn(
+                                "size-6 md:size-[clamp(1.375rem,3.3vh,2.25rem)]",
+                                theme.accent,
+                              )}
                               aria-hidden
                             />
                             <span className={theme.accent}>{time}</span>
@@ -431,7 +437,7 @@ function PartPanel({
                   })}
                 </ul>
               )}
-              <CocktailsCheers className="mt-2 w-28 md:w-32" />
+              <CocktailsCheers className="mt-2 w-28 md:w-[clamp(3.5rem,9vh,8rem)]" />
             </div>
             <div className="relative -mx-6 w-[calc(100%+3rem)] md:-mx-12 md:min-h-0 md:w-[calc(100%+6rem)] md:flex-1">
               <HousewarmingScene
@@ -441,7 +447,7 @@ function PartPanel({
             </div>
           </>
         ) : (
-          <div className="flex w-full flex-1 flex-col items-center gap-2.5 md:gap-4">
+          <div className="flex w-full flex-1 flex-col items-center gap-2.5 md:gap-[1.4vh]">
             <p
               className={cn(
                 "text-xs font-semibold tracking-widest uppercase md:text-sm",
@@ -452,7 +458,7 @@ function PartPanel({
             </p>
             <h2
               className={cn(
-                "-rotate-1 rounded-md px-5 py-1.5 font-serif text-3xl md:px-7 md:py-2 md:text-5xl",
+                "-rotate-1 rounded-md px-5 py-1.5 font-serif text-3xl md:px-7 md:py-2 md:text-[clamp(1.75rem,4.3vh,3rem)]",
                 theme.pill,
               )}
             >
@@ -460,14 +466,20 @@ function PartPanel({
             </h2>
             {venue && (
               <p
-                className={cn("font-script text-2xl md:text-4xl", theme.accent)}
+                className={cn(
+                  "font-script text-2xl md:text-[clamp(1.375rem,3.3vh,2.25rem)]",
+                  theme.accent,
+                )}
               >
                 {venue}
               </p>
             )}
 
-            <p className="flex items-center gap-2 font-serif text-2xl md:gap-3 md:text-4xl">
-              <Clock className="size-5 md:size-8" aria-hidden />
+            <p className="flex items-center gap-2 font-serif text-2xl md:gap-3 md:text-[clamp(1.375rem,3.3vh,2.25rem)]">
+              <Clock
+                className="size-5 md:size-[clamp(1.25rem,3vh,2rem)]"
+                aria-hidden
+              />
               {formatTimeRange(part.startsAt, part.endsAt)}
             </p>
 
@@ -484,7 +496,7 @@ function PartPanel({
             )}
 
             {items.length > 0 && (
-              <ul className="flex flex-col gap-1 text-left text-sm md:gap-2 md:text-lg">
+              <ul className="flex flex-col gap-1 text-left text-sm md:gap-[0.8vh] md:text-[clamp(0.875rem,1.9vh,1.125rem)]">
                 {items.map((item) => {
                   const [, time, text] =
                     /^(\d{1,2}u\d{2})\s+(.*)$/.exec(item) ?? [];
@@ -494,7 +506,7 @@ function PartPanel({
                       className={cn(
                         "flex gap-3",
                         night &&
-                          "text-lg [text-shadow:0_0_12px_rgba(232,106,146,0.9)] md:text-2xl",
+                          "text-lg [text-shadow:0_0_12px_rgba(232,106,146,0.9)] md:text-[clamp(1.125rem,2.6vh,1.5rem)]",
                       )}
                     >
                       {time ? (
