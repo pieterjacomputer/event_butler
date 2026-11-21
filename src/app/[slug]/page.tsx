@@ -1,14 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
-import {
-  ChevronDown,
-  ChevronsDown,
-  Clock,
-  MapPin,
-  Navigation,
-  PartyPopper,
-} from "lucide-react";
+import { ChevronsDown, Clock, MapPin, PartyPopper } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { createOrder } from "./actions";
@@ -31,6 +24,7 @@ import {
   WaveEdge,
 } from "./event-visuals";
 import { OrderForm } from "./order-form";
+import { RouteMenu } from "./route-menu";
 import { StickyCallToAction } from "./sticky-cta";
 import {
   getEventBySlug,
@@ -549,58 +543,6 @@ function PartPanel({
         {children}
       </div>
     </section>
-  );
-}
-
-/**
- * One Route button; the guest picks their maps app from a small menu.
- * Every option goes through our own redirect, so the address is never in
- * this page.
- */
-function RouteMenu({
-  slug,
-  partId,
-  className,
-}: {
-  slug: string;
-  partId: number;
-  className: string;
-}) {
-  const apps = [
-    ["google", "Google Maps"],
-    ["waze", "Waze"],
-    ["apple", "Apple Kaarten"],
-  ] as const;
-  return (
-    <details className="group relative">
-      <summary
-        className={cn(
-          "inline-flex cursor-pointer list-none items-center gap-2 rounded-full border px-5 py-2.5 text-sm font-medium transition-colors md:px-6 md:py-3 md:text-base [&::-webkit-details-marker]:hidden",
-          className,
-        )}
-      >
-        <Navigation className="size-4" aria-hidden />
-        Route
-        <ChevronDown
-          className="size-4 transition-transform group-open:rotate-180"
-          aria-hidden
-        />
-      </summary>
-      <ul className="absolute bottom-full left-1/2 z-20 mb-2 w-48 -translate-x-1/2 overflow-hidden rounded-xl border bg-white text-left text-sm text-[#2B2140] shadow-xl">
-        {apps.map(([app, appLabel]) => (
-          <li key={app}>
-            <a
-              href={`/${slug}/route/${partId}?app=${app}`}
-              target="_blank"
-              rel="nofollow noreferrer"
-              className="block px-4 py-3 hover:bg-[#FBF3E4]"
-            >
-              Openen in {appLabel}
-            </a>
-          </li>
-        ))}
-      </ul>
-    </details>
   );
 }
 
