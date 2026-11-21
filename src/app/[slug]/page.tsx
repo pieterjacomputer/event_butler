@@ -100,7 +100,7 @@ async function EventDetails({
               slug={event.slug}
               className="flex-1 md:col-start-1 md:row-start-2 md:pr-32"
             >
-              {open && <CallToAction className="mt-6 md:hidden" />}
+              {open && <CallToAction className="mt-4 md:hidden" />}
               {otherParts[0] && (
                 <ScrollHint
                   href="#deel-2"
@@ -158,7 +158,7 @@ function ScrollHint({
     <a
       href={href}
       aria-label={label}
-      className={cn("mt-4 flex justify-center p-2 md:hidden", className)}
+      className={cn("mt-2 flex justify-center p-1 md:hidden", className)}
     >
       <ChevronsDown className="size-8 motion-safe:animate-bounce" aria-hidden />
     </a>
@@ -192,7 +192,7 @@ function EventHeader({
   return (
     <header
       className={cn(
-        "relative overflow-hidden bg-[#FBF3E4] px-4 pt-16 pb-6 text-center text-[#2B2140] md:pb-10",
+        "relative overflow-hidden bg-[#FBF3E4] px-4 pt-14 pb-2 text-center text-[#2B2140] md:pt-16 md:pb-10",
         className,
       )}
     >
@@ -269,7 +269,7 @@ function PartPanel({
       id={id}
       aria-label={`Deel ${number}: ${part.name}`}
       className={cn(
-        "relative flex flex-col overflow-hidden px-6 pt-14 pb-8 md:px-12 md:pt-16 md:pb-10",
+        "relative flex flex-col overflow-hidden px-6 pt-10 pb-6 md:px-12 md:pt-16 md:pb-10",
         theme.panel,
         className,
       )}
@@ -302,7 +302,7 @@ function PartPanel({
         </>
       )}
 
-      <div className="relative mx-auto flex w-full max-w-sm flex-1 flex-col items-center gap-4 text-center">
+      <div className="relative mx-auto flex w-full max-w-sm flex-1 flex-col items-center gap-3 text-center md:gap-4">
         <p
           className={cn(
             "text-xs font-semibold tracking-widest uppercase",
