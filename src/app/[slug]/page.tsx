@@ -134,7 +134,7 @@ async function EventDetails({
 
         {/* Desktop: the call to action sits on the seam between both sides. */}
         {open && (
-          <div className="pointer-events-none z-10 hidden md:col-span-2 md:col-start-1 md:row-start-2 md:flex md:items-center md:justify-center">
+          <div className="pointer-events-none z-10 hidden md:col-span-2 md:col-start-1 md:row-start-2 md:flex md:items-end md:justify-center md:pb-[calc(2.5vh-6px)]">
             <CallToAction className="pointer-events-auto" />
           </div>
         )}
