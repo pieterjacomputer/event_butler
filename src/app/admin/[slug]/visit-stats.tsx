@@ -85,7 +85,7 @@ export function VisitStatsCard({
               {stats.perDay.map((d) => (
                 <div
                   key={d.day}
-                  className="relative flex h-full min-w-6 flex-1 flex-col justify-end"
+                  className="relative flex h-full max-w-12 min-w-6 flex-1 flex-col justify-end"
                   title={`${shortDay(d.day)}: ${d.visitors} bezoekers, ${d.views} weergaven`}
                 >
                   <span className="mb-1 text-center text-xs tabular-nums text-muted-foreground">
