@@ -146,3 +146,29 @@ export const orderParts = pgTable(
     ),
   ],
 );
+
+/**
+ * Anonymous visit statistics. No cookies, no IP addresses: a visitor is
+ * recognised for one day only, via a salted hash that changes daily.
+ */
+export const pageVisits = pgTable(
+  "page_visits",
+  {
+    id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
+    eventId: integer("event_id")
+      .notNull()
+      .references(() => events.id, { onDelete: "cascade" }),
+    /** "view" (page visit), "cta" ("Ik kom feesten" click) or "route". */
+    kind: text("kind", { enum: ["view", "cta", "route"] }).notNull(),
+    /** Daily anonymous visitor id (hash); cannot be linked across days. */
+    visitorHash: text("visitor_hash").notNull(),
+    /** Where the visitor came from, as a category (e.g. "whatsapp", "direct"). */
+    referrer: text("referrer").notNull(),
+    /** "mobile", "tablet" or "desktop". */
+    device: text("device").notNull(),
+    /** Two-letter country code from Vercel, if known. */
+    country: text("country"),
+    createdAt,
+  },
+  (t) => [index("page_visits_event_created_idx").on(t.eventId, t.createdAt)],
+);
