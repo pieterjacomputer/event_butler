@@ -320,7 +320,7 @@ function PartPanel({
           />
           <WaveEdge
             direction="horizontal"
-            className="pointer-events-none absolute inset-x-0 top-0 h-8 w-full md:h-10"
+            className="pointer-events-none absolute inset-x-0 top-0 hidden h-10 w-full md:block"
           />
           {/* Mobile: the night flows into the form screen with the same curve */}
           <WaveEdge
@@ -332,6 +332,12 @@ function PartPanel({
         <>
           <Balloons className="pointer-events-none absolute top-3 left-1 w-14 opacity-90 md:hidden" />
           <SpaghettiBowl className="pointer-events-none absolute right-3 bottom-24 w-20 opacity-90 md:hidden" />
+          {/* Mobile: screen 1 flows into the night screen with a wavy edge */}
+          <WaveEdge
+            direction="horizontal"
+            fill="#1B2340"
+            className="pointer-events-none absolute inset-x-0 bottom-0 z-[1] h-8 w-full rotate-180 md:hidden"
+          />
           {/* Pastel confetti and a sun glow (plus a cloud on desktop), continuing the header */}
           <div className="pointer-events-none absolute inset-0" aria-hidden>
             <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_30%_100%,rgba(246,196,69,0.28),transparent_60%)]" />
