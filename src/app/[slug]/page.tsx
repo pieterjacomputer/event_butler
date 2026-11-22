@@ -48,7 +48,33 @@ export async function generateMetadata({
 }: PageProps<"/[slug]">): Promise<Metadata> {
   const { slug } = await params;
   const event = await getEventBySlug(slug);
-  return { title: event ? event.title : "Niet gevonden" };
+  if (!event) return { title: "Niet gevonden" };
+
+  // Shown in share previews (WhatsApp, Messenger, …). Never an address.
+  const date = formatDate(event.startsAt);
+  const parts = event.parts
+    .map(
+      (p) =>
+        `${p.name.split(" – ")[0]} ${formatTimeRange(p.startsAt, p.endsAt)}`,
+    )
+    .join(" · ");
+  const deadline = event.orderDeadline
+    ? ` RSVP en spaghetti bestellen graag voor ${formatDayMonth(event.orderDeadline)}.`
+    : "";
+  const description = `${date.charAt(0).toUpperCase()}${date.slice(1)} · ${parts}.${deadline}`;
+
+  return {
+    title: event.title,
+    description,
+    openGraph: {
+      title: `🎉 ${event.title}`,
+      description,
+      type: "website",
+      locale: "nl_BE",
+      siteName: "Event Butler",
+    },
+    twitter: { card: "summary_large_image", title: event.title, description },
+  };
 }
 
 export default function EventPage({
