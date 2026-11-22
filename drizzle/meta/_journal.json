@@ -50,6 +50,13 @@
       "when": 1795292795478,
       "tag": "0006_order_part_people",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1795305971812,
+      "tag": "0007_page_visits",
+      "breakpoints": true
     }
   ]
 }

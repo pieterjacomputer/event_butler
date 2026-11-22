@@ -4,7 +4,7 @@ import { and, eq } from "drizzle-orm";
 import { redirect } from "next/navigation";
 import { isAdmin } from "@/auth";
 import { getDb } from "@/db";
-import { orders } from "@/db/schema";
+import { orders, pageVisits } from "@/db/schema";
 import { getEventBySlug } from "@/lib/events";
 
 /** Deletes one sign-up (its headcounts and portions go with it). */
@@ -41,10 +41,13 @@ export async function deleteAllSignups(
     return { error: `Typ exact "${event.title}" om te bevestigen.` };
   }
 
-  const deleted = await getDb()
+  const db = getDb();
+  const deleted = await db
     .delete(orders)
     .where(eq(orders.eventId, event.id))
     .returning({ id: orders.id });
+  // Visitor statistics are guest data too.
+  await db.delete(pageVisits).where(eq(pageVisits.eventId, event.id));
 
   redirect(`/admin/${slug}?verwijderd=${deleted.length}`);
 }

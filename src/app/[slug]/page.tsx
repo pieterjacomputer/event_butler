@@ -25,6 +25,7 @@ import {
 } from "./event-visuals";
 import { OrderForm } from "./order-form";
 import { RouteMenu } from "./route-menu";
+import { VisitBeacon } from "./visit-beacon";
 import { StickyCallToAction } from "./sticky-cta";
 import {
   getEventBySlug,
@@ -140,6 +141,7 @@ async function EventDetails({
       </div>
 
       <FormSection event={event} open={open} />
+      <VisitBeacon slug={event.slug} />
       {open && <StickyCallToAction targetId="inschrijven" />}
     </article>
   );
@@ -170,6 +172,7 @@ function CallToAction({ className }: { className?: string }) {
   return (
     <a
       href="#inschrijven"
+      data-track="cta"
       className={cn(
         "inline-flex items-center gap-2 rounded-full border-4 border-white bg-gradient-to-r from-[#E4572E] to-[#E86A92] px-7 py-3.5 font-serif text-xl text-white shadow-xl transition-transform hover:scale-105 focus-visible:ring-4 focus-visible:ring-[#F6C445] focus-visible:outline-none motion-reduce:transition-none",
         className,

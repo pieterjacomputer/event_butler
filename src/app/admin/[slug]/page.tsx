@@ -6,11 +6,13 @@ import { Download } from "lucide-react";
 import { isAdmin } from "@/auth";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getEventOverview } from "@/lib/admin";
+import { getVisitStats } from "@/lib/stats";
 import { isOrderingOpen } from "@/lib/events";
 import { formatDateTime } from "@/lib/format";
 import { SignOutButton } from "../sign-out-button";
 import { deleteAllSignups, deleteSignup } from "./actions";
 import { DeleteAllForm, DeleteSignupButton } from "./delete-buttons";
+import { VisitStatsCard } from "./visit-stats";
 
 export const metadata: Metadata = { title: "Admin – overzicht" };
 
@@ -38,6 +40,7 @@ async function Overview({
   const overview = await getEventOverview(slug);
   if (!overview) notFound();
   const { event, signups, totals } = overview;
+  const visitStats = await getVisitStats(event.id);
   const open = isOrderingOpen(event);
 
   return (
@@ -90,6 +93,8 @@ async function Overview({
           />
         ))}
       </section>
+
+      <VisitStatsCard stats={visitStats} signups={totals.signups} />
 
       <Card>
         <CardHeader>
@@ -197,9 +202,9 @@ async function Overview({
         <CardContent className="flex flex-col gap-3 text-sm">
           <p className="text-muted-foreground">
             Verwijdert alle {totals.signups} inschrijvingen van dit feest:
-            namen, aantallen, porties en opmerkingen. Het feest zelf en de
-            pagina blijven bestaan. Dit kan niet ongedaan worden; download
-            eventueel eerst de CSV.
+            namen, aantallen, porties, opmerkingen en de bezoekersstatistieken.
+            Het feest zelf en de pagina blijven bestaan. Dit kan niet ongedaan
+            worden; download eventueel eerst de CSV.
           </p>
           <DeleteAllForm
             title={event.title}

@@ -66,6 +66,7 @@ export function RouteMenu({
               href={`/${slug}/route/${partId}?app=${app}`}
               target="_blank"
               rel="nofollow noreferrer"
+              data-track="route"
               className="block px-4 py-3 hover:bg-[#FBF3E4]"
               onClick={() => {
                 if (ref.current) ref.current.open = false;

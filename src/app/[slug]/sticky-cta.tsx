@@ -33,6 +33,7 @@ export function StickyCallToAction({ targetId }: { targetId: string }) {
     >
       <a
         href={`#${targetId}`}
+        data-track="cta"
         tabIndex={formVisible ? -1 : undefined}
         className="inline-flex w-full max-w-xs items-center justify-center gap-2 rounded-full border-4 border-white bg-gradient-to-r from-[#E4572E] to-[#E86A92] px-7 py-3 font-serif text-xl text-white shadow-xl focus-visible:ring-4 focus-visible:ring-[#F6C445] focus-visible:outline-none"
       >
