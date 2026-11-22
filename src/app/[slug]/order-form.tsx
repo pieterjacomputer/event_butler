@@ -1,7 +1,7 @@
 "use client";
 
 import { useActionState, useState } from "react";
-import { Minus, Plus } from "lucide-react";
+import { Minus, PartyPopper, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
@@ -26,6 +26,8 @@ type Props = {
   menu: MenuItem[];
   initialValues?: OrderFormValues;
   submitLabel: string;
+  /** Show a party popper on the button that pops when the form is sent. */
+  celebrate?: boolean;
 };
 
 const EMPTY: OrderFormValues = {
@@ -42,6 +44,7 @@ export function OrderForm({
   menu,
   initialValues,
   submitLabel,
+  celebrate = false,
 }: Props) {
   const [state, formAction, pending] = useActionState(action, {});
   const values = state.values ?? initialValues ?? EMPTY;
@@ -57,6 +60,7 @@ export function OrderForm({
       serverError={state.error}
       serverFieldErrors={state.fieldErrors}
       submitLabel={submitLabel}
+      celebrate={celebrate}
     />
   );
 }
@@ -70,6 +74,7 @@ function OrderFields({
   serverError,
   serverFieldErrors,
   submitLabel,
+  celebrate,
 }: {
   formAction: (formData: FormData) => void;
   pending: boolean;
@@ -79,8 +84,11 @@ function OrderFields({
   serverError?: string;
   serverFieldErrors?: FieldErrors;
   submitLabel: string;
+  celebrate: boolean;
 }) {
   const [clientErrors, setClientErrors] = useState<FieldErrors | null>(null);
+  // Increases on every valid submit, to (re)start the popper animation.
+  const [pops, setPops] = useState(0);
   const errors = clientErrors ?? serverFieldErrors ?? {};
   const [quantities, setQuantities] = useState<Record<string, string>>(() =>
     Object.fromEntries(
@@ -113,6 +121,7 @@ function OrderFields({
           setClientErrors(toFieldErrors(result.error));
         } else {
           setClientErrors(null);
+          setPops((n) => n + 1);
         }
       }}
       className="flex flex-col gap-6"
@@ -279,6 +288,7 @@ function OrderFields({
       </div>
 
       <Button type="submit" size="lg" disabled={pending}>
+        {celebrate && <Popper pops={pops} />}
         {pending ? "Bezig…" : submitLabel}
       </Button>
     </form>
@@ -288,4 +298,47 @@ function OrderFields({
 function FieldError({ message }: { message?: string }) {
   if (!message) return null;
   return <p className="text-sm text-destructive">{message}</p>;
+}
+
+const POPPER_PIECES = [
+  { dx: "-14px", dy: "-16px", color: "#F6C445" },
+  { dx: "-4px", dy: "-20px", color: "#E86A92" },
+  { dx: "8px", dy: "-18px", color: "#4FB3A9" },
+  { dx: "16px", dy: "-8px", color: "#F2994A" },
+  { dx: "-16px", dy: "-4px", color: "#B98CF0" },
+];
+
+/**
+ * Party popper icon. On submit it gives a small pop and a few dots of
+ * confetti; nothing moves for people who prefer reduced motion.
+ */
+function Popper({ pops }: { pops: number }) {
+  return (
+    <span key={pops} className="relative inline-flex">
+      <PartyPopper
+        className={
+          pops > 0
+            ? "size-5 motion-safe:animate-[popper-pop_600ms_ease-out]"
+            : "size-5"
+        }
+        aria-hidden
+      />
+      {pops > 0 &&
+        POPPER_PIECES.map((piece, i) => (
+          <span
+            key={i}
+            aria-hidden
+            className="pointer-events-none absolute top-0 right-0 size-1.5 rounded-full opacity-0 motion-safe:animate-[popper-confetti_700ms_ease-out_forwards]"
+            style={
+              {
+                backgroundColor: piece.color,
+                "--dx": piece.dx,
+                "--dy": piece.dy,
+                animationDelay: `${60 + i * 30}ms`,
+              } as React.CSSProperties
+            }
+          />
+        ))}
+    </span>
+  );
 }
