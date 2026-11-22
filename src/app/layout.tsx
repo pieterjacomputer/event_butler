@@ -31,6 +31,12 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  // Absolute URLs for share previews: the production domain on Vercel.
+  metadataBase: new URL(
+    process.env.VERCEL_PROJECT_PRODUCTION_URL
+      ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+      : "http://localhost:3000",
+  ),
   title: "Event Butler",
   description: "Uitnodigingen, inschrijvingen en bestellingen voor je feest.",
   // Event pages are only shared by link; keep them out of search engines.
