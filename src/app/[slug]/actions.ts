@@ -1,12 +1,15 @@
 "use server";
 
 import { randomBytes, randomUUID } from "node:crypto";
-import { eq } from "drizzle-orm";
+import { and, count, eq, gt } from "drizzle-orm";
 import type { BatchItem } from "drizzle-orm/batch";
+import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { getDb } from "@/db";
 import { orderLines, orderParts, orders } from "@/db/schema";
+import { checkFormToken, connectionHash } from "@/lib/anti-spam";
 import { getEventBySlug, isOrderingOpen } from "@/lib/events";
+import { todayInBrussels } from "@/lib/format";
 import {
   formValuesFrom,
   parseOrderForm,
@@ -104,7 +107,44 @@ export async function createOrder(
   if (!result.ok) return result.state;
   const { input } = result;
 
+  // Spam protection 1: humans need a few seconds to fill in the form.
+  const values = formValuesFrom(formData);
+  const tokenCheck = checkFormToken(String(formData.get("formToken") ?? ""));
+  if (tokenCheck === "too-fast") {
+    return { error: "Even geduld… probeer het zo opnieuw.", values, attempt };
+  }
+  if (tokenCheck !== "ok") {
+    return {
+      error: "Deze pagina is verlopen. Vernieuw de pagina en probeer opnieuw.",
+      values,
+      attempt,
+    };
+  }
+
+  // Spam protection 2: at most 5 sign-ups per hour from one connection.
   const db = getDb();
+  const ip =
+    (await headers()).get("x-forwarded-for")?.split(",")[0]?.trim() ??
+    "unknown";
+  const connection = connectionHash(ip, todayInBrussels());
+  const [recent] = await db
+    .select({ n: count() })
+    .from(orders)
+    .where(
+      and(
+        eq(orders.connectionHash, connection),
+        gt(orders.createdAt, new Date(Date.now() - 60 * 60 * 1000)),
+      ),
+    );
+  if ((recent?.n ?? 0) >= 5) {
+    return {
+      error:
+        "Er zijn net veel inschrijvingen gebeurd vanaf deze verbinding. Probeer het over een uurtje opnieuw.",
+      values,
+      attempt,
+    };
+  }
+
   const orderId = randomUUID();
   const token = randomBytes(32).toString("base64url");
 
@@ -116,6 +156,7 @@ export async function createOrder(
       guestName: input.guestName,
       note: input.note === "" ? null : input.note,
       editToken: token,
+      connectionHash: connection,
     }),
     ...childRows(orderId, input),
   ]);

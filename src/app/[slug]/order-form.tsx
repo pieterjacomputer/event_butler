@@ -28,6 +28,8 @@ type Props = {
   submitLabel: string;
   /** Show a party popper on the button that pops when the form is sent. */
   celebrate?: boolean;
+  /** Signed "form opened at" token (spam protection), for new sign-ups. */
+  formToken?: string;
 };
 
 const EMPTY: OrderFormValues = {
@@ -45,6 +47,7 @@ export function OrderForm({
   initialValues,
   submitLabel,
   celebrate = false,
+  formToken,
 }: Props) {
   const [state, formAction, pending] = useActionState(action, {});
   const values = state.values ?? initialValues ?? EMPTY;
@@ -61,6 +64,7 @@ export function OrderForm({
       serverFieldErrors={state.fieldErrors}
       submitLabel={submitLabel}
       celebrate={celebrate}
+      formToken={formToken}
     />
   );
 }
@@ -75,6 +79,7 @@ function OrderFields({
   serverFieldErrors,
   submitLabel,
   celebrate,
+  formToken,
 }: {
   formAction: (formData: FormData) => void;
   pending: boolean;
@@ -85,6 +90,7 @@ function OrderFields({
   serverFieldErrors?: FieldErrors;
   submitLabel: string;
   celebrate: boolean;
+  formToken?: string;
 }) {
   const [clientErrors, setClientErrors] = useState<FieldErrors | null>(null);
   // Increases on every valid submit, to (re)start the popper animation.
@@ -286,6 +292,7 @@ function OrderFields({
           <input name="website" tabIndex={-1} autoComplete="off" />
         </label>
       </div>
+      {formToken && <input type="hidden" name="formToken" value={formToken} />}
 
       <Button type="submit" size="lg" disabled={pending}>
         {celebrate && <Popper pops={pops} />}
