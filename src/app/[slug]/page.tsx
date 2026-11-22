@@ -322,6 +322,11 @@ function PartPanel({
             direction="horizontal"
             className="pointer-events-none absolute inset-x-0 top-0 h-8 w-full md:h-10"
           />
+          {/* Mobile: the night flows into the form screen with the same curve */}
+          <WaveEdge
+            direction="horizontal"
+            className="pointer-events-none absolute inset-x-0 bottom-0 h-8 w-full rotate-180 md:hidden"
+          />
         </>
       ) : (
         <>
