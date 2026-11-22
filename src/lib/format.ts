@@ -1,5 +1,10 @@
 const TIME_ZONE = "Europe/Brussels";
 
+/** Today's date in Brussels as YYYY-MM-DD. */
+export function todayInBrussels(now: Date = new Date()): string {
+  return new Intl.DateTimeFormat("en-CA", { timeZone: TIME_ZONE }).format(now);
+}
+
 const dateFormat = new Intl.DateTimeFormat("nl-BE", {
   timeZone: TIME_ZONE,
   weekday: "long",

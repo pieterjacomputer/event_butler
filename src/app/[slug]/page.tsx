@@ -25,6 +25,7 @@ import {
 } from "./event-visuals";
 import { OrderForm } from "./order-form";
 import { RouteMenu } from "./route-menu";
+import { createFormToken } from "@/lib/anti-spam";
 import { VisitBeacon } from "./visit-beacon";
 import { StickyCallToAction } from "./sticky-cta";
 import {
@@ -586,6 +587,7 @@ function FormSection({
                   menu={event.menu.map((m) => ({ id: m.id, name: m.name }))}
                   submitLabel="Ik kom Feesten"
                   celebrate
+                  formToken={createFormToken()}
                 />
                 <p className="text-xs text-muted-foreground">
                   We bewaren je naam, inschrijving en bestelling enkel voor dit

@@ -57,6 +57,13 @@
       "when": 1795305971812,
       "tag": "0007_page_visits",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1795307892340,
+      "tag": "0008_order_connection_hash",
+      "breakpoints": true
     }
   ]
 }

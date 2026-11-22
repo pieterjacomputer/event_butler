@@ -96,12 +96,20 @@ export const orders = pgTable(
     note: text("note"),
     /** Secret token in the guest's personal link to change or cancel the order. */
     editToken: text("edit_token").notNull().unique(),
+    /**
+     * Anonymous, daily-changing connection id (hash), only used to limit
+     * the number of sign-ups per hour. Never an IP address.
+     */
+    connectionHash: text("connection_hash"),
     createdAt,
     updatedAt: timestamp("updated_at", { withTimezone: true })
       .notNull()
       .defaultNow(),
   },
-  (t) => [index("orders_event_id_idx").on(t.eventId)],
+  (t) => [
+    index("orders_event_id_idx").on(t.eventId),
+    index("orders_connection_idx").on(t.connectionHash, t.createdAt),
+  ],
 );
 
 /** How many portions of each menu item an order contains. */
