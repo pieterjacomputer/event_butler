@@ -7,7 +7,7 @@ import { isAdmin } from "@/auth";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getEventOverview } from "@/lib/admin";
 import { getVisitStats } from "@/lib/stats";
-import { isOrderingOpen } from "@/lib/events";
+import { closingTime, isOrderingOpen } from "@/lib/events";
 import { formatDateTime } from "@/lib/format";
 import { SignOutButton } from "../sign-out-button";
 import { deleteAllSignups, deleteSignup } from "./actions";
@@ -57,9 +57,16 @@ async function Overview({
             {event.title}
           </h1>
           <p className="text-sm text-muted-foreground">
-            {event.orderDeadline
-              ? `${open ? "Inschrijven kan tot" : "Inschrijven gesloten sinds"} ${formatDateTime(event.orderDeadline)}`
-              : "Geen deadline"}
+            {[
+              event.orderDeadline &&
+                event.registrationClosesAt &&
+                `Gewenste deadline: ${formatDateTime(event.orderDeadline)}`,
+              closingTime(event)
+                ? `${open ? "Inschrijven kan tot" : "Inschrijven gesloten sinds"} ${formatDateTime(closingTime(event)!)}`
+                : "Geen deadline",
+            ]
+              .filter(Boolean)
+              .join(" · ")}
           </p>
         </div>
         <div className="flex items-center gap-2">
