@@ -9,7 +9,7 @@ import {
   partsForForm,
   retentionDate,
 } from "@/lib/events";
-import { formatDate } from "@/lib/format";
+import { formatDate, formatDateTime } from "@/lib/format";
 import { getOrderByToken } from "@/lib/orders";
 import { cancelOrder, updateOrder } from "../../actions";
 import { CancelButton } from "../../cancel-button";
@@ -118,11 +118,12 @@ async function OrderDetails({
         </CardContent>
       </Card>
 
-      {open ? (
+      {open && event.orderDeadline ? (
         <>
           <p className="rounded-lg border px-4 py-3 text-sm">
             <strong>Bewaar deze link</strong> (bv. als bladwijzer). Hiermee kan
-            je je inschrijving later nog wijzigen of annuleren.
+            je je inschrijving wijzigen of annuleren tot{" "}
+            {formatDateTime(event.orderDeadline)}.
           </p>
 
           <Card>
