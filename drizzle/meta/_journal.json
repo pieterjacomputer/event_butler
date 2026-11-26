@@ -64,6 +64,20 @@
       "when": 1795307892340,
       "tag": "0008_order_connection_hash",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1795695011162,
+      "tag": "0009_registration_closes_at",
+      "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1795695011565,
+      "tag": "0010_soft_deadline_43",
+      "breakpoints": true
     }
   ]
 }

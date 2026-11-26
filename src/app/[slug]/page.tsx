@@ -101,7 +101,7 @@ async function EventDetails({
   const event = await getEventBySlug(slug);
   if (!event) notFound();
 
-  const open = isOrderingOpen(event) && event.orderDeadline !== null;
+  const open = isOrderingOpen(event);
   const [dayPart, ...otherParts] = event.parts;
 
   return (
@@ -610,13 +610,18 @@ function FormSection({
 
         <Card className="text-foreground">
           <CardContent className="flex flex-col gap-6 text-sm">
-            {open && event.orderDeadline ? (
+            {open ? (
               <>
                 <p>
-                  RSVP&apos;en en spaghetti bestellen graag voor{" "}
-                  <strong>{formatDayMonth(event.orderDeadline)}</strong>. Na het
-                  inschrijven krijg je een persoonlijke link waarmee je tot dan
-                  kan wijzigen of annuleren.
+                  {event.orderDeadline && (
+                    <>
+                      RSVP&apos;en en spaghetti bestellen graag voor{" "}
+                      <strong>{formatDayMonth(event.orderDeadline)}</strong>
+                      .{" "}
+                    </>
+                  )}
+                  Na het inschrijven krijg je een persoonlijke link waarmee je
+                  je inschrijving later nog kan wijzigen of annuleren.
                 </p>
                 <OrderForm
                   action={createOrder.bind(null, event.slug)}

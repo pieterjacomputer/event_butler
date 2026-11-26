@@ -38,16 +38,28 @@ export type EventWithDetails = NonNullable<
 >;
 
 /**
- * Orders and RSVPs are accepted until the deadline (checked on the server).
- * The deadline is stored to the minute (e.g. 23:59) and includes that whole
- * minute.
+ * The moment sign-ups and changes close for good: the hard close if set,
+ * otherwise the order deadline. (With a hard close, the order deadline is
+ * only a "preferably before" date.)
+ */
+export function closingTime(
+  event: Pick<EventWithDetails, "orderDeadline" | "registrationClosesAt">,
+): Date | null {
+  return event.registrationClosesAt ?? event.orderDeadline;
+}
+
+/**
+ * Orders and RSVPs are accepted until the closing time (checked on the
+ * server). Times are stored to the minute (e.g. 23:59) and include that
+ * whole minute.
  */
 export function isOrderingOpen(
-  event: Pick<EventWithDetails, "orderDeadline">,
+  event: Pick<EventWithDetails, "orderDeadline" | "registrationClosesAt">,
   now: Date = new Date(),
 ): boolean {
-  if (event.orderDeadline === null) return false;
-  return now.getTime() < event.orderDeadline.getTime() + 60_000;
+  const closes = closingTime(event);
+  if (closes === null) return false;
+  return now.getTime() < closes.getTime() + 60_000;
 }
 
 /** Guest data is deleted 30 days after the event (see CLAUDE.md, privacy). */

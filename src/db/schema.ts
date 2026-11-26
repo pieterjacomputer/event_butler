@@ -26,6 +26,14 @@ export const events = pgTable("events", {
   endsAt: timestamp("ends_at", { withTimezone: true }),
   /** Orders are accepted until this moment (stored in UTC). */
   orderDeadline: timestamp("order_deadline", { withTimezone: true }),
+  /**
+   * Hard close: after this moment the form and changes are no longer
+   * possible. The order deadline above is then only a "preferably before"
+   * date. Empty means the order deadline is also the hard close.
+   */
+  registrationClosesAt: timestamp("registration_closes_at", {
+    withTimezone: true,
+  }),
   /** Path of the event image under /public, e.g. /events/43-is-a-party.jpg. */
   imagePath: text("image_path"),
   createdAt,
